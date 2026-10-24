@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}Analytics · SupplyShield{% endblock %}
+{% block heading %}Supply Analytics{% endblock %}
+{% block content %}
+<div class="page-intro"><div><span class="eyebrow">MULTI-DIMENSIONAL ANALYTICS</span><h2>Supply-chain intelligence studio</h2><p>Explore the network at four levels: executive, temporal, regional and shipment-level signals.</p></div><div class="date-chip">Enhanced dataset · {{data.records}} telemetry rows</div></div>
+
+<div class="kpi-grid">
+<div class="kpi"><span>Telemetry records</span><b>{{data.records}}</b><small>enriched observations</small></div>
+<div class="kpi"><span>Cold-chain compliance</span><b>{{data.compliance}}%</b><small>average operating compliance</small></div>
+<div class="kpi success"><span>On-time delivery</span><b>{{data.on_time}}%</b><small>within 4-hour delay threshold</small></div>
+<div class="kpi danger"><span>Intervention candidates</span><b>{{data.interventions}}</b><small>risk score ≥ 60</small></div>
+</div>
+
+<div class="chart-grid chart-grid-2">
+<div class="panel chart-card"><div class="panel-head"><div><h3>Network risk trajectory</h3><p>Monthly risk, compliance and average delay.</p></div><span class="chart-badge">TIME SERIES</span></div><div class="canvas-wrap tall"><canvas id="monthly"></canvas></div></div>
+<div class="panel chart-card"><div class="panel-head"><div><h3>Risk composition</h3><p>Four decision bands across the enhanced population.</p></div><span class="chart-badge">DISTRIBUTION</span></div><div class="canvas-wrap doughnut-wrap"><canvas id="levels"></canvas></div></div>
+</div>
+
+<div class="chart-grid chart-grid-2">
+<div class="panel chart-card"><div class="panel-head"><div><h3>Regional risk matrix</h3><p>States ranked by average risk.</p></div><span class="chart-badge">GEOGRAPHY</span></div><div class="canvas-wrap tall"><canvas id="regions"></canvas></div></div>
+<div class="panel chart-card"><div class="panel-head"><div><h3>Route distance vs risk</h3><p>Each point is an enriched shipment observation.</p></div><span class="chart-badge">SHIPMENT LEVEL</span></div><div class="canvas-wrap tall"><canvas id="scatter"></canvas></div></div>
+</div>
+
+<div class="chart-grid chart-grid-2">
+<div class="panel chart-card"><div class="panel-head"><div><h3>Transport exposure</h3><p>Average risk and delay across transport modes.</p></div><span class="chart-badge">LOGISTICS</span></div><div class="canvas-wrap"><canvas id="modes"></canvas></div></div>
+<div class="panel chart-card"><div class="panel-head"><div><h3>Proxy quality-event share</h3><p>Demonstration label generated from risk and package-condition signals.</p></div><span class="chart-badge">QUALITY</span></div><div class="canvas-wrap doughnut-wrap"><canvas id="events"></canvas></div></div>
+</div>
+
+<div class="panel data-note"><div class="note-icon">i</div><div><b>Dataset methodology</b><p>The enhanced dataset is a <strong>research/demo benchmark</strong> derived from the supplied cold-chain telemetry. It adds logistics, environmental, packaging, sustainability and outcome-proxy fields. <strong>quality_event_proxy is synthetic</strong> and must not be presented as confirmed spoilage or real-world loss.</p></div></div>
+{% endblock %}
+{% block scripts %}
+<script>
+const A={{data|tojson}};
+const grid='#edf2f6',text='#71869a';
+const common={responsive:true,maintainAspectRatio:false,plugins:{tooltip:{mode:'index',intersect:false},legend:{labels:{usePointStyle:true,font:{size:10}}}},scales:{x:{grid:{display:false},ticks:{color:text,font:{size:10}}},y:{grid:{color:grid},ticks:{color:text,font:{size:10}}}}};
+new Chart(document.getElementById('monthly'),{type:'line',data:{labels:A.monthly.map(x=>x.month),datasets:[
+{label:'Risk %',data:A.monthly.map(x=>x.risk),borderColor:'#1769aa',backgroundColor:'rgba(23,105,170,.07)',fill:true,tension:.35,borderWidth:2},
+{label:'Compliance %',data:A.monthly.map(x=>x.compliance),borderColor:'#2b9b7d',tension:.35,borderWidth:2,fill:false},
+{label:'Delay hours',data:A.monthly.map(x=>x.delay),borderColor:'#d68b4a',tension:.35,borderWidth:2,fill:false}
+]},options:common});
+new Chart(document.getElementById('levels'),{type:'doughnut',data:{labels:Object.keys(A.levels),datasets:[{data:Object.values(A.levels),backgroundColor:['#48b88e','#e5b84c','#e07b62','#c94d5b'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'67%',plugins:{legend:{position:'bottom',labels:{usePointStyle:true,padding:14,font:{size:10}}}}}});
+new Chart(document.getElementById('regions'),{type:'bar',data:{labels:A.regional.map(x=>x.state),datasets:[{label:'Average risk',data:A.regional.map(x=>x.risk),backgroundColor:'#1769aa',borderRadius:6},{label:'Compliance',data:A.regional.map(x=>x.compliance),backgroundColor:'#4fbfae',borderRadius:6}]},options:{...common,indexAxis:'y',scales:{x:{grid:{color:grid},max:100},y:{grid:{display:false},ticks:{color:text,font:{size:10}}}}}});
+new Chart(document.getElementById('scatter'),{type:'scatter',data:{datasets:[{label:'Shipment observations',data:A.scatter.map(x=>({x:x.distance,y:x.risk})),backgroundColor:'rgba(23,105,170,.55)',pointRadius:4}]},options:{...common,scales:{x:{title:{display:true,text:'Route distance (km)',color:text},grid:{color:grid},ticks:{color:text}},y:{title:{display:true,text:'Risk score',color:text},grid:{color:grid},ticks:{color:text},min:0,max:100}}}});
+new Chart(document.getElementById('modes'),{type:'bar',data:{labels:A.modes.map(x=>x.mode),datasets:[{label:'Risk',data:A.modes.map(x=>x.risk),backgroundColor:'#1769aa',borderRadius:6},{label:'Delay hours',data:A.modes.map(x=>x.delay),backgroundColor:'#d68b4a',borderRadius:6}]},options:{...common,scales:{x:{grid:{display:false},ticks:{color:text,font:{size:9}}},y:{grid:{color:grid}}}}});
+new Chart(document.getElementById('events'),{type:'doughnut',data:{labels:Object.keys(A.proxy_events_split),datasets:[{data:Object.values(A.proxy_events_split),backgroundColor:['#48b88e','#c94d5b'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'67%',plugins:{legend:{position:'bottom',labels:{usePointStyle:true,padding:14,font:{size:10}}}}}});
+</script>
+{% endblock %}

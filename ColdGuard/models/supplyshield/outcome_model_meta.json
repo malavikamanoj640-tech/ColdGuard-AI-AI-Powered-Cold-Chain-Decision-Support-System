@@ -1,0 +1,16 @@
+{
+  "target": "outcome",
+  "classes": [
+    "DELIVERED",
+    "DELAYED",
+    "COLD_CHAIN_COMPROMISED"
+  ],
+  "label_method": "Proxy labels: future OOB in next 6 observations => COLD_CHAIN_COMPROMISED; otherwise expiry <= 240h => DELAYED; otherwise DELIVERED.",
+  "warning": "Dataset has no ground-truth Delivered/Delayed/Spoiled labels. Metrics evaluate the proxy-label task, not real-world outcome accuracy.",
+  "accuracy": 0.9857828023295649,
+  "macro_f1": 0.9772061261005095,
+  "weighted_f1": 0.9858277817179113,
+  "macro_precision": 0.9740191113616845,
+  "macro_recall": 0.9804416749778802,
+  "test_rows": 5838
+}

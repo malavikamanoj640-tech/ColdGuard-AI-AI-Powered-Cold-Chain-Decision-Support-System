@@ -1,0 +1,3738 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Digital Twin · SupplyShield{% endblock %}
+{% block heading %}Shipment Digital Twin{% endblock %}
+
+{% block content %}
+
+<style>
+/* ============================================================
+   SUPPLYSHIELD AI — PROFESSIONAL SHIPMENT DIGITAL TWIN
+   ============================================================ */
+
+:root {
+    --dt-navy: #0b1f33;
+    --dt-navy2: #12314d;
+    --dt-blue: #1769aa;
+    --dt-blue2: #2484c6;
+    --dt-blue-soft: #edf6fc;
+    --dt-bg: #f4f7fa;
+    --dt-white: #ffffff;
+    --dt-text: #294253;
+    --dt-muted: #748895;
+    --dt-border: #dce7ee;
+    --dt-soft-border: #edf2f5;
+    --dt-green: #198754;
+    --dt-green-soft: #eaf7f0;
+    --dt-orange: #df8d12;
+    --dt-orange-soft: #fff5df;
+    --dt-red: #d83b4c;
+    --dt-red-soft: #fcecef;
+    --dt-purple: #7656c8;
+    --dt-shadow: 0 6px 22px rgba(20, 55, 78, .055);
+}
+
+.dt-page {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding-bottom: 45px;
+}
+
+
+/* ============================================================
+   HERO
+   ============================================================ */
+
+.dt-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 27px 29px;
+    margin-bottom: 16px;
+
+    border-radius: 18px;
+
+    background:
+        radial-gradient(
+            circle at 88% 20%,
+            rgba(76, 180, 245, .20),
+            transparent 28%
+        ),
+        linear-gradient(
+            125deg,
+            #0b1f33,
+            #103453 60%,
+            #1769aa
+        );
+
+    color: white;
+
+    box-shadow:
+        0 10px 30px rgba(11, 31, 51, .12);
+}
+
+.dt-hero-content {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 25px;
+}
+
+.dt-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    margin-bottom: 7px;
+
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 1.2px;
+
+    color: #8dd4ff;
+}
+
+.dt-hero h1 {
+    margin: 0;
+
+    font-size: 27px;
+    font-weight: 850;
+}
+
+.dt-hero p {
+    max-width: 760px;
+
+    margin: 7px 0 0;
+
+    color: rgba(255, 255, 255, .73);
+
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.dt-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.dt-hero-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 9px 13px;
+
+    border: 1px solid rgba(255,255,255,.20);
+    border-radius: 8px;
+
+    background: rgba(255,255,255,.08);
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 9px;
+    font-weight: 800;
+}
+
+.dt-hero-btn:hover {
+    color: white;
+    background: rgba(255,255,255,.15);
+}
+
+.dt-hero-btn.primary {
+    background: white;
+    color: var(--dt-blue);
+}
+
+
+/* ============================================================
+   KPI CARDS
+   ============================================================ */
+
+.dt-kpis {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+
+    gap: 11px;
+
+    margin-bottom: 16px;
+}
+
+.dt-kpi {
+    position: relative;
+    overflow: hidden;
+
+    min-height: 100px;
+
+    padding: 14px 15px;
+
+    background: white;
+
+    border: 1px solid var(--dt-border);
+    border-radius: 13px;
+
+    box-shadow: var(--dt-shadow);
+}
+
+.dt-kpi::after {
+    content: "";
+
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    height: 3px;
+
+    background: var(--dt-blue);
+}
+
+.dt-kpi.red::after {
+    background: var(--dt-red);
+}
+
+.dt-kpi.orange::after {
+    background: var(--dt-orange);
+}
+
+.dt-kpi.green::after {
+    background: var(--dt-green);
+}
+
+.dt-kpi-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dt-kpi-label {
+    font-size: 7.5px;
+    font-weight: 900;
+    letter-spacing: .7px;
+
+    color: var(--dt-muted);
+}
+
+.dt-kpi-icon {
+    width: 29px;
+    height: 29px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    background: var(--dt-blue-soft);
+    color: var(--dt-blue);
+}
+
+.dt-kpi-value {
+    display: block;
+
+    margin-top: 8px;
+
+    color: var(--dt-navy);
+
+    font-size: 21px;
+    font-weight: 900;
+}
+
+.dt-kpi-foot {
+    margin-top: 2px;
+
+    color: #8b9ba6;
+
+    font-size: 7.5px;
+}
+
+
+/* ============================================================
+   DIGITAL TWIN PIPELINE
+   ============================================================ */
+
+.dt-flow {
+    display: grid;
+
+    grid-template-columns:
+        1fr 32px
+        1fr 32px
+        1fr 32px
+        1fr;
+
+    align-items: center;
+
+    margin-bottom: 16px;
+}
+
+.dt-flow-card {
+    min-height: 88px;
+
+    padding: 13px;
+
+    text-align: center;
+
+    background: white;
+
+    border: 1px solid var(--dt-border);
+    border-radius: 12px;
+
+    box-shadow: var(--dt-shadow);
+}
+
+.dt-flow-icon {
+    width: 31px;
+    height: 31px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 auto 6px;
+
+    border-radius: 8px;
+
+    background: var(--dt-blue-soft);
+    color: var(--dt-blue);
+}
+
+.dt-flow-card strong {
+    display: block;
+
+    color: var(--dt-navy);
+
+    font-size: 9px;
+}
+
+.dt-flow-card span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: var(--dt-muted);
+
+    font-size: 7px;
+}
+
+.dt-flow-arrow {
+    text-align: center;
+
+    color: #a4b4be;
+}
+
+
+/* ============================================================
+   GENERAL PANEL
+   ============================================================ */
+
+.dt-panel {
+    height: 100%;
+
+    overflow: hidden;
+
+    background: white;
+
+    border: 1px solid var(--dt-border);
+    border-radius: 15px;
+
+    box-shadow: var(--dt-shadow);
+}
+
+.dt-panel-head {
+    min-height: 59px;
+
+    padding: 12px 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    border-bottom: 1px solid var(--dt-soft-border);
+}
+
+.dt-title {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+}
+
+.dt-title-icon {
+    width: 31px;
+    height: 31px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    background: var(--dt-blue-soft);
+    color: var(--dt-blue);
+}
+
+.dt-title h5 {
+    margin: 0;
+
+    color: var(--dt-navy);
+
+    font-size: 12px;
+    font-weight: 850;
+}
+
+.dt-title span {
+    display: block;
+
+    margin-top: 2px;
+
+    color: var(--dt-muted);
+
+    font-size: 7.5px;
+}
+
+.dt-panel-body {
+    padding: 15px;
+}
+
+.dt-select {
+    min-width: 190px;
+
+    padding: 7px 9px;
+
+    background: white;
+
+    border: 1px solid var(--dt-border);
+    border-radius: 8px;
+
+    color: var(--dt-text);
+
+    font-size: 9px;
+}
+
+
+/* ============================================================
+   VIRTUAL SHIPMENT MODEL
+   ============================================================ */
+
+.virtual-stage {
+    position: relative;
+
+    min-height: 385px;
+
+    padding: 25px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background:
+        linear-gradient(
+            rgba(23,105,170,.035) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(23,105,170,.035) 1px,
+            transparent 1px
+        );
+
+    background-size: 25px 25px;
+}
+
+
+/* glowing sync rings */
+
+.sync-ring {
+    position: absolute;
+
+    width: 300px;
+    height: 300px;
+
+    border-radius: 50%;
+
+    border: 1px dashed rgba(23,105,170,.22);
+
+    animation: pulseRing 2.8s ease-in-out infinite;
+}
+
+.sync-ring.second {
+    width: 340px;
+    height: 340px;
+
+    opacity: .45;
+
+    animation-delay: .8s;
+}
+
+@keyframes pulseRing {
+
+    0%, 100% {
+        transform: scale(.97);
+        opacity: .45;
+    }
+
+    50% {
+        transform: scale(1.02);
+        opacity: .9;
+    }
+}
+
+
+/* shipment container */
+
+.virtual-container {
+    position: relative;
+    z-index: 5;
+
+    width: 340px;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            145deg,
+            #1769aa,
+            #0b3153
+        );
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 20px 45px rgba(11,49,83,.22);
+}
+
+.container-top {
+    padding: 12px 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-bottom:
+        1px solid rgba(255,255,255,.12);
+}
+
+.container-brand {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    color: white;
+
+    font-size: 8px;
+    font-weight: 850;
+}
+
+.sync-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+
+    padding: 4px 7px;
+
+    border-radius: 20px;
+
+    background: rgba(37,211,102,.15);
+
+    color: #9ff0bd;
+
+    font-size: 6.5px;
+    font-weight: 900;
+}
+
+.sync-dot {
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: #47db7c;
+
+    box-shadow:
+        0 0 0 4px rgba(71,219,124,.12);
+
+    animation: syncPulse 1.5s infinite;
+}
+
+@keyframes syncPulse {
+
+    50% {
+        box-shadow:
+            0 0 0 8px rgba(71,219,124,0);
+    }
+}
+
+
+/* container visual */
+
+.container-visual {
+    padding: 22px 20px 17px;
+
+    text-align: center;
+}
+
+.container-icon {
+    width: 61px;
+    height: 61px;
+
+    margin: 0 auto 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: rgba(255,255,255,.10);
+
+    border: 1px solid rgba(255,255,255,.14);
+
+    color: white;
+
+    font-size: 27px;
+}
+
+.container-batch {
+    color: white;
+
+    font-size: 16px;
+    font-weight: 900;
+}
+
+.container-product {
+    margin-top: 2px;
+
+    color: rgba(255,255,255,.65);
+
+    font-size: 8px;
+}
+
+
+/* sensor strip */
+
+.container-sensors {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    border-top:
+        1px solid rgba(255,255,255,.12);
+}
+
+.container-sensor {
+    padding: 11px 5px;
+
+    text-align: center;
+
+    border-right:
+        1px solid rgba(255,255,255,.09);
+}
+
+.container-sensor:last-child {
+    border-right: none;
+}
+
+.container-sensor i {
+    display: block;
+
+    margin-bottom: 3px;
+
+    color: #8dd4ff;
+
+    font-size: 12px;
+}
+
+.container-sensor strong {
+    display: block;
+
+    color: white;
+
+    font-size: 9px;
+}
+
+.container-sensor span {
+    display: block;
+
+    margin-top: 2px;
+
+    color: rgba(255,255,255,.55);
+
+    font-size: 6px;
+}
+
+
+/* bottom risk */
+
+.container-risk {
+    padding: 10px 14px;
+
+    background: rgba(0,0,0,.13);
+}
+
+.container-risk-top {
+    display: flex;
+    justify-content: space-between;
+
+    margin-bottom: 5px;
+
+    color: rgba(255,255,255,.68);
+
+    font-size: 7px;
+}
+
+.container-risk-top strong {
+    color: white;
+}
+
+.container-risk-track {
+    height: 5px;
+
+    overflow: hidden;
+
+    border-radius: 20px;
+
+    background: rgba(255,255,255,.15);
+}
+
+.container-risk-fill {
+    width: 0;
+    height: 100%;
+
+    border-radius: inherit;
+
+    background: #4ad582;
+
+    transition: .4s;
+}
+
+
+/* floating labels */
+
+.sensor-label {
+    position: absolute;
+    z-index: 6;
+
+    min-width: 105px;
+
+    padding: 8px 9px;
+
+    background: white;
+
+    border: 1px solid var(--dt-border);
+    border-radius: 9px;
+
+    box-shadow:
+        0 5px 16px rgba(28,65,89,.08);
+}
+
+.sensor-label small {
+    display: block;
+
+    color: var(--dt-muted);
+
+    font-size: 6px;
+    font-weight: 850;
+}
+
+.sensor-label strong {
+    display: block;
+
+    margin-top: 2px;
+
+    color: var(--dt-navy);
+
+    font-size: 9px;
+}
+
+.sensor-label.one {
+    top: 47px;
+    left: 28px;
+}
+
+.sensor-label.two {
+    top: 47px;
+    right: 28px;
+}
+
+.sensor-label.three {
+    bottom: 43px;
+    left: 28px;
+}
+
+.sensor-label.four {
+    bottom: 43px;
+    right: 28px;
+}
+
+
+/* ============================================================
+   CURRENT STATE
+   ============================================================ */
+
+.state-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 8px;
+}
+
+.state-card {
+    padding: 10px;
+
+    background: #fafcfd;
+
+    border: 1px solid var(--dt-soft-border);
+    border-radius: 9px;
+}
+
+.state-card small {
+    display: block;
+
+    color: var(--dt-muted);
+
+    font-size: 6.5px;
+    font-weight: 900;
+
+    letter-spacing: .4px;
+}
+
+.state-card strong {
+    display: block;
+
+    margin-top: 4px;
+
+    color: var(--dt-navy);
+
+    font-size: 11px;
+}
+
+.state-card strong.good {
+    color: var(--dt-green);
+}
+
+
+/* risk intelligence */
+
+.risk-section {
+    margin-top: 12px;
+
+    padding: 12px;
+
+    border: 1px solid var(--dt-soft-border);
+    border-radius: 10px;
+}
+
+.risk-head {
+    display: flex;
+    justify-content: space-between;
+
+    margin-bottom: 6px;
+
+    font-size: 7px;
+
+    color: var(--dt-muted);
+}
+
+.risk-head strong {
+    color: var(--dt-navy);
+
+    font-size: 9px;
+}
+
+.risk-bar {
+    height: 7px;
+
+    overflow: hidden;
+
+    background: #edf2f5;
+
+    border-radius: 20px;
+}
+
+.risk-fill {
+    width: 0;
+    height: 100%;
+
+    background: var(--dt-green);
+
+    border-radius: inherit;
+
+    transition: .4s;
+}
+
+
+/* AI insight */
+
+.ai-insight {
+    margin-top: 11px;
+
+    padding: 11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #eff7fd,
+            #f8fbfe
+        );
+
+    border: 1px solid #d8eaf6;
+    border-radius: 9px;
+}
+
+.ai-title {
+    margin-bottom: 4px;
+
+    color: var(--dt-blue);
+
+    font-size: 7px;
+    font-weight: 900;
+    letter-spacing: .4px;
+}
+
+.ai-insight p {
+    margin: 0;
+
+    color: #526c7e;
+
+    font-size: 8px;
+    line-height: 1.5;
+}
+
+
+/* ============================================================
+   INTERVENTION LAB
+   ============================================================ */
+
+.interventions {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 8px;
+}
+
+.intervention {
+    padding: 11px;
+
+    cursor: pointer;
+
+    background: white;
+
+    border: 1px solid var(--dt-border);
+    border-radius: 10px;
+
+    transition: .18s;
+}
+
+.intervention:hover {
+    transform: translateY(-1px);
+
+    border-color: #9ac9e7;
+
+    background: var(--dt-blue-soft);
+}
+
+.intervention.active {
+    border-color: var(--dt-blue);
+
+    background: var(--dt-blue-soft);
+}
+
+.intervention i {
+    color: var(--dt-blue);
+
+    font-size: 15px;
+}
+
+.intervention strong {
+    display: block;
+
+    margin-top: 6px;
+
+    color: var(--dt-navy);
+
+    font-size: 8.5px;
+}
+
+.intervention span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: var(--dt-muted);
+
+    font-size: 7px;
+}
+
+
+/* simulation result */
+
+.sim-result {
+    display: none;
+
+    margin-top: 10px;
+    padding: 12px;
+
+    background: #f8fafc;
+
+    border: 1px solid var(--dt-border);
+    border-radius: 10px;
+}
+
+.sim-result.show {
+    display: block;
+}
+
+.sim-values {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap: 8px;
+}
+
+.sim-value {
+    padding: 9px;
+
+    background: white;
+
+    border: 1px solid var(--dt-soft-border);
+    border-radius: 8px;
+}
+
+.sim-value small {
+    display: block;
+
+    color: var(--dt-muted);
+
+    font-size: 6.5px;
+}
+
+.sim-value strong {
+    display: block;
+
+    margin-top: 3px;
+
+    color: var(--dt-navy);
+
+    font-size: 10px;
+}
+
+
+/* ============================================================
+   REGISTRY
+   ============================================================ */
+
+.dt-table {
+    margin: 0;
+}
+
+.dt-table thead th {
+    padding: 9px 11px;
+
+    background: #f8fafc;
+
+    border: 0;
+
+    color: var(--dt-muted);
+
+    font-size: 7px;
+    font-weight: 900;
+    letter-spacing: .4px;
+
+    white-space: nowrap;
+}
+
+.dt-table tbody td {
+    padding: 10px 11px;
+
+    border-color: var(--dt-soft-border);
+
+    color: #4e6575;
+
+    font-size: 8px;
+
+    vertical-align: middle;
+}
+
+.batch {
+    color: var(--dt-navy);
+
+    font-weight: 850;
+}
+
+.product {
+    display: block;
+
+    margin-top: 2px;
+
+    color: var(--dt-muted);
+
+    font-size: 6.5px;
+}
+
+.risk-chip {
+    display: inline-flex;
+
+    padding: 4px 7px;
+
+    border-radius: 20px;
+
+    font-size: 7px;
+    font-weight: 850;
+}
+
+.risk-chip.low {
+    background: var(--dt-green-soft);
+    color: var(--dt-green);
+}
+
+.risk-chip.moderate {
+    background: var(--dt-orange-soft);
+    color: #976304;
+}
+
+.risk-chip.high,
+.risk-chip.critical {
+    background: var(--dt-red-soft);
+    color: var(--dt-red);
+}
+
+.inspect-btn {
+    padding: 5px 8px;
+
+    background: white;
+
+    border: 1px solid #cbdde9;
+    border-radius: 7px;
+
+    color: var(--dt-blue);
+
+    font-size: 7px;
+    font-weight: 850;
+}
+
+.inspect-btn:hover {
+    background: var(--dt-blue);
+
+    color: white;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media(max-width:1200px) {
+
+    .dt-kpis {
+        grid-template-columns:
+            repeat(3,1fr);
+    }
+
+    .interventions {
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .sensor-label {
+        display: none;
+    }
+}
+
+@media(max-width:991px) {
+
+    .dt-flow {
+        grid-template-columns: 1fr;
+
+        gap: 7px;
+    }
+
+    .dt-flow-arrow {
+        transform: rotate(90deg);
+    }
+}
+
+@media(max-width:767px) {
+
+    .dt-hero-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .dt-kpis {
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .sim-values {
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .virtual-container {
+        width: 290px;
+    }
+
+    .sync-ring,
+    .sync-ring.second {
+        display: none;
+    }
+}
+
+</style>
+
+
+<div class="dt-page">
+
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+
+<section class="dt-hero">
+
+    <div class="dt-hero-content">
+
+        <div>
+
+            <div class="dt-eyebrow">
+
+                <i class="bi bi-boxes"></i>
+
+                PHASE 4 · DIGITAL TWIN OPERATIONS
+
+            </div>
+
+            <h1>
+                Shipment Digital Twin
+            </h1>
+
+            <p>
+                Monitor the latest virtual shipment state,
+                interpret model-estimated operational risk and
+                evaluate intervention scenarios before taking
+                logistics action.
+            </p>
+
+        </div>
+
+
+        <div class="dt-actions">
+
+            <a href="/live-tracking"
+               class="dt-hero-btn">
+
+                <i class="bi bi-geo-alt"></i>
+
+                Live Tracking
+
+            </a>
+
+
+            <a href="/support-center"
+               class="dt-hero-btn">
+
+                <i class="bi bi-life-preserver"></i>
+
+                Recovery Support
+
+            </a>
+
+
+            <a href="/ai-7"
+               class="dt-hero-btn primary">
+
+                <i class="bi bi-stars"></i>
+
+                Advanced Simulation
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ============================================================
+     KPI CARDS
+     ============================================================ -->
+
+<section class="dt-kpis">
+
+    <div class="dt-kpi">
+
+        <div class="dt-kpi-top">
+
+            <span class="dt-kpi-label">
+                ACTIVE DIGITAL TWINS
+            </span>
+
+            <div class="dt-kpi-icon">
+                <i class="bi bi-boxes"></i>
+            </div>
+
+        </div>
+
+        <strong class="dt-kpi-value">
+            {{ shipments|length }}
+        </strong>
+
+        <div class="dt-kpi-foot">
+            Shipment states represented
+        </div>
+
+    </div>
+
+
+    <div class="dt-kpi red">
+
+        <div class="dt-kpi-top">
+
+            <span class="dt-kpi-label">
+                HIGH / CRITICAL
+            </span>
+
+            <div class="dt-kpi-icon">
+                <i class="bi bi-exclamation-triangle"></i>
+            </div>
+
+        </div>
+
+        <strong class="dt-kpi-value"
+                id="highRiskCount">
+            0
+        </strong>
+
+        <div class="dt-kpi-foot">
+            Intervention priorities
+        </div>
+
+    </div>
+
+
+    <div class="dt-kpi orange">
+
+        <div class="dt-kpi-top">
+
+            <span class="dt-kpi-label">
+                TEMP. EXCURSIONS
+            </span>
+
+            <div class="dt-kpi-icon">
+                <i class="bi bi-thermometer-high"></i>
+            </div>
+
+        </div>
+
+        <strong class="dt-kpi-value"
+                id="tempExcursions">
+            0
+        </strong>
+
+        <div class="dt-kpi-foot">
+            Above demo threshold
+        </div>
+
+    </div>
+
+
+    <div class="dt-kpi">
+
+        <div class="dt-kpi-top">
+
+            <span class="dt-kpi-label">
+                AVERAGE MODEL RISK
+            </span>
+
+            <div class="dt-kpi-icon">
+                <i class="bi bi-activity"></i>
+            </div>
+
+        </div>
+
+        <strong class="dt-kpi-value"
+                id="averageRisk">
+            0.0%
+        </strong>
+
+        <div class="dt-kpi-foot">
+            Active twin portfolio
+        </div>
+
+    </div>
+
+
+    <div class="dt-kpi green">
+
+        <div class="dt-kpi-top">
+
+            <span class="dt-kpi-label">
+                TWIN ENGINE
+            </span>
+
+            <div class="dt-kpi-icon">
+                <i class="bi bi-check-circle"></i>
+            </div>
+
+        </div>
+
+        <strong class="dt-kpi-value"
+                style="font-size:15px;">
+            SYNCHRONIZED
+        </strong>
+
+        <div class="dt-kpi-foot">
+            Latest stored state loaded
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ============================================================
+     PIPELINE
+     ============================================================ -->
+
+<section class="dt-flow">
+
+    <div class="dt-flow-card">
+
+        <div class="dt-flow-icon">
+            <i class="bi bi-broadcast"></i>
+        </div>
+
+        <strong>
+            Shipment Telemetry
+        </strong>
+
+        <span>
+            Temperature · humidity · logistics
+        </span>
+
+    </div>
+
+
+    <div class="dt-flow-arrow">
+        <i class="bi bi-arrow-right"></i>
+    </div>
+
+
+    <div class="dt-flow-card">
+
+        <div class="dt-flow-icon">
+            <i class="bi bi-box"></i>
+        </div>
+
+        <strong>
+            Virtual State
+        </strong>
+
+        <span>
+            Digital representation of shipment
+        </span>
+
+    </div>
+
+
+    <div class="dt-flow-arrow">
+        <i class="bi bi-arrow-right"></i>
+    </div>
+
+
+    <div class="dt-flow-card">
+
+        <div class="dt-flow-icon">
+            <i class="bi bi-cpu"></i>
+        </div>
+
+        <strong>
+            Risk Intelligence
+        </strong>
+
+        <span>
+            Model-estimated operational risk
+        </span>
+
+    </div>
+
+
+    <div class="dt-flow-arrow">
+        <i class="bi bi-arrow-right"></i>
+    </div>
+
+
+    <div class="dt-flow-card">
+
+        <div class="dt-flow-icon">
+            <i class="bi bi-lightning-charge"></i>
+        </div>
+
+        <strong>
+            Intervention Testing
+        </strong>
+
+        <span>
+            Evaluate virtual response scenarios
+        </span>
+
+    </div>
+
+</section>
+
+
+
+<!-- ============================================================
+     MAIN DIGITAL TWIN
+     ============================================================ -->
+
+<div class="row g-3 mb-3">
+
+
+<!-- VIRTUAL MODEL -->
+
+<div class="col-xl-7" id="digitalTwinMonitor">
+
+    <section class="dt-panel">
+
+        <div class="dt-panel-head">
+
+            <div class="dt-title">
+
+                <div class="dt-title-icon">
+                    <i class="bi bi-box-seam"></i>
+                </div>
+
+                <div>
+
+                    <h5>
+                        Virtual Shipment Model
+                    </h5>
+
+                    <span>
+                        Selected shipment digital representation
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <select id="shipmentSelector"
+                    class="dt-select"
+                    onchange="selectTwin(this.value)">
+
+                {% for s in shipments %}
+
+                    <option value="{{ loop.index0 }}">
+                        {{ s.batch_id }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+
+        <div class="virtual-stage">
+
+            <div class="sync-ring"></div>
+
+            <div class="sync-ring second"></div>
+
+
+            <!-- FLOATING SENSOR INFO -->
+
+            <div class="sensor-label one">
+
+                <small>
+                    TEMPERATURE SENSOR
+                </small>
+
+                <strong id="floatTemp">
+                    —
+                </strong>
+
+            </div>
+
+
+            <div class="sensor-label two">
+
+                <small>
+                    HUMIDITY SENSOR
+                </small>
+
+                <strong id="floatHumidity">
+                    —
+                </strong>
+
+            </div>
+
+
+            <div class="sensor-label three">
+
+                <small>
+                    LOGISTICS DELAY
+                </small>
+
+                <strong id="floatDelay">
+                    —
+                </strong>
+
+            </div>
+
+
+            <div class="sensor-label four">
+
+                <small>
+                    MODEL RISK
+                </small>
+
+                <strong id="floatRisk">
+                    —
+                </strong>
+
+            </div>
+
+
+
+            <!-- DIGITAL CONTAINER -->
+
+            <div class="virtual-container">
+
+                <div class="container-top">
+
+                    <div class="container-brand">
+
+                        <i class="bi bi-shield-check"></i>
+
+                        SUPPLYSHIELD DIGITAL TWIN
+
+                    </div>
+
+
+                    <div class="sync-status">
+
+                        <span class="sync-dot"></span>
+
+                        SYNCHRONIZED
+
+                    </div>
+
+                </div>
+
+
+                <div class="container-visual">
+
+                    <div class="container-icon">
+
+                        <i class="bi bi-truck"></i>
+
+                    </div>
+
+
+                    <div class="container-batch"
+                         id="visualBatch">
+
+                        —
+
+                    </div>
+
+
+                    <div class="container-product"
+                         id="visualProduct">
+
+                        —
+
+                    </div>
+
+                </div>
+
+
+                <div class="container-sensors">
+
+                    <div class="container-sensor">
+
+                        <i class="bi bi-thermometer-half"></i>
+
+                        <strong id="containerTemp">
+                            —
+                        </strong>
+
+                        <span>
+                            TEMPERATURE
+                        </span>
+
+                    </div>
+
+
+                    <div class="container-sensor">
+
+                        <i class="bi bi-droplet"></i>
+
+                        <strong id="containerHumidity">
+                            —
+                        </strong>
+
+                        <span>
+                            HUMIDITY
+                        </span>
+
+                    </div>
+
+
+                    <div class="container-sensor">
+
+                        <i class="bi bi-clock"></i>
+
+                        <strong id="containerDelay">
+                            —
+                        </strong>
+
+                        <span>
+                            DELAY
+                        </span>
+
+                    </div>
+
+
+                    <div class="container-sensor">
+
+                        <i class="bi bi-geo-alt"></i>
+
+                        <strong id="containerStatus">
+                            ACTIVE
+                        </strong>
+
+                        <span>
+                            TWIN STATE
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="container-risk">
+
+                    <div class="container-risk-top">
+
+                        <span>
+                            AI MODEL RISK
+                        </span>
+
+                        <strong id="containerRisk">
+                            0.0%
+                        </strong>
+
+                    </div>
+
+
+                    <div class="container-risk-track">
+
+                        <div class="container-risk-fill"
+                             id="containerRiskFill">
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+
+<!-- CURRENT STATE -->
+
+<div class="col-xl-5">
+
+    <section class="dt-panel">
+
+        <div class="dt-panel-head">
+
+            <div class="dt-title">
+
+                <div class="dt-title-icon">
+                    <i class="bi bi-activity"></i>
+                </div>
+
+                <div>
+
+                    <h5>
+                        Current Twin State
+                    </h5>
+
+                    <span>
+                        Latest operational state
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <span id="riskBadge"
+                  class="badge bg-success">
+
+                LOW
+
+            </span>
+
+        </div>
+
+
+        <div class="dt-panel-body">
+
+            <div class="state-grid">
+
+                <div class="state-card">
+
+                    <small>
+                        SHIPMENT
+                    </small>
+
+                    <strong id="stateBatch">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="state-card">
+
+                    <small>
+                        PRODUCT
+                    </small>
+
+                    <strong id="stateProduct">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="state-card">
+
+                    <small>
+                        CURRENT LOCATION
+                    </small>
+
+                    <strong id="stateLocation">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="state-card">
+
+                    <small>
+                        ROUTE
+                    </small>
+
+                    <strong id="stateRoute">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="state-card">
+
+                    <small>
+                        TEMPERATURE
+                    </small>
+
+                    <strong id="stateTemp">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="state-card">
+
+                    <small>
+                        HUMIDITY
+                    </small>
+
+                    <strong id="stateHumidity">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="state-card">
+
+                    <small>
+                        LOGISTICS DELAY
+                    </small>
+
+                    <strong id="stateDelay">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="state-card">
+
+                    <small>
+                        QUALITY RISK
+                    </small>
+
+                    <strong id="stateQuality">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="state-card">
+
+                    <small>
+                        PREDICTED OUTCOME
+                    </small>
+
+                    <strong id="stateOutcome">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="state-card">
+
+                    <small>
+                        TWIN STATUS
+                    </small>
+
+                    <strong class="good">
+                        SYNCHRONIZED
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="risk-section">
+
+                <div class="risk-head">
+
+                    <span>
+                        MODEL-ESTIMATED RISK
+                    </span>
+
+                    <strong id="riskValue">
+                        0.0%
+                    </strong>
+
+                </div>
+
+
+                <div class="risk-bar">
+
+                    <div class="risk-fill"
+                         id="riskFill">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="ai-insight">
+
+                <div class="ai-title">
+
+                    <i class="bi bi-stars"></i>
+
+                    DIGITAL TWIN INTERPRETATION
+
+                </div>
+
+                <p id="twinInsight">
+                    Select a shipment to inspect its
+                    current virtual state.
+                </p>
+
+            </div>
+
+
+            <div class="d-grid gap-2 mt-3">
+
+                <a id="trackingBtn"
+                   href="/live-tracking"
+                   class="btn btn-sm btn-outline-primary">
+
+                    <i class="bi bi-geo-alt"></i>
+
+                    Open Live Tracking
+
+                </a>
+
+
+                <a href="/support-center"
+                   class="btn btn-sm btn-outline-secondary">
+
+                    <i class="bi bi-life-preserver"></i>
+
+                    Recovery Support
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+</div>
+
+
+
+<!-- ============================================================
+     INTERVENTION LAB
+     ============================================================ -->
+
+<section class="dt-panel mb-3">
+
+    <div class="dt-panel-head">
+
+        <div class="dt-title">
+
+            <div class="dt-title-icon">
+
+                <i class="bi bi-bezier2"></i>
+
+            </div>
+
+            <div>
+
+                <h5>
+                    What-If Intervention Lab
+                </h5>
+
+                <span>
+                    Compare transparent operational scenarios
+                    before taking action
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <a href="/ai-7"
+           class="btn btn-sm btn-outline-primary">
+
+            Advanced AI Simulation
+
+        </a>
+
+    </div>
+
+
+    <div class="dt-panel-body">
+
+        <div class="interventions">
+
+
+            <div class="intervention"
+                 onclick="
+                    simulateIntervention(
+                        'cooling',
+                        this
+                    )
+                 ">
+
+                <i class="bi bi-snow"></i>
+
+                <strong>
+                    Cooling Intervention
+                </strong>
+
+                <span>
+                    Evaluate temperature stabilization
+                </span>
+
+            </div>
+
+
+
+            <div class="intervention"
+                 onclick="
+                    simulateIntervention(
+                        'route',
+                        this
+                    )
+                 ">
+
+                <i class="bi bi-signpost-split"></i>
+
+                <strong>
+                    Route Optimization
+                </strong>
+
+                <span>
+                    Evaluate reduced logistics exposure
+                </span>
+
+            </div>
+
+
+
+            <div class="intervention"
+                 onclick="
+                    simulateIntervention(
+                        'storage',
+                        this
+                    )
+                 ">
+
+                <i class="bi bi-building"></i>
+
+                <strong>
+                    Cold Storage Diversion
+                </strong>
+
+                <span>
+                    Evaluate controlled-storage response
+                </span>
+
+            </div>
+
+
+
+            <div class="intervention"
+                 onclick="
+                    simulateIntervention(
+                        'expedite',
+                        this
+                    )
+                 ">
+
+                <i class="bi bi-lightning-charge"></i>
+
+                <strong>
+                    Expedited Delivery
+                </strong>
+
+                <span>
+                    Evaluate lower delay exposure
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <div id="simulationResult"
+             class="sim-result">
+
+
+            <div class="sim-values">
+
+                <div class="sim-value">
+
+                    <small>
+                        BASELINE MODEL RISK
+                    </small>
+
+                    <strong id="simBaseline">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="sim-value">
+
+                    <small>
+                        SCENARIO RISK
+                    </small>
+
+                    <strong id="simProjected">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="sim-value">
+
+                    <small>
+                        ESTIMATED CHANGE
+                    </small>
+
+                    <strong id="simImprovement">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="sim-value">
+
+                    <small>
+                        INTERVENTION
+                    </small>
+
+                    <strong id="simAction">
+                        —
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="ai-insight">
+
+                <div class="ai-title">
+
+                    SCENARIO INTERPRETATION
+
+                </div>
+
+                <p id="simExplanation">
+                    —
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ============================================================
+     DIGITAL TWIN REGISTRY
+     ============================================================ -->
+
+<section class="dt-panel">
+
+    <div class="dt-panel-head">
+
+        <div class="dt-title">
+
+            <div class="dt-title-icon">
+                <i class="bi bi-table"></i>
+            </div>
+
+            <div>
+
+                <h5>
+                    Active Digital Twin Registry
+                </h5>
+
+                <span>
+                    Latest virtual state of monitored shipments
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="table-responsive">
+
+        <table class="table dt-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        SHIPMENT
+                    </th>
+
+                    <th>
+                        ROUTE
+                    </th>
+
+                    <th>
+                        TEMPERATURE
+                    </th>
+
+                    <th>
+                        HUMIDITY
+                    </th>
+
+                    <th>
+                        MODEL RISK
+                    </th>
+
+                    <th>
+                        QUALITY
+                    </th>
+
+                    <th>
+                        OUTCOME
+                    </th>
+
+                    <th>
+                        ACTION
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+            {% for s in shipments %}
+
+                <tr>
+
+                    <td>
+
+                        <span class="batch">
+                            {{ s.batch_id }}
+                        </span>
+
+                        <span class="product">
+                            {{ s.product or '—' }}
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        {{ s.origin or '—' }}
+
+                        →
+
+                        {{ s.destination or '—' }}
+
+                    </td>
+
+
+                    <td>
+
+                        {% if s.thermal_temp is not none %}
+
+                            {{ s.thermal_temp }}°C
+
+                        {% else %}
+
+                            —
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <td>
+
+                        {% if s.humidity is not none %}
+
+                            {{ s.humidity }}%
+
+                        {% else %}
+
+                            —
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <td>
+
+                        <span class="
+                            risk-chip
+                            {{ (s.risk_level or 'LOW')|lower }}
+                        ">
+
+                            {{ s.risk_probability or 0 }}%
+
+                            {{ s.risk_level or 'LOW' }}
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        {{ s.quality_risk or 0 }}%
+
+                    </td>
+
+
+                    <td>
+
+                        {{ s.predicted_outcome or '—' }}
+
+                    </td>
+
+
+                    <td>
+
+            <button
+                type="button"
+                class="inspect-btn inspect-twin-btn"
+                data-twin-index="{{ loop.index0 }}">
+
+                <i class="bi bi-eye"></i>
+                Inspect Twin
+
+            </button>
+
+                    </td>
+
+                </tr>
+
+
+            {% else %}
+
+
+                <tr>
+
+                    <td colspan="8"
+                        class="text-center py-4 text-muted">
+
+                        No active digital twin records.
+
+                    </td>
+
+                </tr>
+
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+</div>
+
+{% endblock %}
+
+
+
+{% block scripts %}
+
+<script>
+
+/* ============================================================
+   SUPPLYSHIELD AI
+   DIGITAL TWIN CONTROLLER
+   ============================================================ */
+
+
+/* ============================================================
+   DIGITAL TWIN DATA
+   ============================================================ */
+
+const twinShipments = [
+
+{% for s in shipments %}
+
+{
+    batch_id:
+        {{ (s.batch_id or '')|tojson }},
+
+    product:
+        {{ (s.product or 'Unknown')|tojson }},
+
+    origin:
+        {{ (s.origin or '')|tojson }},
+
+    destination:
+        {{ (s.destination or '')|tojson }},
+
+    location:
+        {{ (s.location or '')|tojson }},
+
+    temperature:
+        {{ s.thermal_temp
+           if s.thermal_temp is not none
+           else 0 }},
+
+    humidity:
+        {{ s.humidity
+           if s.humidity is not none
+           else 0 }},
+
+    delay:
+        {{ s.delay_hours
+           if s.delay_hours is not none
+           else 0 }},
+
+    risk:
+        {{ s.risk_probability
+           if s.risk_probability is not none
+           else 0 }},
+
+    risk_level:
+        {{ (s.risk_level or 'LOW')|tojson }},
+
+    quality:
+        {{ s.quality_risk
+           if s.quality_risk is not none
+           else 0 }},
+
+    outcome:
+        {{ (s.predicted_outcome or '—')|tojson }}
+}
+
+{% if not loop.last %},{% endif %}
+
+{% endfor %}
+
+];
+
+
+/* ============================================================
+   CURRENTLY SELECTED TWIN
+   ============================================================ */
+
+let selectedTwin = null;
+
+
+/* ============================================================
+   HELPER FUNCTIONS
+   ============================================================ */
+
+function safeNumber(value) {
+
+    const number = Number(value);
+
+    return Number.isFinite(number)
+        ? number
+        : 0;
+}
+
+
+/*
+   Safely update an HTML element.
+
+   This prevents one missing element from breaking
+   the entire Digital Twin JavaScript.
+*/
+
+function setTwinText(id, value) {
+
+    const element =
+        document.getElementById(id);
+
+    if (element) {
+        element.textContent = value;
+    }
+}
+
+
+/*
+   Risk colour used by both risk indicators.
+*/
+
+function getRiskColor(risk) {
+
+    if (risk >= 85) {
+        return '#d83b4c';
+    }
+
+    if (risk >= 60) {
+        return '#df8d12';
+    }
+
+    return '#198754';
+}
+
+
+/* ============================================================
+   KPI CALCULATION
+   ============================================================ */
+
+function calculateKPIs() {
+
+    if (!twinShipments.length) {
+
+        setTwinText(
+            'averageRisk',
+            '0.0%'
+        );
+
+        setTwinText(
+            'highRiskCount',
+            '0'
+        );
+
+        setTwinText(
+            'tempExcursions',
+            '0'
+        );
+
+        return;
+    }
+
+
+    /* --------------------------
+       Average model risk
+       -------------------------- */
+
+    const totalRisk =
+        twinShipments.reduce(
+            (total, shipment) => {
+
+                return total +
+                    safeNumber(
+                        shipment.risk
+                    );
+
+            },
+            0
+        );
+
+
+    const averageRisk =
+        totalRisk /
+        twinShipments.length;
+
+
+    /* --------------------------
+       High / critical shipments
+       -------------------------- */
+
+    const highRisk =
+        twinShipments.filter(
+            shipment =>
+                safeNumber(
+                    shipment.risk
+                ) >= 60
+        ).length;
+
+
+    /*
+       Demonstration temperature threshold.
+
+       In a production implementation this should
+       be product-specific rather than globally 8°C.
+    */
+
+    const temperatureExcursions =
+        twinShipments.filter(
+            shipment =>
+                safeNumber(
+                    shipment.temperature
+                ) > 8
+        ).length;
+
+
+    setTwinText(
+        'averageRisk',
+        averageRisk.toFixed(1) + '%'
+    );
+
+    setTwinText(
+        'highRiskCount',
+        highRisk
+    );
+
+    setTwinText(
+        'tempExcursions',
+        temperatureExcursions
+    );
+}
+
+
+/* ============================================================
+   SELECT / INSPECT DIGITAL TWIN
+   ============================================================ */
+
+function selectTwin(
+    index,
+    scrollToTwin = false
+) {
+
+    index =
+        parseInt(
+            index,
+            10
+        );
+
+
+    /* --------------------------
+       Validate shipment index
+       -------------------------- */
+
+    if (
+        Number.isNaN(index) ||
+        index < 0 ||
+        index >= twinShipments.length
+    ) {
+
+        console.error(
+            'Invalid Digital Twin index:',
+            index
+        );
+
+        return;
+    }
+
+
+    const shipment =
+        twinShipments[index];
+
+
+    selectedTwin =
+        shipment;
+
+
+    /* --------------------------
+       Normalize numeric values
+       -------------------------- */
+
+    const risk =
+        safeNumber(
+            shipment.risk
+        );
+
+    const temperature =
+        safeNumber(
+            shipment.temperature
+        );
+
+    const humidity =
+        safeNumber(
+            shipment.humidity
+        );
+
+    const delay =
+        safeNumber(
+            shipment.delay
+        );
+
+    const quality =
+        safeNumber(
+            shipment.quality
+        );
+
+
+    /* ========================================================
+       SYNCHRONIZE DROPDOWN
+       ======================================================== */
+
+    const selector =
+        document.getElementById(
+            'shipmentSelector'
+        );
+
+
+    if (selector) {
+
+        selector.value =
+            String(index);
+    }
+
+
+    /* ========================================================
+       UPDATE VIRTUAL SHIPMENT MODEL
+       ======================================================== */
+
+    setTwinText(
+        'visualBatch',
+        shipment.batch_id ||
+        'UNKNOWN'
+    );
+
+
+    setTwinText(
+        'visualProduct',
+        shipment.product ||
+        'Unknown product'
+    );
+
+
+    setTwinText(
+        'containerTemp',
+        temperature.toFixed(1) +
+        '°C'
+    );
+
+
+    setTwinText(
+        'containerHumidity',
+        humidity.toFixed(1) +
+        '%'
+    );
+
+
+    setTwinText(
+        'containerDelay',
+        delay.toFixed(1) +
+        'h'
+    );
+
+
+    setTwinText(
+        'containerRisk',
+        risk.toFixed(1) +
+        '%'
+    );
+
+
+    setTwinText(
+        'containerStatus',
+        'ACTIVE'
+    );
+
+
+    /* ========================================================
+       UPDATE FLOATING SENSOR VALUES
+       ======================================================== */
+
+    setTwinText(
+        'floatTemp',
+        temperature.toFixed(1) +
+        '°C'
+    );
+
+
+    setTwinText(
+        'floatHumidity',
+        humidity.toFixed(1) +
+        '% RH'
+    );
+
+
+    setTwinText(
+        'floatDelay',
+        delay.toFixed(1) +
+        'h'
+    );
+
+
+    setTwinText(
+        'floatRisk',
+        risk.toFixed(1) +
+        '%'
+    );
+
+
+    /* ========================================================
+       UPDATE CURRENT TWIN STATE
+       ======================================================== */
+
+    setTwinText(
+        'stateBatch',
+        shipment.batch_id ||
+        '—'
+    );
+
+
+    setTwinText(
+        'stateProduct',
+        shipment.product ||
+        '—'
+    );
+
+
+    setTwinText(
+        'stateLocation',
+        shipment.location ||
+        shipment.origin ||
+        '—'
+    );
+
+
+    setTwinText(
+        'stateRoute',
+        (shipment.origin || '—') +
+        ' → ' +
+        (shipment.destination || '—')
+    );
+
+
+    setTwinText(
+        'stateTemp',
+        temperature.toFixed(1) +
+        '°C'
+    );
+
+
+    setTwinText(
+        'stateHumidity',
+        humidity.toFixed(1) +
+        '% RH'
+    );
+
+
+    setTwinText(
+        'stateDelay',
+        delay.toFixed(1) +
+        'h'
+    );
+
+
+    setTwinText(
+        'stateQuality',
+        quality.toFixed(1) +
+        '%'
+    );
+
+
+    setTwinText(
+        'stateOutcome',
+        shipment.outcome ||
+        '—'
+    );
+
+
+    /* ========================================================
+       UPDATE RISK INDICATORS
+       ======================================================== */
+
+    setTwinText(
+        'riskValue',
+        risk.toFixed(1) +
+        '%'
+    );
+
+
+    /* Main risk bar */
+
+    const riskFill =
+        document.getElementById(
+            'riskFill'
+        );
+
+
+    if (riskFill) {
+
+        riskFill.style.width =
+            Math.min(
+                100,
+                Math.max(
+                    0,
+                    risk
+                )
+            ) + '%';
+
+
+        riskFill.style.background =
+            getRiskColor(
+                risk
+            );
+    }
+
+
+    /* Virtual container risk bar */
+
+    const containerRiskFill =
+        document.getElementById(
+            'containerRiskFill'
+        );
+
+
+    if (containerRiskFill) {
+
+        containerRiskFill.style.width =
+            Math.min(
+                100,
+                Math.max(
+                    0,
+                    risk
+                )
+            ) + '%';
+
+
+        containerRiskFill.style.background =
+            getRiskColor(
+                risk
+            );
+    }
+
+
+    /* ========================================================
+       RISK BADGE
+       ======================================================== */
+
+    const badge =
+        document.getElementById(
+            'riskBadge'
+        );
+
+
+    if (badge) {
+
+        let level =
+            String(
+                shipment.risk_level ||
+                ''
+            )
+            .trim()
+            .toUpperCase();
+
+
+        /*
+           Fall back to numerical risk if
+           risk_level is unavailable.
+        */
+
+        if (!level) {
+
+            if (risk >= 85) {
+                level = 'CRITICAL';
+            }
+
+            else if (risk >= 60) {
+                level = 'HIGH';
+            }
+
+            else {
+                level = 'LOW';
+            }
+        }
+
+
+        badge.textContent =
+            level;
+
+
+        if (
+            level === 'CRITICAL' ||
+            risk >= 85
+        ) {
+
+            badge.className =
+                'badge bg-danger';
+        }
+
+        else if (
+            level === 'HIGH' ||
+            level === 'MODERATE' ||
+            risk >= 60
+        ) {
+
+            badge.className =
+                'badge bg-warning text-dark';
+        }
+
+        else {
+
+            badge.className =
+                'badge bg-success';
+        }
+    }
+
+
+    /* ========================================================
+       DIGITAL TWIN INTERPRETATION
+       ======================================================== */
+
+    setTwinText(
+        'twinInsight',
+        buildInsight(
+            shipment
+        )
+    );
+
+
+    /* ========================================================
+       LIVE TRACKING BUTTON
+       ======================================================== */
+
+    const trackingBtn =
+        document.getElementById(
+            'trackingBtn'
+        );
+
+
+    if (
+        trackingBtn &&
+        shipment.batch_id
+    ) {
+
+        /*
+           IMPORTANT:
+
+           Send selected shipment to the actual
+           Live Tracking page.
+
+           Example:
+           /live-tracking?batch_id=SS-DEMO-1043
+        */
+
+        trackingBtn.href =
+            '/live-tracking?batch_id=' +
+            encodeURIComponent(
+                shipment.batch_id
+            );
+    }
+
+
+    /* ========================================================
+       RESET PREVIOUS INTERVENTION RESULT
+       ======================================================== */
+
+    const simulationResult =
+        document.getElementById(
+            'simulationResult'
+        );
+
+
+    if (simulationResult) {
+
+        simulationResult.classList.remove(
+            'show'
+        );
+    }
+
+
+    document.querySelectorAll(
+        '.intervention'
+    ).forEach(
+        card => {
+
+            card.classList.remove(
+                'active'
+            );
+
+        }
+    );
+
+
+    /* ========================================================
+       SCROLL TO DIGITAL TWIN
+       ======================================================== */
+
+    if (scrollToTwin) {
+
+        const monitor =
+            document.getElementById(
+                'digitalTwinMonitor'
+            );
+
+
+        if (monitor) {
+
+            /*
+               Small delay allows all state values
+               to update before scrolling.
+            */
+
+            requestAnimationFrame(
+                function () {
+
+                    monitor.scrollIntoView({
+                        behavior:
+                            'smooth',
+
+                        block:
+                            'start'
+                    });
+
+                }
+            );
+        }
+    }
+}
+
+
+/* ============================================================
+   DIGITAL TWIN INTERPRETATION
+   ============================================================ */
+
+function buildInsight(shipment) {
+
+    const risk =
+        safeNumber(
+            shipment.risk
+        );
+
+
+    const temperature =
+        safeNumber(
+            shipment.temperature
+        );
+
+
+    const humidity =
+        safeNumber(
+            shipment.humidity
+        );
+
+
+    const delay =
+        safeNumber(
+            shipment.delay
+        );
+
+
+    /* --------------------------
+       Critical + temperature
+       -------------------------- */
+
+    if (
+        risk >= 85 &&
+        temperature > 8
+    ) {
+
+        return (
+            'Critical model-estimated operational risk is ' +
+            'present together with elevated temperature. ' +
+            'Evaluate cooling intervention or nearby ' +
+            'controlled cold-storage support before taking ' +
+            'operational action.'
+        );
+    }
+
+
+    /* --------------------------
+       Critical + delay
+       -------------------------- */
+
+    if (
+        risk >= 85 &&
+        delay >= 2
+    ) {
+
+        return (
+            'Critical model-estimated operational risk is ' +
+            'present together with significant logistics ' +
+            'delay. Route optimization or expedited movement ' +
+            'should be evaluated.'
+        );
+    }
+
+
+    /* --------------------------
+       Critical
+       -------------------------- */
+
+    if (risk >= 85) {
+
+        return (
+            'This shipment is currently a critical ' +
+            'operational priority according to the model. ' +
+            'Review its latest telemetry and logistics state ' +
+            'before taking intervention action.'
+        );
+    }
+
+
+    /* --------------------------
+       Elevated temperature
+       -------------------------- */
+
+    if (
+        temperature > 8 &&
+        risk >= 60
+    ) {
+
+        return (
+            'The shipment has elevated model-estimated risk ' +
+            'and a temperature excursion. Consider evaluating ' +
+            'cooling or controlled-storage intervention.'
+        );
+    }
+
+
+    /* --------------------------
+       Humidity condition
+       -------------------------- */
+
+    if (
+        humidity > 80 &&
+        risk >= 60
+    ) {
+
+        return (
+            'Elevated model-estimated risk is accompanied by ' +
+            'high humidity. Continue close environmental ' +
+            'monitoring and inspect product-specific storage ' +
+            'requirements.'
+        );
+    }
+
+
+    /* --------------------------
+       General elevated risk
+       -------------------------- */
+
+    if (risk >= 60) {
+
+        return (
+            'The shipment has elevated model-estimated ' +
+            'operational risk. Increase monitoring frequency ' +
+            'and evaluate a preventive intervention scenario.'
+        );
+    }
+
+
+    /* --------------------------
+       Stable condition
+       -------------------------- */
+
+    return (
+        'The shipment currently shows comparatively stable ' +
+        'operational conditions. Continue routine monitoring ' +
+        'for changes in temperature, humidity and logistics.'
+    );
+}
+
+
+/* ============================================================
+   WHAT-IF INTERVENTION SIMULATION
+   ============================================================ */
+
+function simulateIntervention(
+    intervention,
+    element
+) {
+
+    if (!selectedTwin) {
+
+        console.warn(
+            'No Digital Twin shipment selected.'
+        );
+
+        return;
+    }
+
+
+    /* Reset intervention selection */
+
+    document.querySelectorAll(
+        '.intervention'
+    ).forEach(
+        card => {
+
+            card.classList.remove(
+                'active'
+            );
+
+        }
+    );
+
+
+    if (element) {
+
+        element.classList.add(
+            'active'
+        );
+    }
+
+
+    const baseline =
+        safeNumber(
+            selectedTwin.risk
+        );
+
+
+    /*
+       IMPORTANT:
+
+       These are transparent Digital Twin scenario
+       assumptions.
+
+       They are NOT new predictions from the trained
+       machine-learning model.
+
+       They can later be replaced with the existing
+       backend endpoint:
+
+       /api/twin/<batch_id>/simulate
+    */
+
+    const scenarios = {
+
+
+        cooling: {
+
+            reduction: 12,
+
+            name:
+                'Cooling Intervention',
+
+            explanation:
+                'The scenario represents stabilization of ' +
+                'temperature exposure through additional ' +
+                'cooling control.'
+        },
+
+
+        route: {
+
+            reduction: 8,
+
+            name:
+                'Route Optimization',
+
+            explanation:
+                'The scenario represents reduced logistics ' +
+                'exposure through an optimized shipment route.'
+        },
+
+
+        storage: {
+
+            reduction: 15,
+
+            name:
+                'Cold Storage Diversion',
+
+            explanation:
+                'The scenario represents temporary diversion ' +
+                'to controlled cold-storage conditions.'
+        },
+
+
+        expedite: {
+
+            reduction: 10,
+
+            name:
+                'Expedited Delivery',
+
+            explanation:
+                'The scenario represents reducing logistics ' +
+                'delay exposure through faster movement.'
+        }
+
+    };
+
+
+    const scenario =
+        scenarios[
+            intervention
+        ];
+
+
+    if (!scenario) {
+
+        console.error(
+            'Unknown intervention:',
+            intervention
+        );
+
+        return;
+    }
+
+
+    /* --------------------------
+       Scenario calculation
+       -------------------------- */
+
+    const projected =
+        Math.max(
+            0,
+            baseline -
+            scenario.reduction
+        );
+
+
+    const improvement =
+        baseline -
+        projected;
+
+
+    /* --------------------------
+       Display simulation
+       -------------------------- */
+
+    setTwinText(
+        'simBaseline',
+        baseline.toFixed(1) +
+        '%'
+    );
+
+
+    setTwinText(
+        'simProjected',
+        projected.toFixed(1) +
+        '%'
+    );
+
+
+    setTwinText(
+        'simImprovement',
+        '-' +
+        improvement.toFixed(1) +
+        ' pts'
+    );
+
+
+    setTwinText(
+        'simAction',
+        scenario.name
+    );
+
+
+    setTwinText(
+        'simExplanation',
+
+        scenario.explanation +
+
+        ' The displayed risk change is an illustrative ' +
+        'Digital Twin decision-support assumption and ' +
+        'should not be interpreted as a confirmed future ' +
+        'outcome or a new machine-learning prediction.'
+    );
+
+
+    const result =
+        document.getElementById(
+            'simulationResult'
+        );
+
+
+    if (result) {
+
+        result.classList.add(
+            'show'
+        );
+    }
+}
+
+
+/* ============================================================
+   INSPECT TWIN BUTTON HANDLER
+   ============================================================ */
+
+function initializeInspectButtons() {
+
+    const buttons =
+        document.querySelectorAll(
+            '.inspect-twin-btn'
+        );
+
+
+    buttons.forEach(
+        button => {
+
+            button.addEventListener(
+                'click',
+                function () {
+
+                    const index =
+                        this.getAttribute(
+                            'data-twin-index'
+                        );
+
+
+                    /*
+                       true = update twin AND scroll
+                       to Virtual Shipment Model.
+                    */
+
+                    selectTwin(
+                        index,
+                        true
+                    );
+
+                }
+            );
+
+        }
+    );
+}
+
+
+/* ============================================================
+   DETERMINE INITIAL PRIORITY SHIPMENT
+   ============================================================ */
+
+function getPriorityShipmentIndex() {
+
+    if (!twinShipments.length) {
+        return -1;
+    }
+
+
+    let priorityIndex = 0;
+
+
+    twinShipments.forEach(
+        (shipment, index) => {
+
+            const currentRisk =
+                safeNumber(
+                    shipment.risk
+                );
+
+
+            const priorityRisk =
+                safeNumber(
+                    twinShipments[
+                        priorityIndex
+                    ].risk
+                );
+
+
+            if (
+                currentRisk >
+                priorityRisk
+            ) {
+
+                priorityIndex =
+                    index;
+            }
+
+        }
+    );
+
+
+    return priorityIndex;
+}
+
+
+/* ============================================================
+   OPTIONAL URL SHIPMENT SELECTION
+   ============================================================ */
+
+function getRequestedShipmentIndex() {
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const requestedBatch =
+        params.get(
+            'batch_id'
+        );
+
+
+    if (!requestedBatch) {
+        return -1;
+    }
+
+
+    return twinShipments.findIndex(
+        shipment =>
+            String(
+                shipment.batch_id
+            ) ===
+            String(
+                requestedBatch
+            )
+    );
+}
+
+
+/* ============================================================
+   PAGE INITIALIZATION
+   ============================================================ */
+
+document.addEventListener(
+    'DOMContentLoaded',
+    function () {
+
+
+        /* --------------------------
+           Calculate dashboard KPIs
+           -------------------------- */
+
+        calculateKPIs();
+
+
+        /* --------------------------
+           Activate Inspect buttons
+           -------------------------- */
+
+        initializeInspectButtons();
+
+
+        /* --------------------------
+           Stop if no shipments exist
+           -------------------------- */
+
+        if (!twinShipments.length) {
+
+            console.warn(
+                'No Digital Twin shipment data available.'
+            );
+
+            return;
+        }
+
+
+        /* --------------------------
+           Check URL selection first
+           -------------------------- */
+
+        let initialIndex =
+            getRequestedShipmentIndex();
+
+
+        /*
+           If there is no batch_id in URL,
+           automatically display the shipment
+           with the highest model risk.
+        */
+
+        if (initialIndex < 0) {
+
+            initialIndex =
+                getPriorityShipmentIndex();
+        }
+
+
+        /* --------------------------
+           Load initial twin
+           -------------------------- */
+
+        if (initialIndex >= 0) {
+
+            selectTwin(
+                initialIndex,
+                false
+            );
+        }
+
+    }
+);
+
+</script>
+
+{% endblock %}

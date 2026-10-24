@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>ColdGuard AI | Predictive Cold-Chain Intelligence</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #020b16;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* =====================================================
+           LANDING PAGE
+        ===================================================== */
+
+        .landing-page {
+            position: relative;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* =====================================================
+           BACKGROUND VIDEO
+        ===================================================== */
+
+        .background-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+
+            z-index: 0;
+
+            pointer-events: none;
+        }
+
+        /* =====================================================
+           VIDEO OVERLAY
+        ===================================================== */
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+
+            z-index: 1;
+
+            pointer-events: none;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(2, 11, 22, 0.97) 0%,
+                    rgba(2, 18, 32, 0.92) 32%,
+                    rgba(2, 18, 32, 0.70) 65%,
+                    rgba(2, 11, 22, 0.82) 100%
+                );
+        }
+
+        /* =====================================================
+           BLUE GLOW
+        ===================================================== */
+
+        .glow {
+            position: absolute;
+
+            width: 500px;
+            height: 500px;
+
+            right: -180px;
+            top: 150px;
+
+            background: rgba(23, 105, 170, 0.25);
+
+            filter: blur(100px);
+
+            border-radius: 50%;
+
+            z-index: 1;
+
+            pointer-events: none;
+        }
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        header {
+            position: relative;
+            z-index: 5;
+
+            width: 100%;
+
+            padding: 22px 6%;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+
+            background: rgba(2, 11, 22, 0.35);
+
+            backdrop-filter: blur(8px);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            text-decoration: none;
+
+            color: white;
+        }
+
+        .logo img {
+            width: 55px;
+            height: 55px;
+
+            object-fit: contain;
+
+            border-radius: 10px;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-title {
+            font-size: 22px;
+            font-weight: 700;
+
+            letter-spacing: 0.5px;
+        }
+
+        .logo-subtitle {
+            font-size: 11px;
+
+            color: #8dbbdc;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+        }
+
+        .public-nav {
+            display: flex;
+            align-items: center;
+
+            gap: 32px;
+        }
+
+        .public-nav a {
+            color: rgba(255,255,255,0.82);
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            transition: 0.3s;
+        }
+
+        .public-nav a:hover {
+            color: #55b8ff;
+        }
+
+        .nav-button {
+            padding: 11px 20px;
+
+            border: 1px solid rgba(85,184,255,0.5);
+
+            border-radius: 8px;
+
+            color: white !important;
+
+            background: rgba(23,105,170,0.25);
+        }
+
+        .nav-button:hover {
+            background: #1769AA;
+        }
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
+        .hero {
+            position: relative;
+            z-index: 3;
+
+            min-height: calc(100vh - 100px);
+
+            display: flex;
+            align-items: center;
+
+            padding: 70px 6%;
+        }
+
+        .hero-content {
+            max-width: 720px;
+        }
+
+        /* STATUS */
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 9px 15px;
+
+            margin-bottom: 25px;
+
+            border-radius: 30px;
+
+            background: rgba(23,105,170,0.16);
+
+            border: 1px solid rgba(85,184,255,0.28);
+
+            color: #a9dcff;
+
+            font-size: 13px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: #39d98a;
+
+            box-shadow: 0 0 12px rgba(57,217,138,0.8);
+        }
+
+        /* HERO HEADING */
+
+        .hero h1 {
+            font-size: clamp(46px, 6vw, 82px);
+
+            line-height: 1.04;
+
+            letter-spacing: -2px;
+
+            margin-bottom: 25px;
+
+            font-weight: 750;
+        }
+
+        .hero h1 span {
+            color: #55b8ff;
+        }
+
+        .hero-description {
+            font-size: 18px;
+
+            line-height: 1.7;
+
+            color: rgba(255,255,255,0.72);
+
+            max-width: 620px;
+
+            margin-bottom: 35px;
+        }
+
+        /* =====================================================
+           BUTTONS
+        ===================================================== */
+
+        .hero-buttons {
+            display: flex;
+
+            gap: 15px;
+
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 14px 25px;
+
+            border-radius: 9px;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            transition: 0.3s;
+
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: #1769AA;
+
+            color: white;
+
+            box-shadow:
+                0 8px 30px rgba(23,105,170,0.35);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+
+            background: #2180c9;
+        }
+
+        .btn-secondary {
+            color: white;
+
+            border: 1px solid rgba(255,255,255,0.22);
+
+            background: rgba(255,255,255,0.05);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.12);
+
+            transform: translateY(-2px);
+        }
+
+        /* =====================================================
+           HERO INFO
+        ===================================================== */
+
+        .hero-info {
+            display: flex;
+
+            gap: 35px;
+
+            margin-top: 50px;
+
+            flex-wrap: wrap;
+        }
+
+        .info-item {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 5px;
+        }
+
+        .info-number {
+            font-size: 25px;
+
+            font-weight: 700;
+
+            color: white;
+        }
+
+        .info-label {
+            font-size: 12px;
+
+            color: rgba(255,255,255,0.5);
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+        }
+
+        /* =====================================================
+           DASHBOARD PREVIEW
+        ===================================================== */
+
+        .dashboard-preview {
+            position: absolute;
+
+            right: 5%;
+
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            width: 430px;
+
+            z-index: 4;
+
+            padding: 20px;
+
+            border-radius: 18px;
+
+            background:
+                rgba(5, 20, 34, 0.72);
+
+            border:
+                1px solid rgba(130,200,255,0.18);
+
+            box-shadow:
+                0 30px 80px rgba(0,0,0,0.45);
+
+            backdrop-filter: blur(16px);
+        }
+
+        .preview-header {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 20px;
+        }
+
+        .preview-title {
+            font-size: 15px;
+
+            font-weight: 600;
+        }
+
+        .preview-live {
+            font-size: 11px;
+
+            color: #65e3a1;
+
+            padding: 5px 9px;
+
+            border-radius: 15px;
+
+            background: rgba(65,227,161,0.10);
+
+            border: 1px solid rgba(65,227,161,0.2);
+        }
+
+        /* PREVIEW GRID */
+
+        .preview-grid {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 12px;
+        }
+
+        .preview-card {
+            padding: 16px;
+
+            border-radius: 12px;
+
+            background: rgba(255,255,255,0.045);
+
+            border: 1px solid rgba(255,255,255,0.07);
+        }
+
+        .preview-card.full {
+            grid-column: 1 / -1;
+        }
+
+        .preview-label {
+            font-size: 11px;
+
+            color: rgba(255,255,255,0.5);
+
+            margin-bottom: 8px;
+        }
+
+        .preview-value {
+            font-size: 24px;
+
+            font-weight: 700;
+        }
+
+        .preview-small {
+            font-size: 12px;
+
+            color: rgba(255,255,255,0.55);
+
+            margin-top: 5px;
+        }
+
+        .risk-low {
+            color: #5ee7a4;
+        }
+
+        .route {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            font-size: 13px;
+        }
+
+        .route-line {
+            flex: 1;
+
+            height: 2px;
+
+            background: rgba(85,184,255,0.35);
+
+            position: relative;
+        }
+
+        .route-line::after {
+            content: "";
+
+            position: absolute;
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #55b8ff;
+
+            right: 0;
+
+            top: -3px;
+        }
+
+        /* =====================================================
+           SECTIONS
+        ===================================================== */
+
+        .section {
+            position: relative;
+
+            z-index: 5;
+
+            padding: 100px 6%;
+
+            background: #061421;
+        }
+
+        .section-heading {
+            max-width: 700px;
+
+            margin-bottom: 50px;
+        }
+
+        .section-heading .eyebrow {
+            color: #55b8ff;
+
+            text-transform: uppercase;
+
+            letter-spacing: 2px;
+
+            font-size: 12px;
+
+            margin-bottom: 12px;
+        }
+
+        .section-heading h2 {
+            font-size: 42px;
+
+            margin-bottom: 15px;
+        }
+
+        .section-heading p {
+            color: rgba(255,255,255,0.62);
+
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           FEATURE CARDS
+        ===================================================== */
+
+        .features {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 18px;
+        }
+
+        .feature-card {
+            padding: 28px;
+
+            border-radius: 14px;
+
+            background: rgba(255,255,255,0.035);
+
+            border:
+                1px solid rgba(255,255,255,0.08);
+
+            transition: 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+
+            border-color:
+                rgba(85,184,255,0.30);
+        }
+
+        .feature-icon {
+            width: 45px;
+            height: 45px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background: rgba(23,105,170,0.18);
+
+            margin-bottom: 20px;
+
+            font-size: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 17px;
+
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            color: rgba(255,255,255,0.55);
+        }
+
+        /* =====================================================
+           HOW IT WORKS
+        ===================================================== */
+
+        .steps {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 25px;
+        }
+
+        .step {
+            position: relative;
+
+            padding: 25px;
+        }
+
+        .step-number {
+            font-size: 12px;
+
+            color: #55b8ff;
+
+            margin-bottom: 15px;
+
+            letter-spacing: 1px;
+        }
+
+        .step h3 {
+            margin-bottom: 10px;
+
+            font-size: 18px;
+        }
+
+        .step p {
+            color: rgba(255,255,255,0.55);
+
+            line-height: 1.6;
+
+            font-size: 13px;
+        }
+
+        /* =====================================================
+           ABOUT
+        ===================================================== */
+
+        .about {
+            background: #020b16;
+
+            text-align: center;
+        }
+
+        .about-content {
+            max-width: 850px;
+
+            margin: auto;
+        }
+
+        .about-content h2 {
+            font-size: 40px;
+
+            margin-bottom: 20px;
+        }
+
+        .about-content p {
+            color: rgba(255,255,255,0.62);
+
+            line-height: 1.8;
+
+            font-size: 15px;
+        }
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        footer {
+            position: relative;
+
+            z-index: 5;
+
+            padding: 25px 6%;
+
+            background: #01070d;
+
+            border-top:
+                1px solid rgba(255,255,255,0.06);
+
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            color: rgba(255,255,255,0.45);
+
+            font-size: 12px;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 1100px) {
+
+            .dashboard-preview {
+                position: relative;
+
+                right: auto;
+
+                top: auto;
+
+                transform: none;
+
+                margin-top: 60px;
+
+                width: 100%;
+
+                max-width: 600px;
+            }
+
+            .hero {
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+            .features,
+            .steps {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 700px) {
+
+            header {
+                padding: 15px 5%;
+            }
+
+            .public-nav {
+                display: none;
+            }
+
+            .logo-title {
+                font-size: 18px;
+            }
+
+            .hero {
+                padding: 55px 5%;
+            }
+
+            .hero h1 {
+                font-size: 46px;
+            }
+
+            .hero-description {
+                font-size: 15px;
+            }
+
+            .features,
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-info {
+                gap: 20px;
+            }
+
+            .section {
+                padding: 70px 5%;
+            }
+
+            .section-heading h2 {
+                font-size: 32px;
+            }
+
+            footer {
+                flex-direction: column;
+
+                gap: 10px;
+
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="landing-page">
+
+    <!-- =====================================================
+         BACKGROUND VIDEO
+    ====================================================== -->
+
+    <video
+        class="background-video"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+    >
+        <source
+            src="/coldchain-video"
+            type="video/mp4"
+        >
+
+        Your browser does not support HTML5 video.
+    </video>
+
+
+    <!-- VIDEO DARK OVERLAY -->
+
+    <div class="video-overlay"></div>
+
+    <div class="glow"></div>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header>
+
+        <a href="/" class="logo">
+
+            <img
+                src="{{ url_for('static', filename='img/coldguard-logo.png') }}"
+                alt="ColdGuard AI"
+            >
+
+            <div class="logo-text">
+
+                <div class="logo-title">
+                    ColdGuard AI
+                </div>
+
+                <div class="logo-subtitle">
+                    Predictive Cold-Chain Intelligence
+                </div>
+
+            </div>
+
+        </a>
+
+
+        <nav class="public-nav">
+
+            <a href="#home">
+                Home
+            </a>
+
+            <a href="#features">
+                Features
+            </a>
+
+            <a href="#how-it-works">
+                How It Works
+            </a>
+
+            <a href="#about">
+                About
+            </a>
+
+            <a
+                href="/dashboard"
+                class="nav-button"
+            >
+                Dashboard
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
+    <main id="home" class="hero">
+
+        <div class="hero-content">
+
+            <!-- SYSTEM STATUS -->
+
+            <div class="status">
+
+                <span class="status-dot"></span>
+
+                Predictive Monitoring Active
+
+            </div>
+
+
+            <!-- MAIN HEADING -->
+
+            <h1>
+
+                Detect the Risk
+                <br>
+
+                <span>
+                    Before It Becomes a Loss.
+                </span>
+
+            </h1>
+
+
+            <!-- DESCRIPTION -->
+
+            <p class="hero-description">
+
+                ColdGuard AI predicts cold-chain risks before
+                shipments are delivered. Monitor temperature,
+                transit conditions and expiry risk to prevent
+                avoidable cargo spoilage and operational losses.
+
+            </p>
+
+
+            <!-- BUTTONS -->
+
+            <div class="hero-buttons">
+
+                <a
+                    href="/dashboard"
+                    class="btn btn-primary"
+                >
+                    Open Control Tower →
+                </a>
+
+                <a
+                    href="/ai-7"
+                    class="btn btn-secondary"
+                >
+                    Explore ColdGuard
+                </a>
+
+            </div>
+
+
+            <!-- QUICK INFORMATION -->
+
+            <div class="hero-info">
+
+                <div class="info-item">
+
+                    <div class="info-number">
+                        AI
+                    </div>
+
+                    <div class="info-label">
+                        Risk Prediction
+                    </div>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <div class="info-number">
+                        24/7
+                    </div>
+
+                    <div class="info-label">
+                        Monitoring
+                    </div>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <div class="info-number">
+                        3
+                    </div>
+
+                    <div class="info-label">
+                        Outcome Classes
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             DASHBOARD PREVIEW
+        ================================================== -->
+
+        <div class="dashboard-preview">
+
+            <div class="preview-header">
+
+                <div class="preview-title">
+                    Cold-Chain Control Tower
+                </div>
+
+                <div class="preview-live">
+                    ● LIVE
+                </div>
+
+            </div>
+
+
+            <div class="preview-grid">
+
+                <!-- TEMPERATURE -->
+
+                <div class="preview-card">
+
+                    <div class="preview-label">
+                        Temperature
+                    </div>
+
+                    <div class="preview-value">
+                        4.3°C
+                    </div>
+
+                    <div class="preview-small">
+                        Within safe range
+                    </div>
+
+                </div>
+
+
+                <!-- RISK -->
+
+                <div class="preview-card">
+
+                    <div class="preview-label">
+                        Current Risk
+                    </div>
+
+                    <div class="preview-value risk-low">
+                        LOW
+                    </div>
+
+                    <div class="preview-small">
+                        92% confidence
+                    </div>
+
+                </div>
+
+
+                <!-- SHIPMENT -->
+
+                <div class="preview-card">
+
+                    <div class="preview-label">
+                        Active Shipment
+                    </div>
+
+                    <div class="preview-value"
+                         style="font-size:18px;">
+
+                        CG-4582
+
+                    </div>
+
+                    <div class="preview-small">
+                        Vaccine Cargo
+                    </div>
+
+                </div>
+
+
+                <!-- TRANSIT -->
+
+                <div class="preview-card">
+
+                    <div class="preview-label">
+                        Transit
+                    </div>
+
+                    <div class="preview-value"
+                         style="font-size:18px;">
+
+                        On Schedule
+
+                    </div>
+
+                    <div class="preview-small">
+                        ETA 04:35 hrs
+                    </div>
+
+                </div>
+
+
+                <!-- ROUTE -->
+
+                <div class="preview-card full">
+
+                    <div class="preview-label">
+                        Shipment Route
+                    </div>
+
+                    <div class="route">
+
+                        <span>
+                            Mumbai
+                        </span>
+
+                        <div class="route-line"></div>
+
+                        <span>
+                            Pune
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================================
+     FEATURES
+========================================================== -->
+
+<section id="features" class="section">
+
+    <div class="section-heading">
+
+        <div class="eyebrow">
+            ColdGuard Intelligence
+        </div>
+
+        <h2>
+            From Monitoring to Prevention
+        </h2>
+
+        <p>
+            ColdGuard combines machine learning, shipment
+            telemetry and operational intelligence to identify
+            cold-chain threats before they become costly losses.
+        </p>
+
+    </div>
+
+
+    <div class="features">
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                🌡
+            </div>
+
+            <h3>
+                Temperature Monitoring
+            </h3>
+
+            <p>
+                Track thermal conditions and identify
+                out-of-bound temperature events during
+                shipment movement.
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                🤖
+            </div>
+
+            <h3>
+                AI Risk Prediction
+            </h3>
+
+            <p>
+                Machine learning analyzes shipment conditions
+                and predicts the probability of future
+                cold-chain violations.
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                ⚠
+            </div>
+
+            <h3>
+                Early Alerts
+            </h3>
+
+            <p>
+                Identify high-risk shipments early so operators
+                can take corrective action before cargo quality
+                is compromised.
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                📊
+            </div>
+
+            <h3>
+                Operational Analytics
+            </h3>
+
+            <p>
+                Analyze shipment performance, risk patterns,
+                delays and cold-chain events through a centralized
+                control tower.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     HOW IT WORKS
+========================================================== -->
+
+<section id="how-it-works" class="section">
+
+    <div class="section-heading">
+
+        <div class="eyebrow">
+            How It Works
+        </div>
+
+        <h2>
+            Monitor → Predict → Act
+        </h2>
+
+        <p>
+            ColdGuard turns shipment data into actionable
+            intelligence through a simple four-step process.
+        </p>
+
+    </div>
+
+
+    <div class="steps">
+
+        <div class="step">
+
+            <div class="step-number">
+                01 — MONITOR
+            </div>
+
+            <h3>
+                Collect Conditions
+            </h3>
+
+            <p>
+                Temperature, humidity, expiry, storage and
+                logistics-stage information are captured for
+                every shipment.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                02 — PREDICT
+            </div>
+
+            <h3>
+                Calculate Risk
+            </h3>
+
+            <p>
+                The machine-learning model analyzes current
+                conditions and estimates future cold-chain
+                violation risk.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                03 — EXPLAIN
+            </div>
+
+            <h3>
+                Understand Why
+            </h3>
+
+            <p>
+                Risk factors and model outputs are presented
+                in a simple format so operators can understand
+                the reason behind the prediction.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                04 — ACT
+            </div>
+
+            <h3>
+                Prevent Loss
+            </h3>
+
+            <p>
+                Alerts, interventions and what-if simulations
+                help operators choose corrective actions before
+                cargo is compromised.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     ABOUT
+========================================================== -->
+
+<section id="about" class="section about">
+
+    <div class="about-content">
+
+        <div class="section-heading"
+             style="margin-left:auto;margin-right:auto;">
+
+            <div class="eyebrow">
+                About ColdGuard
+            </div>
+
+            <h2>
+                Predictive Intelligence for Cold-Chain Logistics
+            </h2>
+
+            <p>
+                ColdGuard AI is designed to help logistics teams
+                move from reactive shipment monitoring to
+                proactive risk management.
+            </p>
+
+        </div>
+
+
+        <p>
+
+            Instead of waiting until a shipment arrives damaged,
+            ColdGuard evaluates current shipment conditions,
+            predicts future cold-chain risk and provides
+            actionable information for intervention.
+
+            <br><br>
+
+            The platform combines machine learning,
+            shipment tracking, operational analytics,
+            alerts and intervention recommendations into
+            one centralized control tower.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================== -->
+
+<footer>
+
+    <div>
+        © 2026 ColdGuard AI
+    </div>
+
+    <div>
+        Predictive Cold-Chain Intelligence
+    </div>
+
+</footer>
+
+
+<!-- =========================================================
+     VIDEO AUTOPLAY SUPPORT
+========================================================== -->
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const video =
+            document.querySelector(".background-video");
+
+        if (video) {
+
+            video.muted = true;
+
+            const playVideo = () => {
+
+                const promise = video.play();
+
+                if (promise !== undefined) {
+
+                    promise.catch(() => {
+
+                        console.log(
+                            "Video autoplay was blocked by the browser."
+                        );
+
+                    });
+
+                }
+
+            };
+
+            playVideo();
+
+        }
+
+    });
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,3544 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Live Tracking{% endblock %}
+{% block heading %}Live Shipment Tracking{% endblock %}
+
+{% block content %}
+
+<style>
+/* ============================================================
+   SUPPLYSHIELD AI - ADVANCED LIVE TRACKING
+   ============================================================ */
+
+:root {
+    --lt-navy: #0b1f33;
+    --lt-blue: #1769aa;
+    --lt-light-blue: #eaf4fb;
+    --lt-bg: #f4f7fa;
+    --lt-border: #dce6ef;
+    --lt-text: #30495b;
+    --lt-muted: #718494;
+    --lt-green: #198754;
+    --lt-red: #dc3545;
+    --lt-orange: #f59e0b;
+}
+
+/* ------------------------------------------------------------
+   INTRO
+   ------------------------------------------------------------ */
+
+.live-page {
+    padding-bottom: 50px;
+}
+
+.live-intro {
+    background:
+        radial-gradient(circle at 88% 25%, rgba(79, 170, 255, .25), transparent 28%),
+        linear-gradient(135deg, #0b1f33 0%, #123b60 62%, #1769aa 100%);
+    color: #fff;
+    border-radius: 20px;
+    padding: 28px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 22px;
+    box-shadow: 0 12px 30px rgba(11,31,51,.14);
+}
+
+.live-intro .eyebrow {
+    color: #91d4ff;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 1.4px;
+}
+
+.live-intro h2 {
+    margin: 6px 0;
+    font-size: 28px;
+    font-weight: 800;
+}
+
+.live-intro p {
+    margin: 0;
+    color: rgba(255,255,255,.75);
+    max-width: 680px;
+}
+
+.live-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.simulation-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 13px;
+    border-radius: 30px;
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.18);
+    font-size: 10px;
+    font-weight: 900;
+    white-space: nowrap;
+}
+
+.simulation-pill i {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #39e38e;
+    box-shadow: 0 0 0 5px rgba(57,227,142,.12);
+    animation: pulseLive 1.5s infinite;
+}
+
+@keyframes pulseLive {
+    50% {
+        opacity: .4;
+    }
+}
+
+
+/* ------------------------------------------------------------
+   KPI
+   ------------------------------------------------------------ */
+
+.live-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
+    gap: 13px;
+    margin-bottom: 22px;
+}
+
+.live-kpi {
+    background: #fff;
+    border: 1px solid var(--lt-border);
+    border-radius: 15px;
+    padding: 17px;
+    box-shadow: 0 4px 15px rgba(23,61,90,.05);
+}
+
+.live-kpi small {
+    display: block;
+    color: var(--lt-muted);
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: .6px;
+    margin-bottom: 5px;
+}
+
+.live-kpi b {
+    display: block;
+    color: var(--lt-navy);
+    font-size: 25px;
+}
+
+.live-kpi span {
+    color: var(--lt-muted);
+    font-size: 10px;
+}
+
+.live-kpi.danger b {
+    color: var(--lt-red);
+}
+
+.live-kpi.success b {
+    color: var(--lt-green);
+}
+
+
+/* ------------------------------------------------------------
+   PANEL
+   ------------------------------------------------------------ */
+
+.lt-panel {
+    background: #fff;
+    border: 1px solid var(--lt-border);
+    border-radius: 17px;
+    overflow: hidden;
+    box-shadow: 0 4px 18px rgba(20,57,84,.05);
+    height: 100%;
+}
+
+.lt-panel-head {
+    padding: 17px 19px;
+    border-bottom: 1px solid #edf2f6;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.lt-panel-head h3 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--lt-navy);
+}
+
+.lt-panel-head p {
+    margin: 3px 0 0;
+    color: var(--lt-muted);
+    font-size: 10px;
+}
+
+.lt-panel-body {
+    padding: 18px;
+}
+
+.lt-badge {
+    border: 1px solid var(--lt-border);
+    border-radius: 8px;
+    padding: 5px 9px;
+    background: #f8fafc;
+    color: #536b7c;
+    font-size: 9px;
+    font-weight: 900;
+    white-space: nowrap;
+}
+
+
+/* ------------------------------------------------------------
+   MAP
+   ------------------------------------------------------------ */
+
+.live-map {
+    height: 470px;
+    width: 100%;
+    background: #edf3f7;
+}
+
+.truck-marker {
+    background: transparent !important;
+    border: 0 !important;
+}
+
+.truck-marker span {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid #fff;
+    box-shadow: 0 3px 12px rgba(0,0,0,.25);
+    font-size: 18px;
+}
+
+.route-marker {
+    background: transparent !important;
+    border: 0 !important;
+}
+
+.route-marker span {
+    width: 29px;
+    height: 29px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    border: 3px solid white;
+    box-shadow: 0 2px 9px rgba(0,0,0,.18);
+}
+
+.origin-marker span {
+    background: #198754;
+}
+
+.destination-marker span {
+    background: #1769aa;
+}
+
+
+/* ------------------------------------------------------------
+   SELECTED SHIPMENT
+   ------------------------------------------------------------ */
+
+.selected-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 16px;
+}
+
+.selected-batch {
+    color: var(--lt-navy);
+    font-size: 21px;
+    font-weight: 900;
+}
+
+.selected-route {
+    color: var(--lt-muted);
+    font-size: 11px;
+    margin-top: 3px;
+}
+
+.telemetry-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 10px;
+}
+
+.telemetry-card {
+    border: 1px solid #e4ebf0;
+    background: #f9fbfc;
+    border-radius: 11px;
+    padding: 12px;
+}
+
+.telemetry-card small {
+    display: block;
+    color: var(--lt-muted);
+    font-size: 9px;
+    font-weight: 800;
+    margin-bottom: 4px;
+}
+
+.telemetry-card b {
+    color: var(--lt-navy);
+    font-size: 15px;
+}
+
+
+/* ------------------------------------------------------------
+   RISK CHIP
+   ------------------------------------------------------------ */
+
+.lt-risk {
+    display: inline-flex;
+    padding: 5px 8px;
+    border-radius: 7px;
+    font-size: 9px;
+    font-weight: 900;
+}
+
+.lt-risk.low {
+    background: #e7f6ee;
+    color: #167248;
+}
+
+.lt-risk.moderate {
+    background: #fff5dc;
+    color: #a76a00;
+}
+
+.lt-risk.high,
+.lt-risk.critical {
+    background: #fdebed;
+    color: #c93243;
+}
+
+
+/* ------------------------------------------------------------
+   JOURNEY
+   ------------------------------------------------------------ */
+
+.journey-wrapper {
+    padding: 8px 3px 3px;
+}
+
+.journey-route {
+    position: relative;
+    height: 8px;
+    background: #e4ebf0;
+    border-radius: 30px;
+    margin: 35px 15px 17px;
+}
+
+.journey-complete {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    border-radius: 30px;
+    background: linear-gradient(90deg,#1769aa,#45a1df);
+}
+
+.journey-truck {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--lt-blue);
+    color: white;
+    border: 3px solid white;
+    box-shadow: 0 2px 10px rgba(0,0,0,.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.journey-start,
+.journey-end {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 4px solid white;
+    box-shadow: 0 2px 6px rgba(0,0,0,.15);
+}
+
+.journey-start {
+    left: 0;
+    background: var(--lt-green);
+}
+
+.journey-end {
+    left: 100%;
+    background: var(--lt-blue);
+}
+
+.progress-value {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--lt-navy);
+}
+
+.journey-info {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.journey-info div {
+    text-align: center;
+    background: #f8fafc;
+    border-radius: 9px;
+    padding: 9px;
+}
+
+.journey-info small {
+    display: block;
+    color: var(--lt-muted);
+    font-size: 8px;
+    font-weight: 800;
+}
+
+.journey-info b {
+    color: var(--lt-navy);
+    font-size: 12px;
+}
+
+
+/* ------------------------------------------------------------
+   TEMPERATURE / RISK HISTORY
+   ------------------------------------------------------------ */
+
+.chart-area {
+    height: 190px;
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    position: relative;
+    padding: 25px 5px 25px;
+}
+
+.temp-limit {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 65%;
+    border-top: 1px dashed #dc3545;
+    z-index: 1;
+}
+
+.temp-limit span {
+    position: absolute;
+    right: 0;
+    top: -18px;
+    color: #dc3545;
+    font-size: 8px;
+    font-weight: 800;
+}
+
+.chart-col {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+}
+
+.chart-bar {
+    width: 70%;
+    max-width: 28px;
+    border-radius: 5px 5px 2px 2px;
+    background: linear-gradient(to top,#1769aa,#6cb8e9);
+    min-height: 4px;
+}
+
+.chart-bar.danger {
+    background: linear-gradient(to top,#c93f4e,#f08089);
+}
+
+.chart-col small {
+    font-size: 7px;
+    color: var(--lt-muted);
+    margin-top: 5px;
+}
+
+.chart-col b {
+    font-size: 8px;
+    color: #506779;
+    margin-bottom: 4px;
+}
+
+
+/* ------------------------------------------------------------
+   TABLE
+   ------------------------------------------------------------ */
+
+.lt-table {
+    margin: 0;
+}
+
+.lt-table th {
+    border: 0;
+    background: #f7fafc;
+    color: #667b8b;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: .4px;
+    white-space: nowrap;
+    padding: 12px;
+}
+
+.lt-table td {
+    font-size: 10px;
+    vertical-align: middle;
+    padding: 12px;
+    color: #41596a;
+    border-color: #edf2f5;
+}
+
+.shipment-link {
+    color: var(--lt-navy);
+    text-decoration: none;
+    font-weight: 900;
+}
+
+.shipment-link:hover {
+    color: var(--lt-blue);
+}
+
+
+/* ------------------------------------------------------------
+   DECISION FEED
+   ------------------------------------------------------------ */
+
+.decision-card {
+    border: 1px solid #e2eaf0;
+    border-radius: 12px;
+    padding: 13px;
+    margin-bottom: 10px;
+}
+
+.decision-card:last-child {
+    margin-bottom: 0;
+}
+
+.decision-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+
+.decision-card h4 {
+    color: var(--lt-navy);
+    font-size: 12px;
+    font-weight: 900;
+    margin: 0;
+}
+
+.decision-card p {
+    margin: 5px 0;
+    color: #536b7c;
+    font-size: 10px;
+}
+
+.decision-meta {
+    color: var(--lt-muted);
+    font-size: 9px;
+}
+
+
+/* ------------------------------------------------------------
+   EXCURSION
+   ------------------------------------------------------------ */
+
+.excursion-box {
+    border-radius: 12px;
+    padding: 14px;
+    background: #fff8f8;
+    border: 1px solid #f5d8dc;
+}
+
+.excursion-safe {
+    background: #f2fbf6;
+    border-color: #d2eedf;
+}
+
+.excursion-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.excursion-grid div {
+    background: rgba(255,255,255,.8);
+    border-radius: 8px;
+    padding: 9px;
+}
+
+.excursion-grid small {
+    display: block;
+    color: var(--lt-muted);
+    font-size: 8px;
+}
+
+.excursion-grid b {
+    color: var(--lt-navy);
+    font-size: 12px;
+}
+
+
+/* ------------------------------------------------------------
+   GEOFENCE TIMELINE
+   ------------------------------------------------------------ */
+
+.geo-item {
+    display: flex;
+    gap: 11px;
+    padding: 10px 0;
+    border-bottom: 1px solid #edf2f5;
+}
+
+.geo-item:last-child {
+    border-bottom: 0;
+}
+
+.geo-icon {
+    width: 27px;
+    height: 27px;
+    border-radius: 50%;
+    background: #eaf4fb;
+    color: var(--lt-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.geo-text b {
+    display: block;
+    color: var(--lt-navy);
+    font-size: 10px;
+}
+
+.geo-text span {
+    color: var(--lt-muted);
+    font-size: 9px;
+}
+
+
+/* ------------------------------------------------------------
+   ACTIONS
+   ------------------------------------------------------------ */
+
+.lt-actions {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 8px;
+    margin-top: 15px;
+}
+
+
+/* ------------------------------------------------------------
+   SIMULATION STATUS
+   ------------------------------------------------------------ */
+
+.source-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 9px 0;
+    border-bottom: 1px solid #edf2f5;
+    font-size: 10px;
+}
+
+.source-row:last-child {
+    border-bottom: 0;
+}
+
+.source-status {
+    color: var(--lt-green);
+    font-weight: 900;
+}
+
+.source-status::before {
+    content: "●";
+    margin-right: 5px;
+}
+
+
+/* ------------------------------------------------------------
+   RESPONSIVE
+   ------------------------------------------------------------ */
+
+@media(max-width:1200px) {
+    .live-kpi-grid {
+        grid-template-columns: repeat(3,1fr);
+    }
+}
+
+@media(max-width:768px) {
+    .live-intro {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .live-kpi-grid {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .telemetry-grid {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .lt-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .live-map {
+        height: 370px;
+    }
+}
+</style>
+
+
+<div class="live-page">
+
+    <!-- ======================================================
+         HEADER
+         ====================================================== -->
+
+    <div class="live-intro">
+
+        <div>
+
+            <span class="eyebrow">
+                REAL-TIME TELEMETRY SIMULATION
+            </span>
+
+            <h2>Live Shipment Control Tower</h2>
+
+            <p>
+                Dynamic shipment movement, cold-chain telemetry,
+                journey progress, shelf-life monitoring and
+                AI-assisted operational decisions.
+            </p>
+
+        </div>
+
+
+        <div class="live-actions">
+
+            <span class="simulation-pill">
+                <i></i>
+                SIMULATION MODE
+            </span>
+
+            <button
+                class="btn btn-light btn-sm"
+                onclick="refreshLive()">
+
+                <i class="bi bi-arrow-clockwise me-1"></i>
+                Refresh
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ======================================================
+         KPI
+         ====================================================== -->
+
+    <div class="live-kpi-grid">
+
+        <div class="live-kpi">
+
+            <small>ACTIVE SHIPMENTS</small>
+
+            <b id="kShip">
+                {{ summary.shipments }}
+            </b>
+
+            <span>Live positions</span>
+
+        </div>
+
+
+        <div class="live-kpi danger">
+
+            <small>HIGH / CRITICAL</small>
+
+            <b id="kHigh">
+                {{ summary.high_risk }}
+            </b>
+
+            <span>Need attention</span>
+
+        </div>
+
+
+        <div class="live-kpi danger">
+
+            <small>TEMP ALERTS</small>
+
+            <b id="kTemp">
+                {{ summary.temperature_alerts }}
+            </b>
+
+            <span>Above 8°C</span>
+
+        </div>
+
+
+        <div class="live-kpi success">
+
+            <small>AVG LIVE RISK</small>
+
+            <b id="kRisk">
+                {{ summary.avg_risk }}%
+            </b>
+
+            <span>Across active fleet</span>
+
+        </div>
+
+
+        <div class="live-kpi">
+
+            <small>LAST TELEMETRY</small>
+
+            <b
+                id="kUpdate"
+                style="font-size:16px;">
+                Waiting...
+            </b>
+
+            <span>3-second refresh</span>
+
+        </div>
+
+    </div>
+
+
+    <!-- ======================================================
+         LIVE MAP
+         ====================================================== -->
+
+    <div class="lt-panel mb-4">
+
+        <div class="lt-panel-head">
+
+            <div>
+
+                <h3>
+                    <i class="bi bi-geo-alt me-2"></i>
+                    Live Fleet Map
+                </h3>
+
+                <p>
+                    Select a truck to inspect shipment telemetry
+                    and journey status.
+                </p>
+
+            </div>
+
+
+            <span
+                class="lt-badge"
+                id="lastUpdate">
+
+                Waiting...
+
+            </span>
+
+        </div>
+
+
+        <div
+            id="liveMap"
+            class="live-map">
+        </div>
+
+    </div>
+
+
+    <!-- ======================================================
+         SELECTED SHIPMENT + JOURNEY
+         ====================================================== -->
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-lg-7">
+
+            <div class="lt-panel">
+
+                <div class="lt-panel-head">
+
+                    <div>
+
+                        <h3>
+                            <i class="bi bi-truck me-2"></i>
+                            Selected Shipment
+                        </h3>
+
+                        <p>
+                            Current shipment condition and telemetry.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="lt-panel-body"
+                    id="selectedShipment">
+
+                    <div class="text-center text-muted py-4">
+                        Select a shipment on the map.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-5">
+
+            <div class="lt-panel">
+
+                <div class="lt-panel-head">
+
+                    <div>
+
+                        <h3>
+                            <i class="bi bi-signpost-split me-2"></i>
+                            Journey Progress
+                        </h3>
+
+                        <p>
+                            Estimated progress toward destination.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="lt-panel-body"
+                    id="journeyPanel">
+
+                    <div class="text-center text-muted py-4">
+                        Waiting for shipment...
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ======================================================
+         TEMP HISTORY + EXCURSION
+         ====================================================== -->
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-lg-7">
+
+            <div class="lt-panel">
+
+                <div class="lt-panel-head">
+
+                    <div>
+
+                        <h3>
+                            <i class="bi bi-thermometer-half me-2"></i>
+                            Temperature Timeline
+                        </h3>
+
+                        <p>
+                            Recent simulated telemetry readings.
+                        </p>
+
+                    </div>
+
+                    <span class="lt-badge">
+                        SAFE LIMIT ≤ 8°C
+                    </span>
+
+                </div>
+
+
+                <div class="lt-panel-body">
+
+                    <div
+                        class="chart-area"
+                        id="tempHistory">
+
+                        <div class="temp-limit">
+                            <span>8°C LIMIT</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-5">
+
+            <div class="lt-panel">
+
+                <div class="lt-panel-head">
+
+                    <div>
+
+                        <h3>
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            Cold-Chain Excursion
+                        </h3>
+
+                        <p>
+                            Simulated threshold-monitoring status.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="lt-panel-body"
+                    id="excursionPanel">
+
+                    <div class="text-center text-muted py-4">
+                        No shipment selected.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ======================================================
+         PRIORITY QUEUE + AI FEED
+         ====================================================== -->
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-xl-8">
+
+            <div class="lt-panel">
+
+                <div class="lt-panel-head">
+
+                    <div>
+
+                        <h3>
+                            <i class="bi bi-list-ol me-2"></i>
+                            Priority Queue
+                        </h3>
+
+                        <p>
+                            Dynamic ranking by risk, temperature,
+                            delay and remaining shelf life.
+                        </p>
+
+                    </div>
+
+                    <span class="lt-badge">
+                        AI PRIORITY
+                    </span>
+
+                </div>
+
+
+                <div class="table-responsive">
+
+                    <table class="table lt-table">
+
+                        <thead>
+
+                            <tr>
+                                <th>#</th>
+                                <th>Shipment</th>
+                                <th>Risk</th>
+                                <th>Trend</th>
+                                <th>Temp</th>
+                                <th>Excursion</th>
+                                <th>Shelf Life</th>
+                                <th>ETA</th>
+                                <th></th>
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="liveBody">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-xl-4">
+
+            <div class="lt-panel">
+
+                <div class="lt-panel-head">
+
+                    <div>
+
+                        <h3>
+                            <i class="bi bi-stars me-2"></i>
+                            AI Decision Feed
+                        </h3>
+
+                        <p>
+                            Highest-impact operational actions.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="lt-panel-body"
+                    id="decisionFeed">
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ======================================================
+         GEOFENCE + FORECAST + DATA SOURCE
+         ====================================================== -->
+
+    <div class="row g-4">
+
+        <div class="col-lg-4">
+
+            <div class="lt-panel">
+
+                <div class="lt-panel-head">
+
+                    <div>
+
+                        <h3>
+                            <i class="bi bi-bullseye me-2"></i>
+                            Journey Events
+                        </h3>
+
+                        <p>
+                            Simulated shipment movement milestones.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="lt-panel-body"
+                    id="geoEvents">
+
+                    <div class="text-muted text-center py-3">
+                        Select a shipment.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-4">
+
+            <div class="lt-panel">
+
+                <div class="lt-panel-head">
+
+                    <div>
+
+                        <h3>
+                            <i class="bi bi-graph-up-arrow me-2"></i>
+                            Operational Indicators
+                        </h3>
+
+                        <p>
+                            Current fleet-level risk indicators.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="lt-panel-body">
+
+                    <div class="telemetry-grid">
+
+                        <div class="telemetry-card">
+
+                            <small>DELAYED</small>
+
+                            <b id="fDelayed">
+                                0
+                            </b>
+
+                        </div>
+
+
+                        <div class="telemetry-card">
+
+                            <small>CRITICAL</small>
+
+                            <b id="fCritical">
+                                0
+                            </b>
+
+                        </div>
+
+
+                        <div class="telemetry-card">
+
+                            <small>SHELF LIFE &lt; 18H</small>
+
+                            <b id="fShelf">
+                                0
+                            </b>
+
+                        </div>
+
+
+                        <div class="telemetry-card">
+
+                            <small>WEATHER RISK ≥ 18</small>
+
+                            <b id="fWeather">
+                                0
+                            </b>
+
+                        </div>
+
+
+                        <div class="telemetry-card">
+
+                            <small>TEMP EXCURSIONS</small>
+
+                            <b id="fExcursions">
+                                0
+                            </b>
+
+                        </div>
+
+
+                        <div class="telemetry-card">
+
+                            <small>STABLE</small>
+
+                            <b id="fStable">
+                                0
+                            </b>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-4">
+
+            <div class="lt-panel">
+
+                <div class="lt-panel-head">
+
+                    <div>
+
+                        <h3>
+                            <i class="bi bi-broadcast-pin me-2"></i>
+                            Telemetry Sources
+                        </h3>
+
+                        <p>
+                            Data-source transparency for demo mode.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="lt-panel-body">
+
+                    <div class="source-row">
+
+                        <span>GPS Position</span>
+
+                        <span class="source-status">
+                            SIMULATED
+                        </span>
+
+                    </div>
+
+
+                    <div class="source-row">
+
+                        <span>Temperature</span>
+
+                        <span class="source-status">
+                            SIMULATED
+                        </span>
+
+                    </div>
+
+
+                    <div class="source-row">
+
+                        <span>Weather Risk</span>
+
+                        <span class="source-status">
+                            SIMULATED
+                        </span>
+
+                    </div>
+
+
+                    <div class="source-row">
+
+                        <span>AI Risk Model</span>
+
+                        <span class="source-status">
+                            ACTIVE
+                        </span>
+
+                    </div>
+
+
+                    <div class="source-row">
+
+                        <span>Refresh Interval</span>
+
+                        <strong>
+                            3 seconds
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+
+/* ============================================================
+   GLOBAL STATE
+   ============================================================ */
+
+let map;
+
+let markers = {};
+
+let routeLines = {};
+
+let endpointMarkers = {};
+
+let selectedBatch = null;
+
+let latestShipments = [];
+
+/*
+    Local history is intentionally maintained in the browser.
+
+    It represents the simulated readings received from the
+    /api/live-tracking endpoint during the current page session.
+*/
+
+let telemetryHistory = {};
+
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+
+function num(value, fallback = 0) {
+
+    const n = Number(value);
+
+    return Number.isFinite(n)
+        ? n
+        : fallback;
+}
+
+
+function escapeHtml(value) {
+
+    return String(value ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+}
+
+
+function levelClass(level) {
+
+    level =
+        String(level || 'LOW')
+        .toUpperCase();
+
+    if (level === 'CRITICAL') {
+        return 'critical';
+    }
+
+    if (level === 'HIGH') {
+        return 'high';
+    }
+
+    if (level === 'MODERATE') {
+        return 'moderate';
+    }
+
+    return 'low';
+}
+
+
+function riskColor(risk) {
+
+    risk = num(risk);
+
+    if (risk >= 80) {
+        return '#c94d5b';
+    }
+
+    if (risk >= 60) {
+        return '#e07b62';
+    }
+
+    if (risk >= 40) {
+        return '#e5b84c';
+    }
+
+    return '#2b9b7d';
+}
+
+
+/* ============================================================
+   MAP
+   ============================================================ */
+
+function initMap() {
+
+    map = L.map('liveMap')
+        .setView(
+            [19.2, 74.2],
+            5
+        );
+
+
+    L.tileLayer(
+        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        {
+            maxZoom: 18,
+            attribution: '© OpenStreetMap contributors'
+        }
+    ).addTo(map);
+
+}
+
+
+function markerIcon(s) {
+
+    const color =
+        riskColor(s.risk);
+
+
+    return L.divIcon({
+
+        className:
+            'truck-marker',
+
+        html:
+            `<span style="background:${color}">
+                🚚
+             </span>`,
+
+        iconSize:
+            [38,38],
+
+        iconAnchor:
+            [19,19]
+
+    });
+
+}
+
+
+function endpointIcon(type) {
+
+    const origin =
+        type === 'origin';
+
+
+    return L.divIcon({
+
+        className:
+            `route-marker ${
+                origin
+                    ? 'origin-marker'
+                    : 'destination-marker'
+            }`,
+
+        html:
+            `<span>
+                ${
+                    origin
+                        ? '●'
+                        : '◆'
+                }
+             </span>`,
+
+        iconSize:
+            [29,29],
+
+        iconAnchor:
+            [14,14]
+
+    });
+
+}
+
+
+function popup(s) {
+
+    return `
+
+        <div style="min-width:190px">
+
+            <b style="font-size:14px">
+                ${escapeHtml(s.batch_id)}
+            </b>
+
+            <br>
+
+            <span style="font-size:11px;color:#667">
+                ${escapeHtml(s.origin || 'Origin')}
+                →
+                ${escapeHtml(s.destination || 'Destination')}
+            </span>
+
+            <hr style="margin:8px 0">
+
+            <b>Risk:</b>
+            ${num(s.risk).toFixed(1)}%
+            ${escapeHtml(s.risk_level || '')}
+
+            <br>
+
+            <b>Temperature:</b>
+            ${num(s.temperature).toFixed(1)}°C
+
+            <br>
+
+            <b>ETA:</b>
+            ${num(s.eta_min).toFixed(0)} min
+
+            <br>
+
+            <b>Shelf life:</b>
+            ${num(s.shelf_life_hours).toFixed(1)}h
+
+            <br><br>
+
+            <button
+                class="btn btn-sm btn-primary w-100"
+                onclick="selectShipment(
+                    '${String(s.batch_id).replaceAll("'", "\\'")}'
+                )">
+
+                Inspect Shipment
+
+            </button>
+
+        </div>
+    `;
+
+}
+
+
+/* ============================================================
+   TELEMETRY HISTORY
+   ============================================================ */
+
+function saveTelemetryHistory(shipments) {
+
+    const now =
+        new Date();
+
+
+    shipments.forEach(s => {
+
+        const id =
+            String(s.batch_id);
+
+
+        if (!telemetryHistory[id]) {
+
+            telemetryHistory[id] = [];
+
+        }
+
+
+        telemetryHistory[id].push({
+
+            time:
+                now,
+
+            temperature:
+                num(s.temperature),
+
+            risk:
+                num(s.risk)
+
+        });
+
+
+        /*
+            Keep only the latest 20 readings.
+        */
+
+        if (
+            telemetryHistory[id].length > 20
+        ) {
+
+            telemetryHistory[id]
+                .shift();
+
+        }
+
+    });
+
+}
+
+
+/* ============================================================
+   RISK TREND
+   ============================================================ */
+
+function getRiskTrend(s) {
+
+    const history =
+        telemetryHistory[
+            String(s.batch_id)
+        ] || [];
+
+
+    if (history.length < 2) {
+
+        return {
+            label: '→ Stable',
+            className: 'text-muted'
+        };
+
+    }
+
+
+    const previous =
+        history[
+            history.length - 2
+        ].risk;
+
+
+    const current =
+        history[
+            history.length - 1
+        ].risk;
+
+
+    const difference =
+        current - previous;
+
+
+    if (difference > 1) {
+
+        return {
+            label: '↑ Rising',
+            className: 'text-danger'
+        };
+
+    }
+
+
+    if (difference < -1) {
+
+        return {
+            label: '↓ Improving',
+            className: 'text-success'
+        };
+
+    }
+
+
+    return {
+        label: '→ Stable',
+        className: 'text-muted'
+    };
+
+}
+
+
+/* ============================================================
+   SIMULATED EXCURSION DURATION
+   ============================================================ */
+
+function getExcursionMinutes(s) {
+
+    const history =
+        telemetryHistory[
+            String(s.batch_id)
+        ] || [];
+
+
+    if (!history.length) {
+        return 0;
+    }
+
+
+    let count = 0;
+
+
+    for (
+        let i = history.length - 1;
+        i >= 0;
+        i--
+    ) {
+
+        if (
+            history[i].temperature > 8
+        ) {
+
+            count++;
+
+        }
+
+        else {
+
+            break;
+
+        }
+
+    }
+
+
+    /*
+        API refreshes every 3 seconds.
+        This is observed simulation-session duration.
+    */
+
+    return Math.round(
+        count * 3 / 60
+    );
+
+}
+
+
+/* ============================================================
+   JOURNEY PROGRESS
+   ============================================================ */
+
+function getJourneyProgress(s) {
+
+    /*
+       Prefer backend value when available.
+    */
+
+    if (
+        s.progress_percent !== undefined &&
+        s.progress_percent !== null
+    ) {
+
+        return Math.max(
+            0,
+            Math.min(
+                100,
+                num(s.progress_percent)
+            )
+        );
+
+    }
+
+
+    /*
+       Fallback estimate for the current simulation.
+
+       ETA is used only to provide a demo progress indicator.
+       It is NOT presented as GPS-derived distance.
+    */
+
+    const eta =
+        num(s.eta_min, 60);
+
+
+    return Math.max(
+        5,
+        Math.min(
+            95,
+            100 - (
+                eta / 180 * 100
+            )
+        )
+    );
+
+}
+
+
+/* ============================================================
+   SELECT SHIPMENT
+   ============================================================ */
+
+function selectShipment(batchId) {
+
+    selectedBatch =
+        String(batchId);
+
+
+    const shipment =
+        latestShipments.find(
+            s =>
+                String(s.batch_id) ===
+                selectedBatch
+        );
+
+
+    if (!shipment) {
+        return;
+    }
+
+
+    renderSelectedShipment(
+        shipment
+    );
+
+
+    renderJourney(
+        shipment
+    );
+
+
+    renderTemperatureHistory(
+        shipment
+    );
+
+
+    renderExcursion(
+        shipment
+    );
+
+
+    renderJourneyEvents(
+        shipment
+    );
+
+
+    if (
+        markers[selectedBatch]
+    ) {
+
+        map.panTo(
+            markers[selectedBatch]
+                .getLatLng()
+        );
+
+        markers[selectedBatch]
+            .openPopup();
+
+    }
+
+}
+
+
+/* ============================================================
+   SELECTED SHIPMENT DETAILS
+   ============================================================ */
+
+function renderSelectedShipment(s) {
+
+    const trend =
+        getRiskTrend(s);
+
+
+    document.getElementById(
+        'selectedShipment'
+    ).innerHTML = `
+
+        <div class="selected-header">
+
+            <div>
+
+                <div class="selected-batch">
+                    ${escapeHtml(s.batch_id)}
+                </div>
+
+                <div class="selected-route">
+
+                    ${escapeHtml(s.origin || 'Origin')}
+
+                    →
+
+                    ${escapeHtml(
+                        s.destination || 'Destination'
+                    )}
+
+                </div>
+
+            </div>
+
+
+            <span class="lt-risk
+                         ${levelClass(
+                            s.risk_level
+                         )}">
+
+                ${num(s.risk).toFixed(1)}%
+                ${escapeHtml(
+                    s.risk_level || ''
+                )}
+
+            </span>
+
+        </div>
+
+
+        <div class="telemetry-grid">
+
+            <div class="telemetry-card">
+
+                <small>AI RISK</small>
+
+                <b>
+                    ${num(s.risk).toFixed(1)}%
+                </b>
+
+                <div class="
+                    ${trend.className}
+                    mt-1"
+                    style="font-size:9px;font-weight:800">
+
+                    ${trend.label}
+
+                </div>
+
+            </div>
+
+
+            <div class="telemetry-card">
+
+                <small>TEMPERATURE</small>
+
+                <b>
+                    ${num(s.temperature).toFixed(1)}°C
+                </b>
+
+                <div
+                    class="mt-1"
+                    style="
+                        font-size:9px;
+                        color:${
+                            num(s.temperature) > 8
+                                ? '#dc3545'
+                                : '#198754'
+                        }">
+
+                    ${
+                        num(s.temperature) > 8
+                            ? 'Above threshold'
+                            : 'Within threshold'
+                    }
+
+                </div>
+
+            </div>
+
+
+            <div class="telemetry-card">
+
+                <small>DELAY</small>
+
+                <b>
+                    ${num(s.delay_hours).toFixed(1)}h
+                </b>
+
+            </div>
+
+
+            <div class="telemetry-card">
+
+                <small>SHELF LIFE</small>
+
+                <b>
+                    ${num(
+                        s.shelf_life_hours
+                    ).toFixed(1)}h
+                </b>
+
+            </div>
+
+
+            <div class="telemetry-card">
+
+                <small>ETA</small>
+
+                <b>
+                    ${num(s.eta_min).toFixed(0)}
+                    min
+                </b>
+
+            </div>
+
+
+            <div class="telemetry-card">
+
+                <small>WEATHER RISK</small>
+
+                <b>
+                    ${num(s.weather_risk).toFixed(0)}
+                </b>
+
+            </div>
+
+        </div>
+
+
+        <div class="lt-actions">
+
+            <a
+                href="/shipment/${encodeURIComponent(
+                    s.batch_id
+                )}"
+                class="btn btn-sm btn-outline-primary">
+
+                <i class="bi bi-box-seam me-1"></i>
+                Shipment Details
+
+            </a>
+
+
+            <a
+                href="/digital-twin"
+                class="btn btn-sm btn-outline-primary">
+
+                <i class="bi bi-cpu me-1"></i>
+                Digital Twin
+
+            </a>
+
+
+            <a
+                href="/support-center"
+                class="btn btn-sm btn-outline-danger">
+
+                <i class="bi bi-geo-alt me-1"></i>
+                Nearby Support
+
+            </a>
+
+        </div>
+
+    `;
+
+}
+
+
+/* ============================================================
+   JOURNEY PROGRESS
+   ============================================================ */
+
+function renderJourney(s) {
+
+    const progress =
+        getJourneyProgress(s);
+
+
+    document.getElementById(
+        'journeyPanel'
+    ).innerHTML = `
+
+        <div class="journey-wrapper">
+
+            <div class="progress-value">
+
+                ${progress.toFixed(0)}%
+
+            </div>
+
+
+            <div class="text-center text-muted"
+                 style="font-size:9px">
+
+                Estimated journey completion
+
+            </div>
+
+
+            <div class="journey-route">
+
+                <div
+                    class="journey-complete"
+                    style="
+                        width:${progress}%;
+                    ">
+                </div>
+
+
+                <div class="journey-start">
+                </div>
+
+
+                <div
+                    class="journey-truck"
+                    style="
+                        left:${progress}%;
+                    ">
+
+                    🚚
+
+                </div>
+
+
+                <div class="journey-end">
+                </div>
+
+            </div>
+
+
+            <div
+                class="d-flex
+                       justify-content-between
+                       text-muted"
+                style="font-size:9px">
+
+                <span>
+                    ${escapeHtml(
+                        s.origin || 'Origin'
+                    )}
+                </span>
+
+                <span>
+                    ${escapeHtml(
+                        s.destination ||
+                        'Destination'
+                    )}
+                </span>
+
+            </div>
+
+
+            <div class="journey-info">
+
+                <div>
+
+                    <small>ETA</small>
+
+                    <b>
+                        ${num(s.eta_min).toFixed(0)}
+                        min
+                    </b>
+
+                </div>
+
+
+                <div>
+
+                    <small>DELAY</small>
+
+                    <b>
+                        ${num(
+                            s.delay_hours
+                        ).toFixed(1)}
+                        h
+                    </b>
+
+                </div>
+
+
+                <div>
+
+                    <small>STAGE</small>
+
+                    <b>
+                        ${
+                            progress >= 75
+                                ? 'Last Mile'
+                                : progress >= 35
+                                    ? 'In Transit'
+                                    : 'Early Transit'
+                        }
+                    </b>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* ============================================================
+   TEMPERATURE HISTORY
+   ============================================================ */
+
+function renderTemperatureHistory(s) {
+
+    const history =
+        telemetryHistory[
+            String(s.batch_id)
+        ] || [];
+
+
+    const container =
+        document.getElementById(
+            'tempHistory'
+        );
+
+
+    const limitLine = `
+
+        <div class="temp-limit">
+            <span>8°C LIMIT</span>
+        </div>
+
+    `;
+
+
+    if (!history.length) {
+
+        container.innerHTML =
+            limitLine +
+            '<div class="text-muted m-auto">No telemetry history.</div>';
+
+        return;
+
+    }
+
+
+    const maxTemp =
+        Math.max(
+            10,
+            ...history.map(
+                x => x.temperature
+            )
+        );
+
+
+    container.innerHTML =
+        limitLine +
+        history.map(x => {
+
+            const height =
+                Math.max(
+                    4,
+                    x.temperature /
+                    maxTemp *
+                    100
+                );
+
+
+            const danger =
+                x.temperature > 8;
+
+
+            return `
+
+                <div class="chart-col">
+
+                    <b>
+                        ${x.temperature.toFixed(1)}°
+                    </b>
+
+                    <div
+                        class="chart-bar
+                               ${danger
+                                    ? 'danger'
+                                    : ''}"
+                        style="
+                            height:${height}%;
+                        ">
+                    </div>
+
+                    <small>
+                        ${x.time.toLocaleTimeString(
+                            [],
+                            {
+                                hour:
+                                    '2-digit',
+                                minute:
+                                    '2-digit',
+                                second:
+                                    '2-digit'
+                            }
+                        )}
+                    </small>
+
+                </div>
+
+            `;
+
+        }).join('');
+
+}
+
+
+/* ============================================================
+   EXCURSION PANEL
+   ============================================================ */
+
+function renderExcursion(s) {
+
+    const temperature =
+        num(s.temperature);
+
+
+    const history =
+        telemetryHistory[
+            String(s.batch_id)
+        ] || [];
+
+
+    const peak =
+        history.length
+
+        ? Math.max(
+            ...history.map(
+                x => x.temperature
+            )
+        )
+
+        : temperature;
+
+
+    const aboveLimit =
+        temperature > 8;
+
+
+    const minutes =
+        getExcursionMinutes(s);
+
+
+    document.getElementById(
+        'excursionPanel'
+    ).innerHTML = `
+
+        <div class="
+            excursion-box
+            ${
+                aboveLimit
+                    ? ''
+                    : 'excursion-safe'
+            }
+        ">
+
+            <div
+                class="d-flex
+                       justify-content-between
+                       align-items-center">
+
+                <div>
+
+                    <strong
+                        style="
+                            color:${aboveLimit
+                                ? '#c93243'
+                                : '#198754'};
+                        ">
+
+                        ${
+                            aboveLimit
+                                ? 'TEMPERATURE EXCURSION'
+                                : 'COLD CHAIN STABLE'
+                        }
+
+                    </strong>
+
+                </div>
+
+
+                <i class="
+                    bi
+                    ${
+                        aboveLimit
+                            ? 'bi-exclamation-triangle-fill'
+                            : 'bi-check-circle-fill'
+                    }
+                "
+                style="
+                    color:${aboveLimit
+                        ? '#dc3545'
+                        : '#198754'};
+                ">
+                </i>
+
+            </div>
+
+
+            <div class="excursion-grid">
+
+                <div>
+
+                    <small>CURRENT</small>
+
+                    <b>
+                        ${temperature.toFixed(1)}°C
+                    </b>
+
+                </div>
+
+
+                <div>
+
+                    <small>PEAK</small>
+
+                    <b>
+                        ${peak.toFixed(1)}°C
+                    </b>
+
+                </div>
+
+
+                <div>
+
+                    <small>OBSERVED SESSION</small>
+
+                    <b>
+                        ${
+                            aboveLimit
+                                ? (
+                                    minutes > 0
+                                        ? minutes + ' min'
+                                        : '< 1 min'
+                                )
+                                : '0 min'
+                        }
+                    </b>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="mt-3"
+                style="
+                    font-size:9px;
+                    color:#6b7d8d;
+                ">
+
+                Duration is calculated only from simulated
+                readings received while this page is open.
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* ============================================================
+   JOURNEY EVENTS
+   ============================================================ */
+
+function renderJourneyEvents(s) {
+
+    const progress =
+        getJourneyProgress(s);
+
+
+    const events = [
+
+        {
+            icon:
+                'bi-building',
+
+            title:
+                escapeHtml(
+                    s.origin ||
+                    'Origin'
+                ),
+
+            text:
+                'Shipment departed origin facility.'
+        },
+
+        {
+            icon:
+                'bi-truck',
+
+            title:
+                'In Transit',
+
+            text:
+                `${progress.toFixed(0)}% estimated journey completed.`
+        },
+
+        {
+            icon:
+                'bi-geo-alt',
+
+            title:
+                escapeHtml(
+                    s.destination ||
+                    'Destination'
+                ),
+
+            text:
+                `Estimated arrival in ${num(
+                    s.eta_min
+                ).toFixed(0)} minutes.`
+        }
+
+    ];
+
+
+    document.getElementById(
+        'geoEvents'
+    ).innerHTML =
+        events.map(e => `
+
+            <div class="geo-item">
+
+                <div class="geo-icon">
+
+                    <i class="
+                        bi ${e.icon}
+                    ">
+                    </i>
+
+                </div>
+
+
+                <div class="geo-text">
+
+                    <b>
+                        ${e.title}
+                    </b>
+
+                    <span>
+                        ${e.text}
+                    </span>
+
+                </div>
+
+            </div>
+
+        `).join('');
+
+}
+
+
+/* ============================================================
+   PRIORITY TABLE
+   ============================================================ */
+
+function renderPriorityTable(shipments) {
+
+    const ranked =
+        [...shipments]
+        .sort(
+            (a,b) =>
+                num(b.risk) -
+                num(a.risk)
+        );
+
+
+    document.getElementById(
+        'liveBody'
+    ).innerHTML =
+        ranked
+        .slice(0,12)
+        .map((s,index) => {
+
+            const trend =
+                getRiskTrend(s);
+
+
+            const excursion =
+                getExcursionMinutes(s);
+
+
+            return `
+
+                <tr>
+
+                    <td>
+                        <b>
+                            ${index + 1}
+                        </b>
+                    </td>
+
+
+                    <td>
+
+                        <a
+                            href="javascript:void(0)"
+                            class="shipment-link"
+                            onclick="selectShipment(
+                                '${String(
+                                    s.batch_id
+                                ).replaceAll(
+                                    "'",
+                                    "\\'"
+                                )}'
+                            )">
+
+                            ${escapeHtml(
+                                s.batch_id
+                            )}
+
+                        </a>
+
+                        <div
+                            class="text-muted"
+                            style="font-size:8px">
+
+                            ${escapeHtml(
+                                s.origin || ''
+                            )}
+                            →
+                            ${escapeHtml(
+                                s.destination || ''
+                            )}
+
+                        </div>
+
+                    </td>
+
+
+                    <td>
+
+                        <span class="
+                            lt-risk
+                            ${levelClass(
+                                s.risk_level
+                            )}
+                        ">
+
+                            ${num(s.risk).toFixed(1)}%
+                            ${escapeHtml(
+                                s.risk_level || ''
+                            )}
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        <span
+                            class="${trend.className}"
+                            style="font-weight:800">
+
+                            ${trend.label}
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        <span
+                            class="${
+                                num(s.temperature) > 8
+                                    ? 'text-danger fw-bold'
+                                    : ''
+                            }">
+
+                            ${num(
+                                s.temperature
+                            ).toFixed(1)}°C
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        ${
+                            num(s.temperature) > 8
+                                ? (
+                                    excursion > 0
+                                        ? excursion + ' min'
+                                        : '< 1 min'
+                                )
+                                : '—'
+                        }
+
+                    </td>
+
+
+                    <td>
+
+                        ${num(
+                            s.shelf_life_hours
+                        ).toFixed(1)}h
+
+                    </td>
+
+
+                    <td>
+
+                        ${num(
+                            s.eta_min
+                        ).toFixed(0)} min
+
+                    </td>
+
+
+                    <td>
+
+                        <button
+                            class="btn
+                                   btn-sm
+                                   btn-outline-primary"
+                            onclick="selectShipment(
+                                '${String(
+                                    s.batch_id
+                                ).replaceAll(
+                                    "'",
+                                    "\\'"
+                                )}'
+                            )">
+
+                            Inspect
+
+                        </button>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }).join('');
+
+}
+
+
+/* ============================================================
+   AI DECISION FEED
+   ============================================================ */
+
+function renderDecisionFeed(shipments) {
+
+    const ranked =
+        [...shipments]
+        .sort(
+            (a,b) =>
+                num(b.risk) -
+                num(a.risk)
+        )
+        .slice(0,5);
+
+
+    if (!ranked.length) {
+
+        document.getElementById(
+            'decisionFeed'
+        ).innerHTML = `
+
+            <div class="text-muted text-center py-4">
+                No active recommendations.
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    document.getElementById(
+        'decisionFeed'
+    ).innerHTML =
+        ranked.map((s,index) => `
+
+            <div class="decision-card">
+
+                <div class="decision-top">
+
+                    <h4>
+
+                        #${index + 1}
+
+                        ${escapeHtml(
+                            s.batch_id
+                        )}
+
+                    </h4>
+
+
+                    <span class="
+                        lt-risk
+                        ${levelClass(
+                            s.risk_level
+                        )}
+                    ">
+
+                        ${num(s.risk).toFixed(1)}%
+
+                    </span>
+
+                </div>
+
+
+                <p>
+
+                    ${
+                        escapeHtml(
+                            s.action ||
+                            'Continue shipment monitoring.'
+                        )
+                    }
+
+                </p>
+
+
+                <div class="decision-meta">
+
+                    🌡
+                    ${num(
+                        s.temperature
+                    ).toFixed(1)}°C
+
+                    ·
+
+                    ⏱
+                    ${num(
+                        s.delay_hours
+                    ).toFixed(1)}h delay
+
+                    ·
+
+                    📦
+                    ${num(
+                        s.shelf_life_hours
+                    ).toFixed(1)}h shelf life
+
+                </div>
+
+
+                <div
+                    class="d-flex
+                           gap-1
+                           flex-wrap
+                           mt-2">
+
+                    <button
+                        class="btn
+                               btn-sm
+                               btn-outline-primary"
+                        onclick="selectShipment(
+                            '${String(
+                                s.batch_id
+                            ).replaceAll(
+                                "'",
+                                "\\'"
+                            )}'
+                        )">
+
+                        Inspect
+
+                    </button>
+
+
+                    <a
+                        href="/digital-twin"
+                        class="btn
+                               btn-sm
+                               btn-outline-primary">
+
+                        Simulate
+
+                    </a>
+
+
+                    <a
+                        href="/support-center"
+                        class="btn
+                               btn-sm
+                               btn-outline-danger">
+
+                        Support
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        `).join('');
+
+}
+
+
+/* ============================================================
+   OPERATIONAL INDICATORS
+   ============================================================ */
+
+function renderIndicators(
+    shipments,
+    summary
+) {
+
+    document.getElementById(
+        'fDelayed'
+    ).textContent =
+        shipments.filter(
+            s =>
+                num(s.delay_hours) > 1
+        ).length;
+
+
+    document.getElementById(
+        'fCritical'
+    ).textContent =
+        num(
+            summary.critical
+        );
+
+
+    document.getElementById(
+        'fShelf'
+    ).textContent =
+        shipments.filter(
+            s =>
+                num(
+                    s.shelf_life_hours
+                ) < 18
+        ).length;
+
+
+    document.getElementById(
+        'fWeather'
+    ).textContent =
+        shipments.filter(
+            s =>
+                num(
+                    s.weather_risk
+                ) >= 18
+        ).length;
+
+
+    document.getElementById(
+        'fExcursions'
+    ).textContent =
+        shipments.filter(
+            s =>
+                num(
+                    s.temperature
+                ) > 8
+        ).length;
+
+
+    document.getElementById(
+        'fStable'
+    ).textContent =
+        shipments.filter(
+            s =>
+                num(s.risk) < 40
+        ).length;
+
+}
+
+
+/* ============================================================
+   MAP RENDERING
+   ============================================================ */
+
+function renderMap(shipments) {
+
+    const points = [];
+
+
+    shipments.forEach(s => {
+
+        const lat =
+            num(s.lat, NaN);
+
+        const lon =
+            num(s.lon, NaN);
+
+
+        if (
+            !Number.isFinite(lat) ||
+            !Number.isFinite(lon)
+        ) {
+
+            return;
+
+        }
+
+
+        points.push(
+            [lat,lon]
+        );
+
+
+        const id =
+            String(s.batch_id);
+
+
+        /*
+            Truck marker
+        */
+
+        if (!markers[id]) {
+
+            markers[id] =
+                L.marker(
+                    [lat,lon],
+                    {
+                        icon:
+                            markerIcon(s)
+                    }
+                )
+                .addTo(map)
+                .on(
+                    'click',
+                    () =>
+                        selectShipment(id)
+                );
+
+        }
+
+        else {
+
+            markers[id]
+                .setLatLng(
+                    [lat,lon]
+                )
+                .setIcon(
+                    markerIcon(s)
+                );
+
+        }
+
+
+        markers[id]
+            .bindPopup(
+                popup(s)
+            );
+
+
+        /*
+            If backend provides route coordinates:
+
+            origin_lat
+            origin_lon
+            destination_lat
+            destination_lon
+
+            the route is drawn automatically.
+        */
+
+        const originLat =
+            num(
+                s.origin_lat,
+                NaN
+            );
+
+        const originLon =
+            num(
+                s.origin_lon,
+                NaN
+            );
+
+        const destinationLat =
+            num(
+                s.destination_lat,
+                NaN
+            );
+
+        const destinationLon =
+            num(
+                s.destination_lon,
+                NaN
+            );
+
+
+        if (
+            Number.isFinite(originLat) &&
+            Number.isFinite(originLon) &&
+            Number.isFinite(destinationLat) &&
+            Number.isFinite(destinationLon)
+        ) {
+
+            if (!routeLines[id]) {
+
+                routeLines[id] =
+                    L.polyline(
+                        [
+                            [
+                                originLat,
+                                originLon
+                            ],
+
+                            [
+                                lat,
+                                lon
+                            ],
+
+                            [
+                                destinationLat,
+                                destinationLon
+                            ]
+                        ],
+                        {
+                            weight: 4,
+                            opacity: .7,
+                            dashArray: '8 7'
+                        }
+                    )
+                    .addTo(map);
+
+            }
+
+            else {
+
+                routeLines[id]
+                    .setLatLngs(
+                        [
+                            [
+                                originLat,
+                                originLon
+                            ],
+
+                            [
+                                lat,
+                                lon
+                            ],
+
+                            [
+                                destinationLat,
+                                destinationLon
+                            ]
+                        ]
+                    );
+
+            }
+
+
+            if (
+                !endpointMarkers[
+                    id + '_origin'
+                ]
+            ) {
+
+                endpointMarkers[
+                    id + '_origin'
+                ] =
+                    L.marker(
+                        [
+                            originLat,
+                            originLon
+                        ],
+                        {
+                            icon:
+                                endpointIcon(
+                                    'origin'
+                                )
+                        }
+                    )
+                    .addTo(map)
+                    .bindTooltip(
+                        s.origin ||
+                        'Origin'
+                    );
+
+            }
+
+
+            if (
+                !endpointMarkers[
+                    id + '_destination'
+                ]
+            ) {
+
+                endpointMarkers[
+                    id + '_destination'
+                ] =
+                    L.marker(
+                        [
+                            destinationLat,
+                            destinationLon
+                        ],
+                        {
+                            icon:
+                                endpointIcon(
+                                    'destination'
+                                )
+                        }
+                    )
+                    .addTo(map)
+                    .bindTooltip(
+                        s.destination ||
+                        'Destination'
+                    );
+
+            }
+
+        }
+
+    });
+
+
+    if (
+        points.length &&
+        !map._hasFit
+    ) {
+
+        map.fitBounds(
+            points,
+            {
+                padding:
+                    [35,35]
+            }
+        );
+
+        map._hasFit = true;
+
+    }
+
+}
+
+
+/* ============================================================
+   MAIN RENDER
+   ============================================================ */
+
+function render(data) {
+
+    const shipments =
+        Array.isArray(
+            data.shipments
+        )
+        ? data.shipments
+        : [];
+
+
+    const summary =
+        data.summary || {};
+
+
+    latestShipments =
+        shipments;
+
+
+    saveTelemetryHistory(
+        shipments
+    );
+
+
+    /* KPI */
+
+    document.getElementById(
+        'kShip'
+    ).textContent =
+        num(
+            summary.shipments,
+            shipments.length
+        );
+
+
+    document.getElementById(
+        'kHigh'
+    ).textContent =
+        num(
+            summary.high_risk
+        );
+
+
+    document.getElementById(
+        'kTemp'
+    ).textContent =
+        num(
+            summary.temperature_alerts
+        );
+
+
+    document.getElementById(
+        'kRisk'
+    ).textContent =
+        `${num(
+            summary.avg_risk
+        ).toFixed(1)}%`;
+
+
+    const updated =
+        summary.updated_at
+            ? new Date(
+                summary.updated_at
+            )
+            : new Date();
+
+
+    const updateTime =
+        updated.toLocaleTimeString();
+
+
+    document.getElementById(
+        'lastUpdate'
+    ).textContent =
+        `Updated ${updateTime}`;
+
+
+    document.getElementById(
+        'kUpdate'
+    ).textContent =
+        updateTime;
+
+
+    renderMap(
+        shipments
+    );
+
+
+    renderPriorityTable(
+        shipments
+    );
+
+
+    renderDecisionFeed(
+        shipments
+    );
+
+
+    renderIndicators(
+        shipments,
+        summary
+    );
+
+
+    /*
+        Automatically select highest-risk shipment
+        on initial load.
+    */
+
+    if (
+        !selectedBatch &&
+        shipments.length
+    ) {
+
+        const highest =
+            [...shipments]
+            .sort(
+                (a,b) =>
+                    num(b.risk) -
+                    num(a.risk)
+            )[0];
+
+
+        selectedBatch =
+            String(
+                highest.batch_id
+            );
+
+    }
+
+
+    if (selectedBatch) {
+
+        const selected =
+            shipments.find(
+                s =>
+                    String(
+                        s.batch_id
+                    ) ===
+                    selectedBatch
+            );
+
+
+        if (selected) {
+
+            renderSelectedShipment(
+                selected
+            );
+
+            renderJourney(
+                selected
+            );
+
+            renderTemperatureHistory(
+                selected
+            );
+
+            renderExcursion(
+                selected
+            );
+
+            renderJourneyEvents(
+                selected
+            );
+
+        }
+
+    }
+
+}
+
+
+/* ============================================================
+   FETCH LIVE TELEMETRY
+   ============================================================ */
+
+async function refreshLive() {
+
+    try {
+
+        const response =
+            await fetch(
+                '/api/live-tracking?ts=' +
+                Date.now(),
+                {
+                    cache:
+                        'no-store'
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                `HTTP ${response.status}`
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        render(
+            data
+        );
+
+    }
+
+    catch(error) {
+
+        console.error(
+            'Live tracking refresh failed:',
+            error
+        );
+
+
+        document.getElementById(
+            'lastUpdate'
+        ).textContent =
+            'Connection error';
+
+    }
+
+}
+
+
+/* ============================================================
+   INITIALIZATION
+   ============================================================ */
+
+initMap();
+
+refreshLive();
+
+
+setInterval(
+    refreshLive,
+    3000
+);
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,56 @@
+{
+  "name": "SupplyShield AI \u2014 Real-Time Cold Chain Control Tower",
+  "features": [
+    "Multi-Agent Ollama AI",
+    "Computer Vision Package Inspection",
+    "Supply Chain Disruption Simulator",
+    "Demand Forecasting",
+    "Inventory Optimization",
+    "Digital Product Passport",
+    "Tamper-Evident SHA-256 Audit",
+    "Cost Risk Route Optimization",
+    "Carbon Footprint Optimization",
+    "Voice Controlled Copilot",
+    "Real-Time Control Tower",
+    "Existing ML Risk Engine",
+    "Telemetry",
+    "Alerts",
+    "PDF Reports"
+  ],
+  "ollama": {
+    "enabled": true,
+    "provider": "Ollama",
+    "model": "qwen2.5:0.5b",
+    "host": "http://127.0.0.1:11434",
+    "fallback": "SupplyShield local multi-agent rules engine"
+  },
+  "vision": "Pillow offline screening",
+  "audit": "SHA-256 chained events",
+  "enhanced_dataset": "data/enhanced_supply_chain.csv",
+  "visualization_layers": [
+    "executive KPIs",
+    "risk composition",
+    "monthly trends",
+    "regional ranking",
+    "transport exposure",
+    "shipment scatter"
+  ],
+  "dataset_note": "Synthetic enrichment of supplied cold-chain telemetry; proxy outcome labels are for demonstration.",
+  "version": "6.0",
+  "highlights": [
+    "Replaced raw JSON outputs in AI Lab and Risk Simulator with visual KPI cards, charts, gauges and action panels",
+    "Added explainable disruption contribution chart",
+    "Added demand forecast model comparison with MAE/RMSE and automatic model selection",
+    "Added inventory days-of-cover, reorder point, stockout probability and order quantity",
+    "Added visual route cost-risk-carbon comparison",
+    "Added visual computer-vision screening summary",
+    "Added digital passport and audit verification cards"
+  ],
+  "new_features": [
+    "AI Decision Center",
+    "Dynamic intervention priority queue",
+    "Decision explainability",
+    "Qwen/Ollama Decision Agent",
+    "Live telemetry to recommended-action pipeline"
+  ]
+}

@@ -1,0 +1,30 @@
+SUPPLYSHIELD AI 8.1 - XAMPP / MYSQL SETUP
+==========================================
+1. Install/start XAMPP.
+2. In XAMPP Control Panel, start MySQL. Apache is optional for this Flask app.
+3. Open phpMyAdmin (normally http://localhost/phpmyadmin).
+4. Import database/schema.sql. (Optional: the Flask app can also create the database/tables automatically.)
+5. Open Command Prompt in this project folder.
+6. Run: pip install -r requirements.txt
+7. Run: python app.py
+8. Open the Flask address shown in the terminal (normally http://127.0.0.1:5000).
+
+Default XAMPP database settings used by config.py:
+Host: 127.0.0.1
+Port: 3306
+User: root
+Password: [blank]
+Database: supplyshield_ai
+
+If your MySQL password/port differs, set these Windows environment variables before starting:
+SUPPLYSHIELD_DB_HOST
+SUPPLYSHIELD_DB_PORT
+SUPPLYSHIELD_DB_USER
+SUPPLYSHIELD_DB_PASSWORD
+SUPPLYSHIELD_DB_NAME
+
+Example:
+set SUPPLYSHIELD_DB_PASSWORD=mypassword
+python app.py
+
+IMPORTANT: MySQL must be running before app.py starts.

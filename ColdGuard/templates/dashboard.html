@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Overview · SupplyShield{% endblock %}
+{% block heading %}Supply Intelligence Overview{% endblock %}
+{% block content %}
+<div class="page-intro"><div><span class="eyebrow">EXECUTIVE INTELLIGENCE</span><h2>Cold-chain command dashboard</h2><p>Multi-level visibility from network health to individual shipment risk.</p></div><div class="date-chip">● Enhanced benchmark dataset · 26K+ telemetry records</div></div>
+
+<div class="kpi-grid">
+<div class="kpi"><span>Tracked batches</span><b>{{kpis.shipments}}</b><small>unique shipment profiles</small></div>
+<div class="kpi danger"><span>Priority risk</span><b>{{kpis.high}}</b><small>high + critical states</small></div>
+<div class="kpi"><span>Average risk</span><b>{{kpis.avg}}%</b><small>composite risk score</small></div>
+<div class="kpi success"><span>Intervention candidates</span><b>{{kpis.preventable}}</b><small>records needing action</small></div>
+</div>
+
+<div class="chart-grid chart-grid-3">
+  <div class="panel chart-card wide"><div class="panel-head"><div><h3>Risk trend</h3><p>Monthly average risk and cold-chain compliance.</p></div><span class="chart-badge">LEVEL 2 · TREND</span></div><div class="canvas-wrap"><canvas id="trendChart"></canvas></div></div>
+  <div class="panel chart-card"><div class="panel-head"><div><h3>Risk mix</h3><p>Current benchmark population.</p></div><span class="chart-badge">LEVEL 1</span></div><div class="canvas-wrap doughnut-wrap"><canvas id="riskChart"></canvas></div></div>
+</div>
+
+<div class="chart-grid chart-grid-2">
+  <div class="panel chart-card"><div class="panel-head"><div><h3>Regional risk ranking</h3><p>Average risk by operating state.</p></div><span class="chart-badge">LEVEL 2 · REGION</span></div><div class="canvas-wrap"><canvas id="regionChart"></canvas></div></div>
+  <div class="panel chart-card"><div class="panel-head"><div><h3>Transport mode exposure</h3><p>Risk and average delay by mode.</p></div><span class="chart-badge">LEVEL 2 · LOGISTICS</span></div><div class="canvas-wrap"><canvas id="modeChart"></canvas></div></div>
+</div>
+
+<div class="panel insight-strip"><div><span class="eyebrow">DATA STORY</span><h3>From KPI → trend → geography → shipment-level decision</h3><p>The enhanced dataset adds route distance, transit delay, handling, package condition, carbon footprint, compliance and proxy quality-event labels. This creates several visual layers instead of a single risk bar.</p></div><a href="/analytics" class="btn btn-primary">Open deep analytics →</a></div>
+
+<div class="panel table-panel"><div class="panel-head"><div><h3>Operational records</h3><p>Recently assessed shipments stored by the decision engine.</p></div><a href="/shipments">View all →</a></div><div class="table-responsive"><table class="table align-middle"><thead><tr><th>Shipment</th><th>Location</th><th>Stage</th><th>Risk</th><th>Outcome</th><th></th></tr></thead><tbody>{% for s in recent %}<tr><td><strong>{{s.batch_id}}</strong><small>{{s.product}}</small></td><td>{{s.location or '—'}}</td><td>{{s.logistics_stage or '—'}}</td><td><span class="risk-chip {{s.risk_level|lower}}">{{s.risk_probability or 0}}% · {{s.risk_level or '—'}}</span></td><td>{{s.predicted_outcome or '—'}}</td><td><a class="arrow" href="/digital-twin">→</a></td></tr>{% else %}<tr><td colspan="6" class="empty">No operator records yet. Run a new assessment to populate this table.</td></tr>{% endfor %}</tbody></table></div></div>
+{% endblock %}
+{% block scripts %}
+<script>
+const A={{analytics|tojson}};
+const chartOpts={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false}},scales:{x:{grid:{display:false},ticks:{color:'#71869a',font:{size:10}}},y:{grid:{color:'#edf2f6'},ticks:{color:'#71869a',font:{size:10}}}}};
+new Chart(document.getElementById('trendChart'),{type:'line',data:{labels:A.monthly.map(x=>x.month),datasets:[
+{label:'Average risk',data:A.monthly.map(x=>x.risk),borderColor:'#1769aa',backgroundColor:'rgba(23,105,170,.08)',fill:true,tension:.35,borderWidth:2},
+{label:'Compliance %',data:A.monthly.map(x=>x.compliance),borderColor:'#2b9b7d',backgroundColor:'transparent',tension:.35,borderWidth:2}
+]},options:{...chartOpts,plugins:{legend:{display:true,labels:{usePointStyle:true,font:{size:10}}}}}});
+new Chart(document.getElementById('riskChart'),{type:'doughnut',data:{labels:Object.keys(A.levels),datasets:[{data:Object.values(A.levels),backgroundColor:['#48b88e','#e5b84c','#e07b62','#c94d5b'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{position:'bottom',labels:{usePointStyle:true,padding:15,font:{size:10}}}}}});
+new Chart(document.getElementById('regionChart'),{type:'bar',data:{labels:A.regional.map(x=>x.state),datasets:[{label:'Risk',data:A.regional.map(x=>x.risk),backgroundColor:'#1769aa',borderRadius:7}]},options:{...chartOpts,indexAxis:'y',scales:{x:{grid:{color:'#edf2f6'},max:100},y:{grid:{display:false},ticks:{color:'#71869a',font:{size:10}}}}}});
+new Chart(document.getElementById('modeChart'),{type:'bar',data:{labels:A.modes.map(x=>x.mode),datasets:[{label:'Risk',data:A.modes.map(x=>x.risk),backgroundColor:'#4fbfae',borderRadius:7}]},options:{...chartOpts,scales:{x:{grid:{display:false},ticks:{color:'#71869a',font:{size:9}}},y:{grid:{color:'#edf2f6'},max:100}}}});
+</script>
+{% endblock %}

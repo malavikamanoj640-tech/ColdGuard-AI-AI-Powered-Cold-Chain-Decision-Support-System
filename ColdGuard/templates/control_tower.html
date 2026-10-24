@@ -1,0 +1,4128 @@
+
+{% extends 'base.html' %}
+
+{% block title %}AI Control Tower{% endblock %}
+{% block heading %}AI Control Tower{% endblock %}
+
+{% block content %}
+
+<style>
+/* ============================================================
+   SUPPLYSHIELD AI
+   PROFESSIONAL CONTROL TOWER
+   ============================================================ */
+
+:root {
+    --ct-navy: #0b1f33;
+    --ct-navy-2: #12314d;
+    --ct-blue: #1769aa;
+    --ct-blue-2: #2484c6;
+    --ct-blue-soft: #edf6fc;
+    --ct-bg: #f4f7fa;
+    --ct-white: #ffffff;
+    --ct-text: #263b4b;
+    --ct-muted: #708392;
+    --ct-border: #dde7ee;
+    --ct-border-soft: #edf2f6;
+    --ct-green: #198754;
+    --ct-green-soft: #eaf7f0;
+    --ct-red: #d83b4c;
+    --ct-red-soft: #fcecef;
+    --ct-orange: #e99a17;
+    --ct-orange-soft: #fff5df;
+    --ct-purple: #7656c8;
+    --ct-purple-soft: #f2effb;
+    --ct-shadow: 0 5px 20px rgba(23, 55, 79, .055);
+}
+
+
+/* ============================================================
+   PAGE
+   ============================================================ */
+
+.control-tower-page {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding-bottom: 45px;
+}
+
+
+/* ============================================================
+   HERO
+   ============================================================ */
+
+.ct-hero {
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(
+            circle at 90% 20%,
+            rgba(68, 169, 235, .22),
+            transparent 28%
+        ),
+        linear-gradient(
+            125deg,
+            #0b1f33 0%,
+            #103453 55%,
+            #1769aa 100%
+        );
+
+    border-radius: 20px;
+    padding: 27px 30px;
+    margin-bottom: 18px;
+    color: white;
+    box-shadow: 0 10px 30px rgba(11, 31, 51, .13);
+}
+
+.ct-hero::after {
+    content: "";
+    position: absolute;
+    width: 260px;
+    height: 260px;
+    right: -100px;
+    top: -130px;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 50%;
+}
+
+.ct-hero-inner {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.ct-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: #8dd4ff;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+    margin-bottom: 7px;
+}
+
+.ct-hero h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -.4px;
+}
+
+.ct-hero p {
+    margin: 6px 0 0;
+    color: rgba(255,255,255,.73);
+    font-size: 13px;
+    max-width: 720px;
+}
+
+.ct-live-box {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.ct-live {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 13px;
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.16);
+    border-radius: 50px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .8px;
+}
+
+.ct-live-dot {
+    width: 8px;
+    height: 8px;
+    background: #39df8f;
+    border-radius: 50%;
+    box-shadow: 0 0 0 5px rgba(57,223,143,.11);
+    animation: livePulse 1.7s infinite;
+}
+
+@keyframes livePulse {
+    50% {
+        opacity: .45;
+    }
+}
+
+.ct-sync {
+    font-size: 10px;
+    color: rgba(255,255,255,.62);
+}
+
+
+/* ============================================================
+   KPI GRID
+   ============================================================ */
+
+.ct-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.ct-kpi {
+    background: white;
+    border: 1px solid var(--ct-border);
+    border-radius: 14px;
+    padding: 15px 16px;
+    min-height: 110px;
+    box-shadow: var(--ct-shadow);
+    position: relative;
+    overflow: hidden;
+}
+
+.ct-kpi::after {
+    content: "";
+    position: absolute;
+    height: 3px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #dfeaf1;
+}
+
+.ct-kpi.primary::after {
+    background: var(--ct-blue);
+}
+
+.ct-kpi.danger::after {
+    background: var(--ct-red);
+}
+
+.ct-kpi.warning::after {
+    background: var(--ct-orange);
+}
+
+.ct-kpi.success::after {
+    background: var(--ct-green);
+}
+
+.ct-kpi-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ct-kpi-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: var(--ct-blue-soft);
+    color: var(--ct-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+}
+
+.ct-kpi.danger .ct-kpi-icon {
+    background: var(--ct-red-soft);
+    color: var(--ct-red);
+}
+
+.ct-kpi.warning .ct-kpi-icon {
+    background: var(--ct-orange-soft);
+    color: var(--ct-orange);
+}
+
+.ct-kpi.success .ct-kpi-icon {
+    background: var(--ct-green-soft);
+    color: var(--ct-green);
+}
+
+.ct-kpi-label {
+    color: var(--ct-muted);
+    font-size: 9px;
+    letter-spacing: .7px;
+    font-weight: 800;
+}
+
+.ct-kpi-value {
+    display: block;
+    margin-top: 9px;
+    font-size: 23px;
+    line-height: 1;
+    font-weight: 800;
+    color: var(--ct-navy);
+}
+
+.ct-kpi-foot {
+    margin-top: 6px;
+    font-size: 9px;
+    color: #8999a5;
+}
+
+
+/* ============================================================
+   PANEL
+   ============================================================ */
+
+.ct-panel {
+    height: 100%;
+    background: white;
+    border: 1px solid var(--ct-border);
+    border-radius: 16px;
+    box-shadow: var(--ct-shadow);
+    overflow: hidden;
+}
+
+.ct-panel-head {
+    min-height: 62px;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--ct-border-soft);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.ct-panel-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ct-panel-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    background: var(--ct-blue-soft);
+    color: var(--ct-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ct-panel-head h5 {
+    margin: 0;
+    font-size: 14px;
+    color: var(--ct-navy);
+    font-weight: 800;
+}
+
+.ct-panel-sub {
+    color: var(--ct-muted);
+    font-size: 9.5px;
+    margin-top: 2px;
+}
+
+.ct-panel-body {
+    padding: 17px 18px;
+}
+
+
+/* ============================================================
+   COMMAND CENTER
+   ============================================================ */
+
+.command-wrapper {
+    padding: 18px;
+}
+
+.command-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.command-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 9px;
+    font-weight: 900;
+    color: var(--ct-red);
+    letter-spacing: .7px;
+    margin-bottom: 5px;
+}
+
+.command-batch {
+    color: var(--ct-navy);
+    font-size: 23px;
+    font-weight: 800;
+}
+
+.command-location {
+    color: var(--ct-muted);
+    font-size: 10px;
+    margin-top: 2px;
+}
+
+.command-risk {
+    text-align: right;
+}
+
+.command-risk strong {
+    display: block;
+    font-size: 29px;
+    line-height: 1;
+    color: var(--ct-red);
+}
+
+.command-risk span {
+    color: var(--ct-muted);
+    font-size: 9px;
+}
+
+.command-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 9px;
+    margin-top: 15px;
+}
+
+.command-metric {
+    background: #f8fafc;
+    border: 1px solid #e9eff4;
+    border-radius: 10px;
+    padding: 10px 11px;
+}
+
+.command-metric small {
+    display: block;
+    color: var(--ct-muted);
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: .4px;
+}
+
+.command-metric strong {
+    display: block;
+    color: var(--ct-navy);
+    margin-top: 3px;
+    font-size: 12px;
+}
+
+.command-ai {
+    margin-top: 12px;
+    background: linear-gradient(135deg, #eff7fd, #f7fbfe);
+    border: 1px solid #d5e8f6;
+    border-radius: 11px;
+    padding: 12px 13px;
+}
+
+.command-ai-title {
+    font-size: 9px;
+    color: var(--ct-blue);
+    font-weight: 900;
+    letter-spacing: .5px;
+    margin-bottom: 4px;
+}
+
+.command-ai-text {
+    margin: 0;
+    color: #466276;
+    font-size: 10.5px;
+    line-height: 1.5;
+}
+
+.command-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 12px;
+}
+
+.ct-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 11px;
+    border-radius: 8px;
+    font-size: 9.5px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: .18s ease;
+    border: 1px solid var(--ct-border);
+    background: white;
+    color: #526a7b;
+}
+
+.ct-action-btn:hover {
+    transform: translateY(-1px);
+    border-color: var(--ct-blue);
+    color: var(--ct-blue);
+}
+
+.ct-action-btn.primary {
+    background: var(--ct-blue);
+    border-color: var(--ct-blue);
+    color: white;
+}
+
+.ct-action-btn.danger {
+    color: var(--ct-red);
+    border-color: #f0cbd0;
+}
+
+
+/* ============================================================
+   NETWORK HEALTH
+   ============================================================ */
+
+.health-layout {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.health-ring {
+    width: 96px;
+    height: 96px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: conic-gradient(
+        var(--ct-green) 0 85%,
+        #e7edf2 85% 100%
+    );
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.health-ring::after {
+    content: "";
+    position: absolute;
+    width: 72px;
+    height: 72px;
+    background: white;
+    border-radius: 50%;
+}
+
+.health-ring-value {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+
+.health-ring-value strong {
+    display: block;
+    font-size: 21px;
+    line-height: 1;
+    color: var(--ct-navy);
+}
+
+.health-ring-value small {
+    color: var(--ct-muted);
+    font-size: 7px;
+}
+
+.health-list {
+    flex: 1;
+}
+
+.health-item {
+    margin-bottom: 10px;
+}
+
+.health-item:last-child {
+    margin-bottom: 0;
+}
+
+.health-item-head {
+    display: flex;
+    justify-content: space-between;
+    font-size: 9px;
+    margin-bottom: 4px;
+}
+
+.health-item-head span {
+    color: #526879;
+}
+
+.health-item-head strong {
+    color: var(--ct-navy);
+}
+
+.health-progress {
+    height: 5px;
+    border-radius: 10px;
+    background: #edf2f5;
+    overflow: hidden;
+}
+
+.health-progress > div {
+    height: 100%;
+    background: var(--ct-blue);
+    border-radius: inherit;
+}
+
+
+/* ============================================================
+   COMPACT LIVE SUPPLY NETWORK / TRACKING
+   ============================================================ */
+
+.tracking-body {
+    padding: 17px 20px 18px;
+}
+
+.tracking-summary {
+    display: grid;
+    grid-template-columns: 1.15fr .85fr;
+    gap: 22px;
+    align-items: center;
+}
+
+.tracking-shipment {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-bottom: 16px;
+}
+
+.truck-box {
+    width: 42px;
+    height: 42px;
+    border-radius: 11px;
+    background: var(--ct-blue-soft);
+    color: var(--ct-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.tracking-shipment h6 {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--ct-navy);
+}
+
+.tracking-shipment p {
+    margin: 2px 0 0;
+    color: var(--ct-muted);
+    font-size: 9px;
+}
+
+.route-progress {
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+    padding: 0 5px;
+}
+
+.route-step {
+    position: relative;
+    flex: 1;
+    text-align: center;
+    z-index: 2;
+}
+
+.route-step::after {
+    content: "";
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    width: 100%;
+    height: 3px;
+    background: #dce7ee;
+    z-index: -1;
+}
+
+.route-step:last-child::after {
+    display: none;
+}
+
+.route-step.completed::after {
+    background: var(--ct-blue);
+}
+
+.route-dot {
+    width: 27px;
+    height: 27px;
+    margin: 0 auto;
+    border-radius: 50%;
+    background: white;
+    border: 3px solid #cbd8e1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #93a4af;
+    font-size: 9px;
+}
+
+.route-step.completed .route-dot {
+    background: var(--ct-blue);
+    border-color: var(--ct-blue);
+    color: white;
+}
+
+.route-step.current .route-dot {
+    background: white;
+    border-color: var(--ct-red);
+    color: var(--ct-red);
+    box-shadow: 0 0 0 5px var(--ct-red-soft);
+}
+
+.route-label {
+    margin-top: 7px;
+    color: #718492;
+    font-size: 8px;
+    font-weight: 700;
+}
+
+.route-step.current .route-label {
+    color: var(--ct-red);
+}
+
+.tracking-side {
+    border-left: 1px solid var(--ct-border-soft);
+    padding-left: 20px;
+}
+
+.track-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.track-info {
+    border: 1px solid var(--ct-border-soft);
+    background: #fafcfd;
+    border-radius: 9px;
+    padding: 9px 10px;
+}
+
+.track-info small {
+    display: block;
+    color: var(--ct-muted);
+    font-size: 7.5px;
+    font-weight: 800;
+}
+
+.track-info strong {
+    display: block;
+    margin-top: 2px;
+    color: var(--ct-navy);
+    font-size: 10px;
+}
+
+.track-buttons {
+    display: flex;
+    gap: 7px;
+    margin-top: 9px;
+}
+
+.track-buttons a {
+    flex: 1;
+    text-align: center;
+}
+
+
+/* ============================================================
+   TABLE
+   ============================================================ */
+
+.ct-table {
+    margin: 0;
+}
+
+.ct-table thead th {
+    background: #f8fafc;
+    border: 0;
+    border-bottom: 1px solid #e9eff3;
+    padding: 11px 13px;
+    color: #718492;
+    font-size: 8px;
+    font-weight: 900;
+    letter-spacing: .45px;
+    white-space: nowrap;
+}
+
+.ct-table tbody td {
+    padding: 11px 13px;
+    vertical-align: middle;
+    border-color: #edf2f5;
+    color: #4c6272;
+    font-size: 10px;
+}
+
+.ct-table tbody tr:hover {
+    background: #fbfdfe;
+}
+
+.table-batch {
+    font-weight: 800;
+    color: var(--ct-navy);
+}
+
+.risk-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 8px;
+    border-radius: 20px;
+    font-size: 8px;
+    font-weight: 800;
+}
+
+.risk-low {
+    color: #167145;
+    background: var(--ct-green-soft);
+}
+
+.risk-moderate {
+    color: #9c6506;
+    background: var(--ct-orange-soft);
+}
+
+.risk-high,
+.risk-critical {
+    color: #bd3040;
+    background: var(--ct-red-soft);
+}
+
+.risk-dot {
+    width: 5px;
+    height: 5px;
+    background: currentColor;
+    border-radius: 50%;
+}
+
+.trend {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 9px;
+    font-weight: 700;
+}
+
+.trend.up {
+    color: var(--ct-red);
+}
+
+.trend.down {
+    color: var(--ct-green);
+}
+
+.trend.stable {
+    color: #778b99;
+}
+
+.track-mini-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 8px;
+    border-radius: 7px;
+    border: 1px solid #d8e5ee;
+    background: white;
+    color: var(--ct-blue);
+    font-size: 8px;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.track-mini-btn:hover {
+    background: var(--ct-blue);
+    color: white;
+    border-color: var(--ct-blue);
+}
+
+
+/* ============================================================
+   PRIORITY QUEUE
+   ============================================================ */
+
+.priority-list {
+    padding: 4px 16px 10px;
+}
+
+.priority-item {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--ct-border-soft);
+}
+
+.priority-item:last-child {
+    border-bottom: 0;
+}
+
+.priority-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.priority-left {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.priority-number {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    border-radius: 7px;
+    background: #f0f5f8;
+    color: #698091;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    font-weight: 900;
+}
+
+.priority-item:first-child .priority-number {
+    background: var(--ct-red-soft);
+    color: var(--ct-red);
+}
+
+.priority-name {
+    color: var(--ct-navy);
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.priority-location {
+    color: var(--ct-muted);
+    font-size: 8px;
+    margin-top: 1px;
+}
+
+.priority-risk {
+    font-size: 11px;
+    font-weight: 900;
+}
+
+.priority-reason {
+    margin: 7px 0 0 33px;
+    color: #667b8a;
+    font-size: 8.5px;
+    line-height: 1.45;
+}
+
+
+/* ============================================================
+   FORECAST
+   ============================================================ */
+
+.forecast-layout {
+    display: grid;
+    grid-template-columns: 1fr 175px;
+    gap: 18px;
+    align-items: center;
+}
+
+.forecast-chart {
+    height: 135px;
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+}
+
+.forecast-column {
+    flex: 1;
+    text-align: center;
+}
+
+.forecast-bar-area {
+    height: 105px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.forecast-bar {
+    width: 60%;
+    max-width: 32px;
+    min-height: 5px;
+    background: linear-gradient(
+        to top,
+        #1769aa,
+        #58a8de
+    );
+    border-radius: 5px 5px 2px 2px;
+}
+
+.forecast-column span {
+    display: block;
+    margin-top: 6px;
+    color: var(--ct-muted);
+    font-size: 7.5px;
+}
+
+.forecast-summary-box {
+    background: #f7fafc;
+    border: 1px solid #e7eef3;
+    border-radius: 11px;
+    padding: 13px;
+}
+
+.forecast-summary-box small {
+    display: block;
+    color: var(--ct-muted);
+    font-size: 8px;
+    font-weight: 800;
+}
+
+.forecast-summary-box strong {
+    display: block;
+    margin-top: 5px;
+    color: var(--ct-navy);
+    font-size: 18px;
+}
+
+.forecast-summary-box p {
+    margin: 5px 0 0;
+    color: #6a7f8e;
+    font-size: 8.5px;
+    line-height: 1.45;
+}
+
+
+/* ============================================================
+   EVENTS
+   ============================================================ */
+
+.event-list {
+    padding: 5px 17px 10px;
+    max-height: 225px;
+    overflow-y: auto;
+}
+
+.event-row {
+    display: grid;
+    grid-template-columns: 43px 11px 1fr;
+    gap: 8px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--ct-border-soft);
+}
+
+.event-row:last-child {
+    border-bottom: 0;
+}
+
+.event-time {
+    color: #82929e;
+    font-size: 8px;
+    font-weight: 700;
+}
+
+.event-marker {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    margin-top: 2px;
+}
+
+.event-marker.red {
+    background: var(--ct-red);
+}
+
+.event-marker.orange {
+    background: var(--ct-orange);
+}
+
+.event-marker.green {
+    background: var(--ct-green);
+}
+
+.event-text strong {
+    display: block;
+    color: var(--ct-navy);
+    font-size: 9px;
+}
+
+.event-text span {
+    display: block;
+    color: #718492;
+    font-size: 8px;
+    margin-top: 2px;
+    line-height: 1.4;
+}
+
+
+/* ============================================================
+   COMPACT DECISION TOOLS
+   ============================================================ */
+
+.decision-tools {
+    display: flex;
+    align-items: stretch;
+    gap: 9px;
+    padding: 12px;
+}
+
+.decision-tool {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 12px;
+    background: #fbfdfe;
+    border: 1px solid #e2eaf0;
+    border-radius: 10px;
+    color: var(--ct-navy);
+    text-decoration: none;
+    transition: .18s ease;
+}
+
+.decision-tool:hover {
+    background: var(--ct-blue-soft);
+    border-color: #bddcf0;
+    color: var(--ct-blue);
+    transform: translateY(-1px);
+}
+
+.decision-tool-icon {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    border-radius: 9px;
+    background: white;
+    border: 1px solid #e4ecf2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ct-blue);
+    font-size: 14px;
+}
+
+.decision-tool-text strong {
+    display: block;
+    font-size: 9.5px;
+    font-weight: 800;
+}
+
+.decision-tool-text span {
+    display: block;
+    color: var(--ct-muted);
+    font-size: 7.5px;
+    margin-top: 1px;
+}
+
+.decision-arrow {
+    margin-left: auto;
+    color: #9cabb5;
+    font-size: 10px;
+}
+
+
+/* ============================================================
+   EMPTY / LOADING
+   ============================================================ */
+
+.ct-empty {
+    padding: 30px 15px;
+    text-align: center;
+    color: var(--ct-muted);
+    font-size: 10px;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1200px) {
+
+    .ct-kpi-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .decision-tools {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 991px) {
+
+    .tracking-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .tracking-side {
+        border-left: 0;
+        border-top: 1px solid var(--ct-border-soft);
+        padding-left: 0;
+        padding-top: 15px;
+    }
+
+    .forecast-layout {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width: 767px) {
+
+    .ct-hero-inner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .ct-live-box {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .ct-kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .command-metrics {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .health-layout {
+        flex-direction: column;
+    }
+
+    .health-list {
+        width: 100%;
+    }
+
+    .decision-tools {
+        grid-template-columns: 1fr;
+    }
+
+    .route-label {
+        font-size: 7px;
+    }
+
+}
+
+@media (max-width: 480px) {
+
+    .ct-kpi-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ct-hero {
+        padding: 22px;
+    }
+
+    .ct-hero h1 {
+        font-size: 23px;
+    }
+
+    .track-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+</style>
+
+
+<div class="control-tower-page">
+
+    <!-- ======================================================
+         HERO
+         ====================================================== -->
+
+    <section class="ct-hero">
+
+        <div class="ct-hero-inner">
+
+            <div>
+
+                <div class="ct-eyebrow">
+
+                    <i class="bi bi-broadcast-pin"></i>
+
+                    REAL-TIME DECISION CENTER
+
+                </div>
+
+                <h1>Supply Chain Control Tower</h1>
+
+                <p>
+                    Unified AI-powered monitoring across shipment risk,
+                    cold-chain quality, logistics and operational response.
+                </p>
+
+            </div>
+
+
+            <div class="ct-live-box">
+
+                <div class="ct-live">
+
+                    <span class="ct-live-dot"></span>
+
+                    LIVE
+
+                </div>
+
+                <div class="ct-sync">
+
+                    Last sync
+
+                    <strong id="lastSync"
+                            class="text-white">
+                        --:--:--
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ======================================================
+         KPI STRIP
+         ====================================================== -->
+
+    <section class="ct-kpi-grid">
+
+        <div class="ct-kpi primary">
+
+            <div class="ct-kpi-top">
+
+                <span class="ct-kpi-label">
+                    ACTIVE SHIPMENTS
+                </span>
+
+                <div class="ct-kpi-icon">
+                    <i class="bi bi-truck"></i>
+                </div>
+
+            </div>
+
+            <strong class="ct-kpi-value"
+                    id="active">
+
+                {{ shipments|length }}
+
+            </strong>
+
+            <div class="ct-kpi-foot">
+                Currently monitored
+            </div>
+
+        </div>
+
+
+        <div class="ct-kpi danger">
+
+            <div class="ct-kpi-top">
+
+                <span class="ct-kpi-label">
+                    HIGH / CRITICAL
+                </span>
+
+                <div class="ct-kpi-icon">
+                    <i class="bi bi-exclamation-triangle"></i>
+                </div>
+
+            </div>
+
+            <strong class="ct-kpi-value"
+                    id="high">
+
+                {{ shipments
+                    |selectattr(
+                        'risk_level',
+                        'in',
+                        ['HIGH','CRITICAL']
+                    )
+                    |list
+                    |length
+                }}
+
+            </strong>
+
+            <div class="ct-kpi-foot">
+                Immediate attention
+            </div>
+
+        </div>
+
+
+        <div class="ct-kpi warning">
+
+            <div class="ct-kpi-top">
+
+                <span class="ct-kpi-label">
+                    OPEN ALERTS
+                </span>
+
+                <div class="ct-kpi-icon">
+                    <i class="bi bi-bell"></i>
+                </div>
+
+            </div>
+
+            <strong class="ct-kpi-value"
+                    id="openAlerts">
+
+                {{ alerts|length }}
+
+            </strong>
+
+            <div class="ct-kpi-foot">
+                Active incidents
+            </div>
+
+        </div>
+
+
+        <div class="ct-kpi">
+
+            <div class="ct-kpi-top">
+
+                <span class="ct-kpi-label">
+                    AVG NETWORK RISK
+                </span>
+
+                <div class="ct-kpi-icon">
+                    <i class="bi bi-activity"></i>
+                </div>
+
+            </div>
+
+            <strong class="ct-kpi-value"
+                    id="avgRisk">
+                0.0%
+            </strong>
+
+            <div class="ct-kpi-foot">
+                Active shipment average
+            </div>
+
+        </div>
+
+
+        <div class="ct-kpi">
+
+            <div class="ct-kpi-top">
+
+                <span class="ct-kpi-label">
+                    ACTION REQUIRED
+                </span>
+
+                <div class="ct-kpi-icon">
+                    <i class="bi bi-lightning-charge"></i>
+                </div>
+
+            </div>
+
+            <strong class="ct-kpi-value"
+                    id="interventions">
+                0
+            </strong>
+
+            <div class="ct-kpi-foot">
+                AI-prioritized cases
+            </div>
+
+        </div>
+
+
+        <div class="ct-kpi success">
+
+            <div class="ct-kpi-top">
+
+                <span class="ct-kpi-label">
+                    AUDIT INTEGRITY
+                </span>
+
+                <div class="ct-kpi-icon">
+                    <i class="bi bi-shield-check"></i>
+                </div>
+
+            </div>
+
+            <strong class="ct-kpi-value"
+                    id="audit"
+                    style="font-size:16px; margin-top:13px;">
+
+                CHECKING
+
+            </strong>
+
+            <div class="ct-kpi-foot">
+                Audit-chain verification
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ======================================================
+         COMMAND CENTER + HEALTH
+         ====================================================== -->
+
+    <div class="row g-3 mb-3">
+
+        <div class="col-xl-8">
+
+            <section class="ct-panel">
+
+                <div class="ct-panel-head">
+
+                    <div class="ct-panel-title">
+
+                        <div class="ct-panel-icon">
+                            <i class="bi bi-cpu"></i>
+                        </div>
+
+                        <div>
+
+                            <h5>AI Command Center</h5>
+
+                            <div class="ct-panel-sub">
+                                Highest-priority operational case
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <span class="badge bg-secondary"
+                          id="incidentStatus">
+
+                        ANALYZING
+
+                    </span>
+
+                </div>
+
+
+                <div id="incidentContent">
+
+                    <div class="ct-empty">
+                        Analyzing shipment network...
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+
+        <div class="col-xl-4">
+
+            <section class="ct-panel">
+
+                <div class="ct-panel-head">
+
+                    <div class="ct-panel-title">
+
+                        <div class="ct-panel-icon">
+                            <i class="bi bi-heart-pulse"></i>
+                        </div>
+
+                        <div>
+
+                            <h5>Network Health</h5>
+
+                            <div class="ct-panel-sub">
+                                Operational health indicators
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="ct-panel-body">
+
+                    <div class="health-layout">
+
+                        <div class="health-ring"
+                             id="healthRing">
+
+                            <div class="health-ring-value">
+
+                                <strong id="healthScore">
+                                    0
+                                </strong>
+
+                                <small>HEALTH</small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="health-list">
+
+                            <div class="health-item">
+
+                                <div class="health-item-head">
+
+                                    <span>Cold Chain</span>
+
+                                    <strong id="coldHealth">
+                                        --
+                                    </strong>
+
+                                </div>
+
+                                <div class="health-progress">
+
+                                    <div id="coldBar"
+                                         style="width:0%">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="health-item">
+
+                                <div class="health-item-head">
+
+                                    <span>Logistics</span>
+
+                                    <strong id="logisticsHealth">
+                                        --
+                                    </strong>
+
+                                </div>
+
+                                <div class="health-progress">
+
+                                    <div id="logisticsBar"
+                                         style="width:0%">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="health-item">
+
+                                <div class="health-item-head">
+
+                                    <span>Shipment Safety</span>
+
+                                    <strong id="shipmentHealth">
+                                        --
+                                    </strong>
+
+                                </div>
+
+                                <div class="health-progress">
+
+                                    <div id="shipmentBar"
+                                         style="width:0%">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="health-item">
+
+                                <div class="health-item-head">
+
+                                    <span>Audit</span>
+
+                                    <strong id="auditHealth">
+                                        Checking
+                                    </strong>
+
+                                </div>
+
+                                <div class="health-progress">
+
+                                    <div id="auditBar"
+                                         style="width:0%">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </div>
+
+
+    <!-- ======================================================
+         PROFESSIONAL LIVE TRACKING
+         ====================================================== -->
+
+    <section class="ct-panel mb-3">
+
+        <div class="ct-panel-head">
+
+            <div class="ct-panel-title">
+
+                <div class="ct-panel-icon">
+                    <i class="bi bi-geo-alt"></i>
+                </div>
+
+                <div>
+
+                    <h5>Live Supply Network</h5>
+
+                    <div class="ct-panel-sub">
+                        Priority shipment journey and latest recorded status
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <span class="badge bg-light text-dark border"
+                  id="trackingState">
+
+                MONITORING
+
+            </span>
+
+        </div>
+
+
+        <div class="tracking-body">
+
+            <div class="tracking-summary">
+
+
+                <!-- ROUTE SIDE -->
+
+                <div>
+
+                    <div class="tracking-shipment">
+
+                        <div class="truck-box">
+                            <i class="bi bi-truck"></i>
+                        </div>
+
+                        <div>
+
+                            <h6 id="trackBatch">
+                                Selecting priority shipment...
+                            </h6>
+
+                            <p id="trackLocation">
+                                Waiting for latest shipment status
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="route-progress">
+
+                        <div class="route-step completed">
+
+                            <div class="route-dot">
+                                <i class="bi bi-check"></i>
+                            </div>
+
+                            <div class="route-label">
+                                Origin
+                            </div>
+
+                        </div>
+
+
+                        <div class="route-step completed">
+
+                            <div class="route-dot">
+                                <i class="bi bi-check"></i>
+                            </div>
+
+                            <div class="route-label">
+                                Dispatched
+                            </div>
+
+                        </div>
+
+
+                        <div class="route-step current"
+                             id="routeCurrent">
+
+                            <div class="route-dot">
+                                <i class="bi bi-truck"></i>
+                            </div>
+
+                            <div class="route-label">
+                                In Transit
+                            </div>
+
+                        </div>
+
+
+                        <div class="route-step">
+
+                            <div class="route-dot">
+                                <i class="bi bi-box-seam"></i>
+                            </div>
+
+                            <div class="route-label">
+                                Hub
+                            </div>
+
+                        </div>
+
+
+                        <div class="route-step">
+
+                            <div class="route-dot">
+                                <i class="bi bi-geo-alt"></i>
+                            </div>
+
+                            <div class="route-label">
+                                Destination
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- STATUS SIDE -->
+
+                <div class="tracking-side">
+
+                    <div class="track-info-grid">
+
+                        <div class="track-info">
+
+                            <small>CURRENT RISK</small>
+
+                            <strong id="trackRisk">
+                                --
+                            </strong>
+
+                        </div>
+
+
+                        <div class="track-info">
+
+                            <small>TEMPERATURE</small>
+
+                            <strong id="trackTemp">
+                                --
+                            </strong>
+
+                        </div>
+
+
+                        <div class="track-info">
+
+                            <small>DELAY</small>
+
+                            <strong id="trackDelay">
+                                --
+                            </strong>
+
+                        </div>
+
+
+                        <div class="track-info">
+
+                            <small>RISK STATUS</small>
+
+                            <strong id="trackRiskLevel">
+                                --
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="track-buttons">
+
+                        <a href="/shipments"
+                           id="openTrackingBtn"
+                           class="ct-action-btn primary">
+
+                            <i class="bi bi-geo-alt"></i>
+
+                            Open Tracking
+
+                        </a>
+
+
+                        <a href="/support-center"
+                           class="ct-action-btn">
+
+                            <i class="bi bi-life-preserver"></i>
+
+                            Nearby Support
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ======================================================
+         LIVE RISK TABLE + PRIORITY QUEUE
+         ====================================================== -->
+
+    <div class="row g-3 mb-3">
+
+        <div class="col-xl-8">
+
+            <section class="ct-panel">
+
+                <div class="ct-panel-head">
+
+                    <div class="ct-panel-title">
+
+                        <div class="ct-panel-icon">
+                            <i class="bi bi-activity"></i>
+                        </div>
+
+                        <div>
+
+                            <h5>Live Shipment Risk</h5>
+
+                            <div class="ct-panel-sub">
+                                Current shipment conditions and risk
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <button type="button"
+                            class="ct-action-btn"
+                            onclick="refreshTower()">
+
+                        <i class="bi bi-arrow-clockwise"></i>
+
+                        Refresh
+
+                    </button>
+
+                </div>
+
+
+                <div class="table-responsive">
+
+                    <table class="table ct-table">
+
+                        <thead>
+
+                            <tr>
+                                <th>BATCH</th>
+                                <th>LOCATION</th>
+                                <th>RISK</th>
+                                <th>TREND</th>
+                                <th>TEMP.</th>
+                                <th>DELAY</th>
+                                <th>TRACKING</th>
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="towerBody">
+
+                            {% for s in shipments %}
+
+                            <tr>
+
+                                <td>
+
+                                    <span class="table-batch">
+                                        {{ s.batch_id }}
+                                    </span>
+
+                                </td>
+
+                                <td>
+                                    {{ s.location or '—' }}
+                                </td>
+
+                                <td>
+
+                                    <span class="risk-pill
+                                        {% if s.risk_level in ['HIGH','CRITICAL'] %}
+                                            risk-high
+                                        {% elif s.risk_level == 'MODERATE' %}
+                                            risk-moderate
+                                        {% else %}
+                                            risk-low
+                                        {% endif %}">
+
+                                        <span class="risk-dot"></span>
+
+                                        {{ s.risk_probability|round(1) }}%
+
+                                        {{ s.risk_level }}
+
+                                    </span>
+
+                                </td>
+
+                                <td>
+
+                                    <span class="trend stable">
+
+                                        <i class="bi bi-arrow-right"></i>
+
+                                        Stable
+
+                                    </span>
+
+                                </td>
+
+                                <td>
+                                    {{ s.thermal_temp or 0 }}°C
+                                </td>
+
+                                <td>
+                                    {{ s.delay_hours or 0 }}h
+                                </td>
+
+                                <td>
+
+                                    <a href="/shipment/{{ s.batch_id }}"
+                                       class="track-mini-btn">
+
+                                        <i class="bi bi-geo-alt"></i>
+
+                                        Open
+
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+        </div>
+
+
+        <div class="col-xl-4">
+
+            <section class="ct-panel">
+
+                <div class="ct-panel-head">
+
+                    <div class="ct-panel-title">
+
+                        <div class="ct-panel-icon">
+                            <i class="bi bi-stars"></i>
+                        </div>
+
+                        <div>
+
+                            <h5>AI Priority Queue</h5>
+
+                            <div class="ct-panel-sub">
+                                Ranked operational attention
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="priority-list"
+                     id="priorities">
+
+                    <div class="ct-empty">
+                        Ranking shipments...
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </div>
+
+
+    <!-- ======================================================
+         FORECAST + EVENTS
+         ====================================================== -->
+
+    <div class="row g-3 mb-3">
+
+        <div class="col-xl-7">
+
+            <section class="ct-panel">
+
+                <div class="ct-panel-head">
+
+                    <div class="ct-panel-title">
+
+                        <div class="ct-panel-icon">
+                            <i class="bi bi-graph-up-arrow"></i>
+                        </div>
+
+                        <div>
+
+                            <h5>Risk Outlook</h5>
+
+                            <div class="ct-panel-sub">
+                                Operational projection from current conditions
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <span class="badge bg-light text-dark border">
+                        6 HOUR VIEW
+                    </span>
+
+                </div>
+
+
+                <div class="ct-panel-body">
+
+                    <div class="forecast-layout">
+
+                        <div class="forecast-chart"
+                             id="forecastChart">
+
+                            <div class="ct-empty w-100">
+                                Building risk outlook...
+                            </div>
+
+                        </div>
+
+
+                        <div class="forecast-summary-box">
+
+                            <small>
+                                CURRENT AVG RISK
+                            </small>
+
+                            <strong id="forecastAverage">
+                                0.0%
+                            </strong>
+
+                            <p id="forecastText">
+                                Analyzing active shipment conditions.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+
+        <div class="col-xl-5">
+
+            <section class="ct-panel">
+
+                <div class="ct-panel-head">
+
+                    <div class="ct-panel-title">
+
+                        <div class="ct-panel-icon">
+                            <i class="bi bi-broadcast"></i>
+                        </div>
+
+                        <div>
+
+                            <h5>Operational Event Stream</h5>
+
+                            <div class="ct-panel-sub">
+                                Current shipment risk events
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="event-list"
+                     id="eventStream">
+
+                    <div class="ct-empty">
+                        Loading operational events...
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </div>
+
+
+    <!-- ======================================================
+         COMPACT DECISION TOOLS
+         ====================================================== -->
+
+    <section class="ct-panel">
+
+        <div class="ct-panel-head">
+
+            <div class="ct-panel-title">
+
+                <div class="ct-panel-icon">
+                    <i class="bi bi-grid"></i>
+                </div>
+
+                <div>
+
+                    <h5>Decision Tools</h5>
+
+                    <div class="ct-panel-sub">
+                        Access operational intelligence modules
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="decision-tools">
+
+
+            <a href="/shipments"
+               class="decision-tool">
+
+                <div class="decision-tool-icon">
+                    <i class="bi bi-truck"></i>
+                </div>
+
+                <div class="decision-tool-text">
+
+                    <strong>Shipments</strong>
+
+                    <span>
+                        Monitor all batches
+                    </span>
+
+                </div>
+
+                <i class="bi bi-chevron-right decision-arrow"></i>
+
+            </a>
+
+
+            <a href="/alerts"
+               class="decision-tool">
+
+                <div class="decision-tool-icon">
+                    <i class="bi bi-bell"></i>
+                </div>
+
+                <div class="decision-tool-text">
+
+                    <strong>Alerts & Actions</strong>
+
+                    <span>
+                        Manage incidents
+                    </span>
+
+                </div>
+
+                <i class="bi bi-chevron-right decision-arrow"></i>
+
+            </a>
+
+
+            <a href="/digital-twin"
+               class="decision-tool">
+
+                <div class="decision-tool-icon">
+                    <i class="bi bi-box"></i>
+                </div>
+
+                <div class="decision-tool-text">
+
+                    <strong>Digital Twin</strong>
+
+                    <span>
+                        Simulate scenarios
+                    </span>
+
+                </div>
+
+                <i class="bi bi-chevron-right decision-arrow"></i>
+
+            </a>
+
+
+            <a href="/support-center"
+               class="decision-tool">
+
+                <div class="decision-tool-icon">
+                    <i class="bi bi-life-preserver"></i>
+                </div>
+
+                <div class="decision-tool-text">
+
+                    <strong>Support Network</strong>
+
+                    <span>
+                        Find nearby assistance
+                    </span>
+
+                </div>
+
+                <i class="bi bi-chevron-right decision-arrow"></i>
+
+            </a>
+
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>
+
+/* ============================================================
+   SUPPLYSHIELD AI CONTROL TOWER
+   FRONT-END CONTROLLER
+   ============================================================ */
+
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+
+function safeNumber(value) {
+
+    const number = Number(value);
+
+    return Number.isFinite(number)
+        ? number
+        : 0;
+}
+
+
+function escapeHtml(value) {
+
+    return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+
+function riskClass(level) {
+
+    const value =
+        String(level || 'LOW')
+        .toUpperCase();
+
+    if (value === 'CRITICAL') {
+        return 'risk-critical';
+    }
+
+    if (value === 'HIGH') {
+        return 'risk-high';
+    }
+
+    if (value === 'MODERATE') {
+        return 'risk-moderate';
+    }
+
+    return 'risk-low';
+}
+
+
+function riskColor(risk) {
+
+    if (risk >= 85) {
+        return '#d83b4c';
+    }
+
+    if (risk >= 60) {
+        return '#e99a17';
+    }
+
+    return '#198754';
+}
+
+
+/* ============================================================
+   TREND
+   ============================================================ */
+
+function trendHtml(shipment) {
+
+    const trend =
+        String(
+            shipment.risk_trend ||
+            shipment.trend ||
+            'STABLE'
+        ).toUpperCase();
+
+
+    if (
+        trend === 'RISING' ||
+        trend === 'UP' ||
+        trend === 'INCREASING'
+    ) {
+
+        return `
+            <span class="trend up">
+
+                <i class="bi bi-arrow-up-right"></i>
+
+                Rising
+
+            </span>
+        `;
+    }
+
+
+    if (
+        trend === 'FALLING' ||
+        trend === 'DOWN' ||
+        trend === 'DECREASING'
+    ) {
+
+        return `
+            <span class="trend down">
+
+                <i class="bi bi-arrow-down-right"></i>
+
+                Improving
+
+            </span>
+        `;
+    }
+
+
+    return `
+        <span class="trend stable">
+
+            <i class="bi bi-arrow-right"></i>
+
+            Stable
+
+        </span>
+    `;
+}
+
+
+/* ============================================================
+   RECOMMENDATION ENGINE
+   UI FALLBACK
+   ============================================================ */
+
+function recommendationFor(shipment) {
+
+    const risk =
+        safeNumber(
+            shipment.risk_probability
+        );
+
+    const temperature =
+        safeNumber(
+            shipment.thermal_temp
+        );
+
+    const delay =
+        safeNumber(
+            shipment.delay_hours
+        );
+
+
+    /*
+       Prefer backend AI recommendation whenever
+       the API provides one.
+    */
+
+    if (shipment.recommended_action) {
+        return shipment.recommended_action;
+    }
+
+
+    if (shipment.recommendation) {
+        return shipment.recommendation;
+    }
+
+
+    /*
+       Fallback operational rules.
+    */
+
+    if (risk >= 85 && temperature > 8) {
+
+        return `
+            Temperature excursion and critical risk detected.
+            Inspect cold-chain conditions immediately and evaluate
+            nearby cold-storage support.
+        `;
+    }
+
+
+    if (risk >= 85 && delay >= 2) {
+
+        return `
+            Critical risk with significant logistics delay.
+            Review route conditions and prioritize shipment movement.
+        `;
+    }
+
+
+    if (risk >= 85) {
+
+        return `
+            Critical shipment risk detected.
+            Immediate operational review is recommended.
+        `;
+    }
+
+
+    if (risk >= 60) {
+
+        return `
+            Increase monitoring frequency and review temperature,
+            delay and logistics conditions.
+        `;
+    }
+
+
+    return `
+        Conditions are currently within the normal monitoring range.
+    `;
+}
+
+
+/* ============================================================
+   KPI UPDATE
+   ============================================================ */
+
+function updateKPIs(shipments) {
+
+    const total =
+        shipments.length;
+
+
+    const highCount =
+        shipments.filter(s => {
+
+            const level =
+                String(
+                    s.risk_level || ''
+                ).toUpperCase();
+
+            return (
+                level === 'HIGH' ||
+                level === 'CRITICAL'
+            );
+
+        }).length;
+
+
+    const averageRisk =
+        total > 0
+
+        ? shipments.reduce(
+            (sum, shipment) =>
+                sum +
+                safeNumber(
+                    shipment.risk_probability
+                ),
+            0
+        ) / total
+
+        : 0;
+
+
+    const actionCount =
+        shipments.filter(
+            shipment =>
+                safeNumber(
+                    shipment.risk_probability
+                ) >= 60
+        ).length;
+
+
+    document.getElementById(
+        'active'
+    ).textContent = total;
+
+
+    document.getElementById(
+        'high'
+    ).textContent = highCount;
+
+
+    document.getElementById(
+        'avgRisk'
+    ).textContent =
+        averageRisk.toFixed(1) + '%';
+
+
+    document.getElementById(
+        'interventions'
+    ).textContent =
+        actionCount;
+}
+
+
+/* ============================================================
+   SHIPMENT TABLE
+   ============================================================ */
+
+function renderShipmentTable(shipments) {
+
+    const tbody =
+        document.getElementById(
+            'towerBody'
+        );
+
+
+    if (!shipments.length) {
+
+        tbody.innerHTML = `
+
+            <tr>
+
+                <td colspan="7"
+                    class="text-center py-4 text-muted">
+
+                    No active shipments found.
+
+                </td>
+
+            </tr>
+        `;
+
+        return;
+    }
+
+
+    const sorted =
+        [...shipments].sort(
+            (a, b) =>
+                safeNumber(
+                    b.risk_probability
+                ) -
+                safeNumber(
+                    a.risk_probability
+                )
+        );
+
+
+    tbody.innerHTML =
+        sorted.map(shipment => {
+
+            const batch =
+                escapeHtml(
+                    shipment.batch_id || '—'
+                );
+
+            const location =
+                escapeHtml(
+                    shipment.location || '—'
+                );
+
+            const risk =
+                safeNumber(
+                    shipment.risk_probability
+                );
+
+            const level =
+                String(
+                    shipment.risk_level || 'LOW'
+                ).toUpperCase();
+
+            const temperature =
+                safeNumber(
+                    shipment.thermal_temp
+                );
+
+            const delay =
+                safeNumber(
+                    shipment.delay_hours
+                );
+
+
+            return `
+
+                <tr>
+
+                    <td>
+
+                        <span class="table-batch">
+                            ${batch}
+                        </span>
+
+                    </td>
+
+
+                    <td>
+                        ${location}
+                    </td>
+
+
+                    <td>
+
+                        <span class="
+                            risk-pill
+                            ${riskClass(level)}
+                        ">
+
+                            <span class="risk-dot"></span>
+
+                            ${risk.toFixed(1)}%
+
+                            ${escapeHtml(level)}
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+                        ${trendHtml(shipment)}
+                    </td>
+
+
+                    <td>
+                        ${temperature.toFixed(1)}°C
+                    </td>
+
+
+                    <td>
+                        ${delay.toFixed(1)}h
+                    </td>
+
+
+                    <td>
+
+                        <a
+                            href="/shipment/${encodeURIComponent(
+                                shipment.batch_id || ''
+                            )}"
+                            class="track-mini-btn">
+
+                            <i class="bi bi-geo-alt"></i>
+
+                            Open
+
+                        </a>
+
+                    </td>
+
+                </tr>
+            `;
+
+        }).join('');
+}
+
+
+/* ============================================================
+   AI PRIORITY QUEUE
+   ============================================================ */
+
+function renderPriorities(shipments) {
+
+    const container =
+        document.getElementById(
+            'priorities'
+        );
+
+
+    if (!shipments.length) {
+
+        container.innerHTML = `
+
+            <div class="ct-empty">
+
+                No active priorities.
+
+            </div>
+        `;
+
+        return;
+    }
+
+
+    const ranked =
+        [...shipments]
+        .sort(
+            (a, b) =>
+                safeNumber(
+                    b.risk_probability
+                ) -
+                safeNumber(
+                    a.risk_probability
+                )
+        )
+        .slice(0, 5);
+
+
+    container.innerHTML =
+        ranked.map(
+            (shipment, index) => {
+
+                const risk =
+                    safeNumber(
+                        shipment.risk_probability
+                    );
+
+                const batch =
+                    escapeHtml(
+                        shipment.batch_id ||
+                        'Unknown'
+                    );
+
+                const location =
+                    escapeHtml(
+                        shipment.location ||
+                        'Location unavailable'
+                    );
+
+                const recommendation =
+                    escapeHtml(
+                        recommendationFor(
+                            shipment
+                        )
+                    );
+
+
+                return `
+
+                    <div class="priority-item">
+
+                        <div class="priority-top">
+
+                            <div class="priority-left">
+
+                                <div class="priority-number">
+                                    ${index + 1}
+                                </div>
+
+
+                                <div>
+
+                                    <div class="priority-name">
+                                        ${batch}
+                                    </div>
+
+                                    <div class="priority-location">
+                                        ${location}
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div
+                                class="priority-risk"
+                                style="
+                                    color:
+                                    ${riskColor(risk)}
+                                ">
+
+                                ${risk.toFixed(1)}%
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="priority-reason">
+
+                            ${recommendation}
+
+                        </div>
+
+                    </div>
+                `;
+
+            }
+        ).join('');
+}
+
+
+/* ============================================================
+   COMMAND CENTER
+   ============================================================ */
+
+function renderCommandCenter(shipments) {
+
+    const container =
+        document.getElementById(
+            'incidentContent'
+        );
+
+    const status =
+        document.getElementById(
+            'incidentStatus'
+        );
+
+
+    if (!shipments.length) {
+
+        status.className =
+            'badge bg-success';
+
+        status.textContent =
+            'NORMAL';
+
+
+        container.innerHTML = `
+
+            <div class="ct-empty">
+
+                No active operational incident detected.
+
+            </div>
+        `;
+
+        return;
+    }
+
+
+    const shipment =
+        [...shipments].sort(
+            (a, b) =>
+                safeNumber(
+                    b.risk_probability
+                ) -
+                safeNumber(
+                    a.risk_probability
+                )
+        )[0];
+
+
+    const risk =
+        safeNumber(
+            shipment.risk_probability
+        );
+
+    const temperature =
+        safeNumber(
+            shipment.thermal_temp
+        );
+
+    const delay =
+        safeNumber(
+            shipment.delay_hours
+        );
+
+    const level =
+        String(
+            shipment.risk_level || 'LOW'
+        ).toUpperCase();
+
+
+    const batch =
+        escapeHtml(
+            shipment.batch_id || 'Unknown'
+        );
+
+    const location =
+        escapeHtml(
+            shipment.location ||
+            'Location unavailable'
+        );
+
+    const recommendation =
+        escapeHtml(
+            recommendationFor(shipment)
+        );
+
+
+    if (risk >= 85) {
+
+        status.className =
+            'badge bg-danger';
+
+        status.textContent =
+            'CRITICAL';
+    }
+
+    else if (risk >= 60) {
+
+        status.className =
+            'badge bg-warning text-dark';
+
+        status.textContent =
+            'ATTENTION';
+    }
+
+    else {
+
+        status.className =
+            'badge bg-success';
+
+        status.textContent =
+            'STABLE';
+    }
+
+
+    container.innerHTML = `
+
+        <div class="command-wrapper">
+
+            <div class="command-header">
+
+                <div>
+
+                    <div class="command-tag">
+
+                        <i class="
+                            bi
+                            bi-exclamation-triangle-fill
+                        "></i>
+
+                        PRIORITY SHIPMENT
+
+                    </div>
+
+
+                    <div class="command-batch">
+                        ${batch}
+                    </div>
+
+
+                    <div class="command-location">
+
+                        <i class="bi bi-geo-alt"></i>
+
+                        ${location}
+
+                    </div>
+
+                </div>
+
+
+                <div class="command-risk">
+
+                    <strong>
+                        ${risk.toFixed(1)}%
+                    </strong>
+
+                    <span>
+                        MODEL RISK
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="command-metrics">
+
+                <div class="command-metric">
+
+                    <small>RISK LEVEL</small>
+
+                    <strong>
+                        ${escapeHtml(level)}
+                    </strong>
+
+                </div>
+
+
+                <div class="command-metric">
+
+                    <small>TEMPERATURE</small>
+
+                    <strong>
+                        ${temperature.toFixed(1)}°C
+                    </strong>
+
+                </div>
+
+
+                <div class="command-metric">
+
+                    <small>DELAY</small>
+
+                    <strong>
+                        ${delay.toFixed(1)}h
+                    </strong>
+
+                </div>
+
+
+                <div class="command-metric">
+
+                    <small>TREND</small>
+
+                    <strong>
+                        ${
+                            escapeHtml(
+                                shipment.risk_trend ||
+                                shipment.trend ||
+                                'Stable'
+                            )
+                        }
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="command-ai">
+
+                <div class="command-ai-title">
+
+                    <i class="bi bi-stars"></i>
+
+                    AI RECOMMENDED RESPONSE
+
+                </div>
+
+
+                <p class="command-ai-text">
+
+                    ${recommendation}
+
+                </p>
+
+            </div>
+
+
+            <div class="command-actions">
+
+                <a
+                href="/shipment/${encodeURIComponent(
+            shipment.batch_id || ''
+        )}"
+                    class="ct-action-btn primary">
+
+                    <i class="bi bi-geo-alt"></i>
+
+                    Open Tracking
+
+                </a>
+
+
+                <a
+                    href="/alerts"
+                    class="ct-action-btn danger">
+
+                    <i class="bi bi-lightning-charge"></i>
+
+                    Alerts & Actions
+
+                </a>
+
+
+                <a
+                    href="/digital-twin"
+                    class="ct-action-btn">
+
+                    <i class="bi bi-box"></i>
+
+                    Digital Twin
+
+                </a>
+
+
+                <a
+                    href="/support-center"
+                    class="ct-action-btn">
+
+                    <i class="bi bi-life-preserver"></i>
+
+                    Find Support
+
+                </a>
+
+            </div>
+
+        </div>
+    `;
+}
+
+
+/* ============================================================
+   PROFESSIONAL TRACKING PANEL
+   ============================================================ */
+
+function renderTracking(shipments) {
+
+    if (!shipments.length) {
+
+        document.getElementById(
+            'trackBatch'
+        ).textContent =
+            'No active shipment';
+
+
+        document.getElementById(
+            'trackLocation'
+        ).textContent =
+            'No tracking data available';
+
+
+        document.getElementById(
+            'trackingState'
+        ).textContent =
+            'NO DATA';
+
+        return;
+    }
+
+
+    /*
+       Show highest-risk active shipment in
+       the Control Tower tracking panel.
+    */
+
+    const shipment =
+        [...shipments].sort(
+            (a, b) =>
+                safeNumber(
+                    b.risk_probability
+                ) -
+                safeNumber(
+                    a.risk_probability
+                )
+        )[0];
+
+
+    const batch =
+        shipment.batch_id ||
+        'Unknown';
+
+
+    const risk =
+        safeNumber(
+            shipment.risk_probability
+        );
+
+
+    const temperature =
+        safeNumber(
+            shipment.thermal_temp
+        );
+
+
+    const delay =
+        safeNumber(
+            shipment.delay_hours
+        );
+
+
+    const level =
+        String(
+            shipment.risk_level ||
+            'LOW'
+        ).toUpperCase();
+
+
+    document.getElementById(
+        'trackBatch'
+    ).textContent =
+        batch;
+
+
+    document.getElementById(
+        'trackLocation'
+    ).textContent =
+        shipment.location
+        ? `Latest recorded location: ${shipment.location}`
+        : 'Latest location unavailable';
+
+
+    document.getElementById(
+        'trackRisk'
+    ).textContent =
+        risk.toFixed(1) + '%';
+
+
+    document.getElementById(
+        'trackTemp'
+    ).textContent =
+        temperature.toFixed(1) + '°C';
+
+
+    document.getElementById(
+        'trackDelay'
+    ).textContent =
+        delay.toFixed(1) + 'h';
+
+
+    const riskLevel =
+        document.getElementById(
+            'trackRiskLevel'
+        );
+
+
+    riskLevel.textContent =
+        level;
+
+
+    riskLevel.style.color =
+        riskColor(risk);
+
+
+    document.getElementById(
+        'openTrackingBtn'
+    ).href =
+        '/shipment/' +
+        encodeURIComponent(batch);
+
+
+    const trackingState =
+        document.getElementById(
+            'trackingState'
+        );
+
+
+    if (risk >= 85) {
+
+        trackingState.className =
+            'badge bg-danger';
+
+        trackingState.textContent =
+            'INTERVENTION REQUIRED';
+    }
+
+    else if (risk >= 60) {
+
+        trackingState.className =
+            'badge bg-warning text-dark';
+
+        trackingState.textContent =
+            'CLOSE MONITORING';
+    }
+
+    else {
+
+        trackingState.className =
+            'badge bg-success';
+
+        trackingState.textContent =
+            'ON TRACK';
+    }
+}
+
+
+/* ============================================================
+   NETWORK HEALTH
+   ============================================================ */
+
+function renderHealth(shipments) {
+
+    const total =
+        shipments.length;
+
+
+    if (!total) {
+
+        setHealthValue(
+            'coldHealth',
+            'coldBar',
+            100
+        );
+
+        setHealthValue(
+            'logisticsHealth',
+            'logisticsBar',
+            100
+        );
+
+        setHealthValue(
+            'shipmentHealth',
+            'shipmentBar',
+            100
+        );
+
+
+        document.getElementById(
+            'healthScore'
+        ).textContent = '100';
+
+
+        document.getElementById(
+            'healthRing'
+        ).style.background = `
+
+            conic-gradient(
+                #198754 0 100%,
+                #e7edf2 100% 100%
+            )
+        `;
+
+        return;
+    }
+
+
+    const averageRisk =
+        shipments.reduce(
+            (sum, shipment) =>
+                sum +
+                safeNumber(
+                    shipment.risk_probability
+                ),
+            0
+        ) / total;
+
+
+    const shipmentHealth =
+        Math.round(
+            Math.max(
+                0,
+                100 - averageRisk
+            )
+        );
+
+
+    const tempIssues =
+        shipments.filter(
+            shipment =>
+                safeNumber(
+                    shipment.thermal_temp
+                ) > 8
+        ).length;
+
+
+    const delayIssues =
+        shipments.filter(
+            shipment =>
+                safeNumber(
+                    shipment.delay_hours
+                ) > 2
+        ).length;
+
+
+    const coldHealth =
+        Math.round(
+            100 -
+            (
+                tempIssues /
+                total
+            ) * 100
+        );
+
+
+    const logisticsHealth =
+        Math.round(
+            100 -
+            (
+                delayIssues /
+                total
+            ) * 100
+        );
+
+
+    const overall =
+        Math.round(
+            (
+                coldHealth +
+                logisticsHealth +
+                shipmentHealth
+            ) / 3
+        );
+
+
+    setHealthValue(
+        'coldHealth',
+        'coldBar',
+        coldHealth
+    );
+
+
+    setHealthValue(
+        'logisticsHealth',
+        'logisticsBar',
+        logisticsHealth
+    );
+
+
+    setHealthValue(
+        'shipmentHealth',
+        'shipmentBar',
+        shipmentHealth
+    );
+
+
+    document.getElementById(
+        'healthScore'
+    ).textContent =
+        overall;
+
+
+    document.getElementById(
+        'healthRing'
+    ).style.background = `
+
+        conic-gradient(
+            #198754 0 ${overall}%,
+            #e7edf2 ${overall}% 100%
+        )
+    `;
+}
+
+
+function setHealthValue(
+    textId,
+    barId,
+    value
+) {
+
+    const safe =
+        Math.max(
+            0,
+            Math.min(
+                100,
+                Number(value) || 0
+            )
+        );
+
+
+    document.getElementById(
+        textId
+    ).textContent =
+        Math.round(safe) + '%';
+
+
+    document.getElementById(
+        barId
+    ).style.width =
+        safe + '%';
+}
+
+
+/* ============================================================
+   RISK OUTLOOK
+   ============================================================ */
+
+function renderForecast(shipments, apiData) {
+
+    const chart =
+        document.getElementById(
+            'forecastChart'
+        );
+
+
+    const total =
+        shipments.length;
+
+
+    if (!total) {
+
+        chart.innerHTML = `
+
+            <div class="ct-empty w-100">
+
+                No active shipment data.
+
+            </div>
+        `;
+
+
+        document.getElementById(
+            'forecastAverage'
+        ).textContent =
+            '0.0%';
+
+
+        document.getElementById(
+            'forecastText'
+        ).textContent =
+            'No current risk conditions to summarize.';
+
+        return;
+    }
+
+
+    const average =
+        shipments.reduce(
+            (sum, shipment) =>
+                sum +
+                safeNumber(
+                    shipment.risk_probability
+                ),
+            0
+        ) / total;
+
+
+    /*
+       IMPORTANT:
+
+       If your backend provides:
+
+       data.forecast = [31, 35, 40, 46, 52, 58]
+
+       those values will be displayed.
+
+       Otherwise we do NOT pretend to have a
+       real ML six-hour forecast. We display a
+       flat current-condition outlook.
+    */
+
+    let values;
+
+
+    if (
+        apiData &&
+        Array.isArray(apiData.forecast) &&
+        apiData.forecast.length >= 6
+    ) {
+
+        values =
+            apiData.forecast
+            .slice(0, 6)
+            .map(safeNumber);
+    }
+
+    else {
+
+        values =
+            Array(6).fill(average);
+    }
+
+
+    chart.innerHTML =
+        values.map(
+            (value, index) => {
+
+                const bounded =
+                    Math.max(
+                        4,
+                        Math.min(
+                            100,
+                            value
+                        )
+                    );
+
+
+                return `
+
+                    <div class="forecast-column">
+
+                        <div class="forecast-bar-area">
+
+                            <div
+                                class="forecast-bar"
+                                style="
+                                    height:
+                                    ${bounded}%
+                                "
+                                title="
+                                    ${value.toFixed(1)}%
+                                ">
+                            </div>
+
+                        </div>
+
+
+                        <span>
+                            +${index + 1}h
+                        </span>
+
+                    </div>
+                `;
+
+            }
+        ).join('');
+
+
+    document.getElementById(
+        'forecastAverage'
+    ).textContent =
+        average.toFixed(1) + '%';
+
+
+    const forecastText =
+        document.getElementById(
+            'forecastText'
+        );
+
+
+    if (
+        apiData &&
+        Array.isArray(apiData.forecast)
+    ) {
+
+        forecastText.textContent =
+            'Backend forecast available for the six-hour operational window.';
+    }
+
+    else {
+
+        forecastText.textContent =
+            'Current-condition outlook shown. Connect backend forecasting for predictive values.';
+    }
+}
+
+
+/* ============================================================
+   EVENT STREAM
+   ============================================================ */
+
+function renderEvents(shipments) {
+
+    const container =
+        document.getElementById(
+            'eventStream'
+        );
+
+
+    if (!shipments.length) {
+
+        container.innerHTML = `
+
+            <div class="ct-empty">
+
+                No active operational events.
+
+            </div>
+        `;
+
+        return;
+    }
+
+
+    const sorted =
+        [...shipments]
+        .sort(
+            (a, b) =>
+                safeNumber(
+                    b.risk_probability
+                ) -
+                safeNumber(
+                    a.risk_probability
+                )
+        )
+        .slice(0, 6);
+
+
+    container.innerHTML =
+        sorted.map(
+            shipment => {
+
+                const risk =
+                    safeNumber(
+                        shipment.risk_probability
+                    );
+
+                let marker =
+                    'green';
+
+                let text =
+                    'Shipment operating within normal monitoring range.';
+
+
+                if (risk >= 85) {
+
+                    marker =
+                        'red';
+
+                    text =
+                        'Critical shipment risk requires operational attention.';
+                }
+
+                else if (risk >= 60) {
+
+                    marker =
+                        'orange';
+
+                    text =
+                        'Elevated shipment risk detected.';
+                }
+
+
+                return `
+
+                    <div class="event-row">
+
+                        <div class="event-time">
+                            LIVE
+                        </div>
+
+
+                        <div class="
+                            event-marker
+                            ${marker}
+                        ">
+                        </div>
+
+
+                        <div class="event-text">
+
+                            <strong>
+                                ${escapeHtml(
+                                    shipment.batch_id ||
+                                    'Shipment'
+                                )}
+                            </strong>
+
+                            <span>
+                                ${text}
+                            </span>
+
+                        </div>
+
+                    </div>
+                `;
+
+            }
+        ).join('');
+}
+
+
+/* ============================================================
+   AUDIT VERIFICATION
+   ============================================================ */
+
+async function verifyAudit() {
+
+    const audit =
+        document.getElementById(
+            'audit'
+        );
+
+    const health =
+        document.getElementById(
+            'auditHealth'
+        );
+
+    const bar =
+        document.getElementById(
+            'auditBar'
+        );
+
+
+    try {
+
+        const response =
+            await fetch(
+                '/api/audit/verify',
+                {
+                    cache: 'no-store'
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                'Audit API unavailable'
+            );
+        }
+
+
+        const data =
+            await response.json();
+
+
+        if (data.valid) {
+
+            audit.textContent =
+                'VERIFIED';
+
+            audit.style.color =
+                '#198754';
+
+
+            health.textContent =
+                '100%';
+
+            health.style.color =
+                '#198754';
+
+
+            bar.style.width =
+                '100%';
+
+            bar.style.background =
+                '#198754';
+        }
+
+        else {
+
+            audit.textContent =
+                'WARNING';
+
+            audit.style.color =
+                '#d83b4c';
+
+
+            health.textContent =
+                'Warning';
+
+            health.style.color =
+                '#d83b4c';
+
+
+            bar.style.width =
+                '35%';
+
+            bar.style.background =
+                '#d83b4c';
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(
+            'Audit verification:',
+            error
+        );
+
+
+        audit.textContent =
+            'UNAVAILABLE';
+
+        audit.style.color =
+            '#708392';
+
+
+        health.textContent =
+            'Unavailable';
+
+
+        bar.style.width =
+            '0%';
+    }
+}
+
+
+/* ============================================================
+   MAIN REFRESH
+   ============================================================ */
+
+let towerRefreshRunning = false;
+
+
+async function refreshTower() {
+
+    /*
+       Prevent overlapping requests when the
+       previous refresh has not completed.
+    */
+
+    if (towerRefreshRunning) {
+        return;
+    }
+
+
+    towerRefreshRunning = true;
+
+
+    try {
+
+        const response =
+            await fetch(
+                '/api/control-tower',
+                {
+                    cache: 'no-store'
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                `Control Tower API returned ${response.status}`
+            );
+        }
+
+
+        const data =
+            await response.json();
+
+
+        const shipments =
+            Array.isArray(
+                data.shipments
+            )
+            ? data.shipments
+            : [];
+
+
+        /*
+           Use backend alert count when provided.
+        */
+
+        if (
+            typeof data.open_alerts === 'number'
+        ) {
+
+            document.getElementById(
+                'openAlerts'
+            ).textContent =
+                data.open_alerts;
+        }
+
+        else if (
+            Array.isArray(data.alerts)
+        ) {
+
+            document.getElementById(
+                'openAlerts'
+            ).textContent =
+                data.alerts.length;
+        }
+
+
+        updateKPIs(
+            shipments
+        );
+
+
+        renderCommandCenter(
+            shipments
+        );
+
+
+        renderTracking(
+            shipments
+        );
+
+
+        renderHealth(
+            shipments
+        );
+
+
+        renderShipmentTable(
+            shipments
+        );
+
+
+        renderPriorities(
+            shipments
+        );
+
+
+        renderForecast(
+            shipments,
+            data
+        );
+
+
+        renderEvents(
+            shipments
+        );
+
+
+        document.getElementById(
+            'lastSync'
+        ).textContent =
+            new Date()
+            .toLocaleTimeString(
+                [],
+                {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                }
+            );
+
+
+        await verifyAudit();
+
+    }
+
+    catch (error) {
+
+        console.error(
+            'Control Tower refresh failed:',
+            error
+        );
+
+
+        document.getElementById(
+            'lastSync'
+        ).textContent =
+            'Connection error';
+    }
+
+    finally {
+
+        towerRefreshRunning = false;
+    }
+}
+
+
+/* ============================================================
+   START CONTROL TOWER
+   ============================================================ */
+
+document.addEventListener(
+    'DOMContentLoaded',
+    function () {
+
+        refreshTower();
+
+
+        setInterval(
+            refreshTower,
+            10000
+        );
+
+    }
+);
+
+</script>
+
+{% endblock %}

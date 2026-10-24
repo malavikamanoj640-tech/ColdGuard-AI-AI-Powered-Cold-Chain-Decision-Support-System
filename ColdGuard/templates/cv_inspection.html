@@ -1,0 +1,1588 @@
+{% extends 'base.html' %}
+
+{% block title %}Visual Inspection · SupplyShield{% endblock %}
+{% block heading %}Computer Vision Inspection{% endblock %}
+
+{% block content %}
+
+<style>
+:root {
+    --cv-navy: #0b1f33;
+    --cv-blue: #1769aa;
+    --cv-blue-soft: #edf6fc;
+    --cv-border: #dce7ee;
+    --cv-muted: #71869a;
+    --cv-green: #198754;
+    --cv-green-soft: #eaf7f0;
+    --cv-orange: #d8890b;
+    --cv-orange-soft: #fff5df;
+    --cv-red: #d83b4c;
+    --cv-red-soft: #fcecef;
+    --cv-bg: #f4f7fa;
+}
+
+.cv-page {
+    max-width: 1450px;
+    margin: 0 auto;
+    padding-bottom: 50px;
+}
+
+/* HERO */
+
+.cv-hero {
+    padding: 27px 29px;
+    margin-bottom: 16px;
+    border-radius: 18px;
+    color: white;
+
+    background:
+        radial-gradient(
+            circle at 88% 15%,
+            rgba(76,180,245,.22),
+            transparent 28%
+        ),
+        linear-gradient(
+            125deg,
+            #0b1f33,
+            #103453 62%,
+            #1769aa
+        );
+
+    box-shadow: 0 10px 30px rgba(11,31,51,.12);
+}
+
+.cv-hero-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.cv-eyebrow {
+    color: #8dd4ff;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+
+.cv-hero h1 {
+    margin: 5px 0;
+    font-size: 27px;
+    font-weight: 850;
+}
+
+.cv-hero p {
+    max-width: 760px;
+    margin: 0;
+    font-size: 11px;
+    line-height: 1.6;
+    color: rgba(255,255,255,.72);
+}
+
+.cv-status {
+    padding: 8px 11px;
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 20px;
+    background: rgba(255,255,255,.08);
+    font-size: 8px;
+    font-weight: 800;
+}
+
+/* INFO */
+
+.cv-info {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.cv-info-card {
+    padding: 13px;
+    background: white;
+    border: 1px solid var(--cv-border);
+    border-radius: 12px;
+}
+
+.cv-info-card span {
+    display: block;
+    color: var(--cv-muted);
+    font-size: 7px;
+    font-weight: 900;
+}
+
+.cv-info-card strong {
+    display: block;
+    margin-top: 5px;
+    color: var(--cv-navy);
+    font-size: 12px;
+}
+
+/* PANEL */
+
+.cv-panel {
+    height: 100%;
+    overflow: hidden;
+    background: white;
+    border: 1px solid var(--cv-border);
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(20,55,78,.05);
+}
+
+.cv-panel-head {
+    padding: 13px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #edf2f5;
+}
+
+.cv-panel-head h5 {
+    margin: 0;
+    color: var(--cv-navy);
+    font-size: 12px;
+    font-weight: 850;
+}
+
+.cv-panel-head p {
+    margin: 2px 0 0;
+    color: var(--cv-muted);
+    font-size: 7.5px;
+}
+
+.cv-body {
+    padding: 16px;
+}
+
+/* FORM */
+
+.cv-label {
+    margin-bottom: 5px;
+    color: var(--cv-navy);
+    font-size: 8px;
+    font-weight: 850;
+}
+
+.cv-input {
+    width: 100%;
+    padding: 9px 10px;
+    border: 1px solid var(--cv-border);
+    border-radius: 8px;
+    font-size: 9px;
+    background: white;
+}
+
+.cv-help {
+    margin-top: 5px;
+    color: var(--cv-muted);
+    font-size: 7px;
+}
+
+/* DROP ZONE */
+
+.upload-zone {
+    position: relative;
+    min-height: 230px;
+    margin-top: 13px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    border: 2px dashed #b9d2e3;
+    border-radius: 13px;
+
+    background: #f8fbfd;
+}
+
+.upload-zone:hover {
+    border-color: var(--cv-blue);
+}
+
+.upload-placeholder {
+    text-align: center;
+    padding: 25px;
+}
+
+.upload-icon {
+    width: 52px;
+    height: 52px;
+    margin: auto auto 9px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: var(--cv-blue-soft);
+    color: var(--cv-blue);
+
+    font-size: 23px;
+}
+
+.upload-placeholder strong {
+    display: block;
+    color: var(--cv-navy);
+    font-size: 10px;
+}
+
+.upload-placeholder span {
+    display: block;
+    margin-top: 4px;
+    color: var(--cv-muted);
+    font-size: 7px;
+}
+
+#previewImage {
+    display: none;
+    width: 100%;
+    max-height: 330px;
+    object-fit: contain;
+    padding: 10px;
+}
+
+.file-input {
+    display: none;
+}
+
+.upload-zone {
+    cursor: pointer;
+}
+
+/* BUTTON */
+
+.inspect-btn {
+    width: 100%;
+    margin-top: 12px;
+    padding: 10px;
+
+    border: 0;
+    border-radius: 8px;
+
+    background: var(--cv-blue);
+    color: white;
+
+    font-size: 9px;
+    font-weight: 850;
+}
+
+.inspect-btn:hover {
+    background: #12598f;
+}
+
+.inspect-btn:disabled {
+    opacity: .65;
+    cursor: not-allowed;
+}
+
+/* DISCLAIMER */
+
+.cv-disclaimer {
+    margin-top: 11px;
+    padding: 10px;
+
+    display: flex;
+    gap: 8px;
+
+    border: 1px solid #f0dba9;
+    border-radius: 9px;
+
+    background: #fffaf0;
+    color: #755f28;
+
+    font-size: 7.5px;
+    line-height: 1.5;
+}
+
+/* EMPTY RESULT */
+
+.result-empty {
+    min-height: 390px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+}
+
+.result-empty-icon {
+    width: 64px;
+    height: 64px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: var(--cv-blue-soft);
+    color: var(--cv-blue);
+
+    font-size: 25px;
+}
+
+.result-empty h5 {
+    margin: 11px 0 4px;
+    color: var(--cv-navy);
+    font-size: 12px;
+}
+
+.result-empty p {
+    max-width: 300px;
+    color: var(--cv-muted);
+    font-size: 8px;
+}
+
+/* RESULT */
+
+.result-content {
+    display: none;
+}
+
+.result-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding-bottom: 13px;
+    margin-bottom: 13px;
+
+    border-bottom: 1px solid #edf2f5;
+}
+
+.result-label {
+    display: inline-flex;
+    padding: 5px 9px;
+    border-radius: 20px;
+    font-size: 7px;
+    font-weight: 900;
+}
+
+.result-label.normal {
+    background: var(--cv-green-soft);
+    color: var(--cv-green);
+}
+
+.result-label.review {
+    background: var(--cv-orange-soft);
+    color: #986205;
+}
+
+.result-label.high {
+    background: var(--cv-red-soft);
+    color: var(--cv-red);
+}
+
+/* SCORE */
+
+.damage-score {
+    padding: 15px;
+    margin-bottom: 12px;
+    border: 1px solid #e7eef3;
+    border-radius: 11px;
+}
+
+.damage-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+}
+
+.damage-top span {
+    color: var(--cv-muted);
+    font-size: 7px;
+    font-weight: 850;
+}
+
+.damage-top strong {
+    color: var(--cv-navy);
+    font-size: 22px;
+}
+
+.score-track {
+    height: 7px;
+    margin-top: 8px;
+    overflow: hidden;
+    background: #edf2f5;
+    border-radius: 20px;
+}
+
+.score-fill {
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    transition: width .4s ease;
+}
+
+/* METRICS */
+
+.cv-metrics {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 8px;
+}
+
+.cv-metric {
+    padding: 10px;
+    border: 1px solid #edf2f5;
+    border-radius: 9px;
+    background: #fafcfd;
+}
+
+.cv-metric span {
+    display: block;
+    color: var(--cv-muted);
+    font-size: 6.5px;
+    font-weight: 850;
+}
+
+.cv-metric strong {
+    display: block;
+    margin-top: 4px;
+    color: var(--cv-navy);
+    font-size: 10px;
+}
+
+/* OBSERVATIONS */
+
+.observation-box {
+    margin-top: 12px;
+    padding: 12px;
+    border-radius: 10px;
+    background: #f7fafc;
+    border: 1px solid #e6edf2;
+}
+
+.observation-box h6 {
+    margin: 0 0 7px;
+    color: var(--cv-navy);
+    font-size: 8px;
+    font-weight: 900;
+}
+
+.observation-item {
+    display: flex;
+    gap: 7px;
+    margin-top: 5px;
+    color: #526b7b;
+    font-size: 7.5px;
+}
+
+.observation-item i {
+    color: var(--cv-blue);
+}
+
+/* RECOMMENDATION */
+
+.recommendation {
+    margin-top: 12px;
+    padding: 12px;
+    border-radius: 10px;
+}
+
+.recommendation.normal {
+    background: var(--cv-green-soft);
+    border: 1px solid #cdebd9;
+}
+
+.recommendation.review {
+    background: var(--cv-orange-soft);
+    border: 1px solid #f2dfb3;
+}
+
+.recommendation.high {
+    background: var(--cv-red-soft);
+    border: 1px solid #f1cbd0;
+}
+
+.recommendation span {
+    display: block;
+    font-size: 6.5px;
+    font-weight: 900;
+}
+
+.recommendation strong {
+    display: block;
+    margin-top: 4px;
+    font-size: 9px;
+}
+
+/* LOADING */
+
+.cv-loading {
+    display: none;
+    padding: 40px;
+    text-align: center;
+}
+
+.cv-spinner {
+    width: 34px;
+    height: 34px;
+    margin: auto auto 10px;
+
+    border: 3px solid #e3edf3;
+    border-top-color: var(--cv-blue);
+    border-radius: 50%;
+
+    animation: spin .7s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@media(max-width: 991px) {
+    .cv-info {
+        grid-template-columns: repeat(2,1fr);
+    }
+}
+
+@media(max-width: 767px) {
+    .cv-hero-inner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .cv-info {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
+
+<div class="cv-page">
+
+    <!-- HERO -->
+
+    <section class="cv-hero">
+
+        <div class="cv-hero-inner">
+
+            <div>
+
+                <span class="cv-eyebrow">
+                    MULTI-MODAL AI · VISUAL INTELLIGENCE
+                </span>
+
+                <h1>
+                    Computer Vision Inspection
+                </h1>
+
+                <p>
+                    Upload shipment imagery to perform assistive
+                    package-condition screening and combine visual
+                    evidence with SupplyShield operational intelligence.
+                </p>
+
+            </div>
+
+            <div class="cv-status">
+                ● ASSISTIVE SCREENING
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- EXPLANATION -->
+
+    <section class="cv-info">
+
+        <div class="cv-info-card">
+            <span>STEP 01</span>
+            <strong>Select Shipment</strong>
+        </div>
+
+        <div class="cv-info-card">
+            <span>STEP 02</span>
+            <strong>Upload Package Image</strong>
+        </div>
+
+        <div class="cv-info-card">
+            <span>STEP 03</span>
+            <strong>Run Visual Screening</strong>
+        </div>
+
+        <div class="cv-info-card">
+            <span>STEP 04</span>
+            <strong>Review Decision Support</strong>
+        </div>
+
+    </section>
+
+
+    <div class="row g-3">
+
+        <!-- LEFT -->
+
+        <div class="col-lg-5">
+
+            <section class="cv-panel">
+
+                <div class="cv-panel-head">
+
+                    <div>
+                        <h5>Inspection Input</h5>
+                        <p>
+                            Connect visual evidence to a shipment.
+                        </p>
+                    </div>
+
+                    <i class="bi bi-camera text-primary"></i>
+
+                </div>
+
+
+                <div class="cv-body">
+
+                    <div class="mb-3">
+
+                        <label class="cv-label">
+                            SHIPMENT / BATCH ID
+                        </label>
+
+                        <select
+                            id="batchId"
+                            class="cv-input">
+
+                            <option value="">
+                                Select shipment
+                            </option>
+
+                            {% for s in shipments %}
+
+                            <option value="{{ s.batch_id }}">
+                                {{ s.batch_id }}
+                                {% if s.product %}
+                                    · {{ s.product }}
+                                {% endif %}
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <label class="cv-label">
+                        PACKAGE / SHIPMENT IMAGE
+                    </label>
+
+
+                    <div
+                        class="upload-zone"
+                        id="uploadZone"
+                        onclick="
+                            document
+                            .getElementById('imageInput')
+                            .click()
+                        ">
+
+                        <div
+                            class="upload-placeholder"
+                            id="uploadPlaceholder">
+
+                            <div class="upload-icon">
+                                <i class="bi bi-cloud-arrow-up"></i>
+                            </div>
+
+                            <strong>
+                                Upload inspection image
+                            </strong>
+
+                            <span>
+                                JPG, JPEG or PNG · Maximum 10 MB
+                            </span>
+
+                        </div>
+
+
+                        <img
+                            id="previewImage"
+                            alt="Inspection preview">
+
+                    </div>
+
+
+                    <input
+                        type="file"
+                        id="imageInput"
+                        class="file-input"
+                        accept=".jpg,.jpeg,.png,image/jpeg,image/png">
+
+
+                    <div
+                        class="cv-help"
+                        id="fileInformation">
+
+                        No image selected.
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="inspect-btn"
+                        id="inspectButton"
+                        onclick="runInspection()">
+
+                        <i class="bi bi-search"></i>
+
+                        Run Visual Inspection
+
+                    </button>
+
+
+                    <div class="cv-disclaimer">
+
+                        <i class="bi bi-info-circle"></i>
+
+                        <div>
+                            This module provides assistive visual
+                            screening. Results should support, not
+                            replace, physical inspection and qualified
+                            operational judgement.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+
+        <!-- RIGHT -->
+
+        <div class="col-lg-7">
+
+            <section class="cv-panel">
+
+                <div class="cv-panel-head">
+
+                    <div>
+                        <h5>Visual Inspection Result</h5>
+                        <p>
+                            Screening metrics and recommended response.
+                        </p>
+                    </div>
+
+                    <span
+                        class="badge bg-light text-dark"
+                        id="inspectionId">
+
+                        NOT RUN
+
+                    </span>
+
+                </div>
+
+
+                <div class="cv-body">
+
+                    <!-- EMPTY -->
+
+                    <div
+                        class="result-empty"
+                        id="emptyResult">
+
+                        <div class="result-empty-icon">
+                            <i class="bi bi-image"></i>
+                        </div>
+
+                        <h5>
+                            No inspection performed
+                        </h5>
+
+                        <p>
+                            Select a shipment, upload an image and run
+                            the visual inspection to view screening
+                            results.
+                        </p>
+
+                    </div>
+
+
+                    <!-- LOADING -->
+
+                    <div
+                        class="cv-loading"
+                        id="loadingResult">
+
+                        <div class="cv-spinner"></div>
+
+                        <strong>
+                            Inspecting package image...
+                        </strong>
+
+                    </div>
+
+
+                    <!-- RESULT -->
+
+                    <div
+                        class="result-content"
+                        id="resultContent">
+
+                        <div class="result-header">
+
+                            <div>
+
+                                <span class="cv-eyebrow">
+                                    INSPECTION RESULT
+                                </span>
+
+                                <h5
+                                    class="mt-1 mb-0"
+                                    id="resultBatch">
+
+                                    —
+
+                                </h5>
+
+                            </div>
+
+
+                            <span
+                                class="result-label normal"
+                                id="conditionLabel">
+
+                                NORMAL
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="damage-score">
+
+                            <div class="damage-top">
+
+                                <span>
+                                    VISUAL / DAMAGE SCREENING SCORE
+                                </span>
+
+                                <strong id="damageScore">
+                                    0%
+                                </strong>
+
+                            </div>
+
+
+                            <div class="score-track">
+
+                                <div
+                                    class="score-fill"
+                                    id="damageFill">
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="cv-metrics">
+
+                            <div class="cv-metric">
+
+                                <span>
+                                    SCREENING CONFIDENCE
+                                </span>
+
+                                <strong id="confidence">
+                                    —
+                                </strong>
+
+                            </div>
+
+
+                            <div class="cv-metric">
+
+                                <span>
+                                    IMAGE RESOLUTION
+                                </span>
+
+                                <strong id="resolution">
+                                    —
+                                </strong>
+
+                            </div>
+
+
+                            <div class="cv-metric">
+
+                                <span>
+                                    MEAN BRIGHTNESS
+                                </span>
+
+                                <strong id="brightness">
+                                    —
+                                </strong>
+
+                            </div>
+
+
+                            <div class="cv-metric">
+
+                                <span>
+                                    IMAGE CONTRAST
+                                </span>
+
+                                <strong id="contrast">
+                                    —
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="observation-box">
+
+                            <h6>
+                                <i class="bi bi-eye"></i>
+                                Screening Observations
+                            </h6>
+
+                            <div id="observations">
+                                —
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            class="recommendation normal"
+                            id="recommendationBox">
+
+                            <span>
+                                RECOMMENDED RESPONSE
+                            </span>
+
+                            <strong id="recommendation">
+                                Continue monitoring
+                            </strong>
+
+                        </div>
+
+
+                        <div class="d-flex gap-2 mt-3">
+
+                            <a
+                                href="#"
+                                id="shipmentLink"
+                                class="btn btn-sm btn-outline-primary">
+
+                                <i class="bi bi-box-seam"></i>
+
+                                Open Shipment
+
+                            </a>
+
+
+                            <a
+                                href="/support-center"
+                                class="btn btn-sm btn-outline-secondary">
+
+                                <i class="bi bi-life-preserver"></i>
+
+                                Recovery Support
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>
+document.addEventListener(
+    'DOMContentLoaded',
+    function () {
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+
+        const batchId =
+            params.get(
+                'batch_id'
+            );
+
+
+        if (!batchId) {
+            return;
+        }
+
+
+        const selector =
+            document.getElementById(
+                'batchId'
+            );
+
+
+        if (!selector) {
+            return;
+        }
+
+
+        const exists =
+            Array.from(
+                selector.options
+            ).some(
+                option =>
+                    option.value ===
+                    batchId
+            );
+
+
+        if (exists) {
+
+            selector.value =
+                batchId;
+
+        }
+
+    }
+);
+
+const imageInput =
+    document.getElementById('imageInput');
+
+
+imageInput.addEventListener(
+    'change',
+    previewSelectedImage
+);
+
+
+function previewSelectedImage() {
+
+    const file =
+        imageInput.files[0];
+
+    if (!file) {
+        return;
+    }
+
+
+    const allowedTypes = [
+        'image/jpeg',
+        'image/png'
+    ];
+
+
+    if (!allowedTypes.includes(file.type)) {
+
+        alert(
+            'Please select a JPG, JPEG or PNG image.'
+        );
+
+        imageInput.value = '';
+
+        return;
+    }
+
+
+    const maximumSize =
+        10 * 1024 * 1024;
+
+
+    if (file.size > maximumSize) {
+
+        alert(
+            'Image size must be below 10 MB.'
+        );
+
+        imageInput.value = '';
+
+        return;
+    }
+
+
+    const reader =
+        new FileReader();
+
+
+    reader.onload =
+        function(event) {
+
+            const preview =
+                document.getElementById(
+                    'previewImage'
+                );
+
+            preview.src =
+                event.target.result;
+
+            preview.style.display =
+                'block';
+
+
+            document.getElementById(
+                'uploadPlaceholder'
+            ).style.display =
+                'none';
+        };
+
+
+    reader.readAsDataURL(file);
+
+
+    document.getElementById(
+        'fileInformation'
+    ).textContent =
+        file.name +
+        ' · ' +
+        (
+            file.size /
+            (1024 * 1024)
+        ).toFixed(2) +
+        ' MB';
+}
+
+
+
+async function runInspection() {
+
+    const batchId =
+        document
+        .getElementById('batchId')
+        .value;
+
+
+    const file =
+        imageInput.files[0];
+
+
+    if (!batchId) {
+
+        alert(
+            'Please select a shipment first.'
+        );
+
+        return;
+    }
+
+
+    if (!file) {
+
+        alert(
+            'Please upload a package image.'
+        );
+
+        return;
+    }
+
+
+    const button =
+        document.getElementById(
+            'inspectButton'
+        );
+
+
+    button.disabled = true;
+
+    button.innerHTML =
+        '<i class="bi bi-hourglass-split"></i> Inspecting...';
+
+
+    document.getElementById(
+        'emptyResult'
+    ).style.display =
+        'none';
+
+
+    document.getElementById(
+        'resultContent'
+    ).style.display =
+        'none';
+
+
+    document.getElementById(
+        'loadingResult'
+    ).style.display =
+        'block';
+
+
+    try {
+
+        const formData =
+            new FormData();
+
+
+        formData.append(
+            'image',
+            file
+        );
+
+
+        formData.append(
+            'batch_id',
+            batchId
+        );
+
+
+        const response =
+            await fetch(
+                '/api/cv-inspect',
+                {
+                    method: 'POST',
+                    body: formData
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.error ||
+                'Visual inspection failed.'
+            );
+        }
+
+
+        displayInspection(
+            data,
+            batchId
+        );
+
+    }
+
+    catch (error) {
+
+        document.getElementById(
+            'loadingResult'
+        ).style.display =
+            'none';
+
+
+        document.getElementById(
+            'emptyResult'
+        ).style.display =
+            'flex';
+
+
+        alert(
+            error.message
+        );
+
+    }
+
+    finally {
+
+        button.disabled = false;
+
+        button.innerHTML =
+            '<i class="bi bi-search"></i> Run Visual Inspection';
+
+    }
+}
+
+
+
+function displayInspection(
+    data,
+    batchId
+) {
+
+    document.getElementById(
+        'loadingResult'
+    ).style.display =
+        'none';
+
+
+    document.getElementById(
+        'resultContent'
+    ).style.display =
+        'block';
+
+
+const score =
+    Number(data.damage_score ?? 0);
+
+const confidence =
+    Number(data.confidence ?? 0);
+
+const label =
+    data.label ?? 'SCREENING COMPLETE';
+
+const width =
+    data.width ?? '—';
+
+const height =
+    data.height ?? '—';
+
+const brightness =
+    data.mean_brightness ?? '—';
+
+const contrast =
+    data.contrast ?? '—';
+
+    document.getElementById(
+        'resultBatch'
+    ).textContent =
+        batchId;
+
+
+   document.getElementById(
+    'damageScore'
+).textContent =
+    score.toFixed(1) + '%';
+
+
+document.getElementById(
+    'confidence'
+).textContent =
+    confidence.toFixed(1) + '%';
+
+
+document.getElementById(
+    'resolution'
+).textContent =
+    width + ' × ' + height;
+
+
+document.getElementById(
+    'brightness'
+).textContent =
+    brightness;
+
+
+document.getElementById(
+    'contrast'
+).textContent =
+    contrast;
+
+
+document.getElementById(
+    'conditionLabel'
+).textContent =
+    label;
+
+    /* SCORE BAR */
+
+    const fill =
+        document.getElementById(
+            'damageFill'
+        );
+
+
+    fill.style.width =
+        Math.max(
+            0,
+            Math.min(
+                100,
+                score
+            )
+        ) +
+        '%';
+
+
+    /* CONDITION */
+
+    let condition =
+        data.label ||
+        'NORMAL';
+
+
+    let style =
+        'normal';
+
+
+    if (score >= 70) {
+
+        condition =
+            data.label ||
+            'HIGH VISUAL RISK';
+
+        style =
+            'high';
+
+        fill.style.background =
+            '#d83b4c';
+
+    }
+
+    else if (score >= 40) {
+
+        condition =
+            data.label ||
+            'REVIEW REQUIRED';
+
+        style =
+            'review';
+
+        fill.style.background =
+            '#d8890b';
+
+    }
+
+    else {
+
+        fill.style.background =
+            '#198754';
+    }
+
+
+    const label =
+        document.getElementById(
+            'conditionLabel'
+        );
+
+
+    label.textContent =
+        condition;
+
+
+    label.className =
+        'result-label ' +
+        style;
+
+
+    /* OBSERVATIONS */
+
+    const reasons =
+        Array.isArray(
+            data.reasons
+        )
+        ? data.reasons
+        : [];
+
+
+    const observations =
+        document.getElementById(
+            'observations'
+        );
+
+
+    if (reasons.length) {
+
+        observations.innerHTML =
+            reasons.map(
+                reason => `
+                    <div class="observation-item">
+                        <i class="bi bi-check-circle"></i>
+                        <span>
+                            ${escapeHtml(reason)}
+                        </span>
+                    </div>
+                `
+            ).join('');
+
+    }
+
+    else {
+
+        observations.innerHTML =
+            `
+            <div class="observation-item">
+                <i class="bi bi-info-circle"></i>
+                <span>
+                    No additional visual observations
+                    were returned.
+                </span>
+            </div>
+            `;
+    }
+
+
+    /* RECOMMENDATION */
+
+    let recommendation;
+
+
+    if (score >= 70) {
+
+        recommendation =
+            'HOLD FOR MANUAL INSPECTION';
+
+    }
+
+    else if (score >= 40) {
+
+        recommendation =
+            'REVIEW PACKAGE CONDITION';
+
+    }
+
+    else {
+
+        recommendation =
+            'CONTINUE WITH ROUTINE MONITORING';
+    }
+
+
+    document.getElementById(
+        'recommendation'
+    ).textContent =
+        data.recommendation ||
+        recommendation;
+
+
+    document.getElementById(
+        'recommendationBox'
+    ).className =
+        'recommendation ' +
+        style;
+
+
+    /* SHIPMENT LINK */
+
+    document.getElementById(
+        'shipmentLink'
+    ).href =
+        '/shipment/' +
+        encodeURIComponent(
+            batchId
+        );
+}
+
+
+
+function escapeHtml(value) {
+
+    return String(value)
+        .replace(
+            /[&<>"']/g,
+            character => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            })[character]
+        );
+}
+
+</script>
+
+{% endblock %}

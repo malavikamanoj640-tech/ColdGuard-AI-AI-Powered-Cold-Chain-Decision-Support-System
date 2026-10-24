@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}Risk Simulator · SupplyShield{% endblock %}
+{% block heading %}AI Scenario Simulator{% endblock %}
+{% block content %}
+<div class="page-intro"><div><span class="eyebrow">WHAT-IF INTELLIGENCE</span><h2>Simulate disruption before it happens</h2><p>Change operational conditions and compare baseline risk with the predicted scenario impact.</p></div><div class="date-chip">Decision support · explainable risk model</div></div>
+<div class="sim-layout">
+  <div class="panel">
+    <div class="panel-head"><div><h3>Scenario builder</h3><p>Use realistic operating assumptions.</p></div><span class="chart-badge">INPUTS</span></div>
+    <div class="form-grid">
+      <label>Baseline risk %<input id="base" type="number" min="0" max="99" value="30"></label>
+      <label>Delay hours<input id="delay" type="number" min="0" step="0.5" value="2"></label>
+      <label>Temperature °C<input id="temp" type="number" min="0" step="0.1" value="9"></label>
+      <label>Demand multiplier<input id="demand" type="number" min="0.5" step="0.05" value="1.2"></label>
+    </div>
+    <div class="scenario-checks">
+      <label><input id="closure" type="checkbox"> Route closure</label>
+      <label><input id="fridge" type="checkbox"> Refrigeration failure</label>
+      <label><input id="weather" type="checkbox"> Severe weather</label>
+    </div>
+    <button class="btn btn-danger w-100 mt-3" onclick="runScenario()">Run AI Scenario →</button>
+    <div class="simulation-note mt-3"><b>How to read this:</b> the model decomposes risk into delay, temperature, demand and disruption contributors. It is a decision-support simulation, not a guaranteed financial forecast.</div>
+  </div>
+  <div class="panel" id="simResult">
+    <div class="result-placeholder"><div class="result-ring">AI</div><h3>Simulation ready</h3><p>Run a scenario to see risk movement, estimated impact and recommended actions.</p></div>
+  </div>
+</div>
+<div class="chart-grid chart-grid-2 mt-3">
+  <div class="panel chart-card"><div class="panel-head"><div><h3>Risk contribution waterfall</h3><p>Which factors are pushing the scenario upward?</p></div><span class="chart-badge">EXPLAINABILITY</span></div><div class="canvas-wrap"><canvas id="impactChart"></canvas></div></div>
+  <div class="panel chart-card"><div class="panel-head"><div><h3>Scenario risk gauge</h3><p>Operational severity band.</p></div><span class="chart-badge">DECISION</span></div><div class="gauge-wrap"><div class="risk-gauge"><div id="gaugeFill"></div><div class="gauge-center"><b id="gaugeValue">—</b><span id="gaugeLabel">Waiting</span></div></div><div class="gauge-scale"><span>LOW</span><span>MODERATE</span><span>HIGH</span><span>CRITICAL</span></div></div></div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+let impactChart;
+function val(id){return document.getElementById(id).value}
+async function runScenario(){
+  const payload={baseline_risk:+val('base'),delay_hours:+val('delay'),temperature:+val('temp'),demand_multiplier:+val('demand'),route_closure:document.getElementById('closure').checked,refrigeration_failure:document.getElementById('fridge').checked,severe_weather:document.getElementById('weather').checked};
+  const box=document.getElementById('simResult'); box.innerHTML='<div class="result-placeholder"><div class="result-ring">…</div><h3>Calculating scenario</h3><p>Evaluating disruption contributors.</p></div>';
+  try{
+    const r=await fetch('/api/disruption',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}); const d=await r.json(); if(!r.ok) throw new Error(d.error||'Simulation failed');
+    const delta=d.impact_points; const direction=delta>=0?'↑':'↓';
+    box.innerHTML=`<div class="panel-head"><div><span class="eyebrow">SCENARIO RESULT</span><h3>${d.severity} operational exposure</h3></div><span class="risk-chip ${d.severity.toLowerCase()}">${d.severity}</span></div>
+      <div class="compare compare-modern"><div><small>Baseline risk</small><strong>${d.baseline_risk}%</strong><span>Current state</span></div><div class="delta ${delta>0?'bad':'good'}">${direction} ${Math.abs(delta)} pts</div><div><small>Scenario risk</small><strong>${d.scenario_risk}%</strong><span>Predicted state</span></div></div>
+      <div class="feature-grid"><div><b>Estimated loss</b><span>₹${Number(d.estimated_loss).toLocaleString('en-IN')}</span></div><div><b>Expected delay</b><span>${d.estimated_delay_hours} hours</span></div></div>
+      <h4>AI recommended actions</h4><ul class="action-list">${d.recommended_actions.map(x=>`<li>${x}</li>`).join('')}</ul>`;
+    renderImpact(d); renderGauge(d.scenario_risk,d.severity);
+  }catch(e){box.innerHTML=`<div class="alert alert-danger">${e.message}</div>`}
+}
+function renderImpact(d){
+ const c=document.getElementById('impactChart'); if(impactChart) impactChart.destroy();
+ const rows=d.contributors.filter(x=>x.impact>0);
+ impactChart=new Chart(c,{type:'bar',data:{labels:rows.map(x=>x.name),datasets:[{label:'Risk contribution',data:rows.map(x=>x.impact),backgroundColor:'#1769aa',borderRadius:6}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.raw} points`}}},scales:{x:{beginAtZero:true,grid:{color:'#edf2f6'},ticks:{color:'#71869a'}},y:{grid:{display:false},ticks:{color:'#71869a',font:{size:10}}}}}});
+}
+function renderGauge(value,label){document.getElementById('gaugeValue').textContent=value+'%';document.getElementById('gaugeLabel').textContent=label;document.getElementById('gaugeFill').style.width=Math.min(100,value)+'%'}
+</script>
+{% endblock %}

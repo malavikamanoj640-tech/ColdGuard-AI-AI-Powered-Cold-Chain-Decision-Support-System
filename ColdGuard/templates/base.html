@@ -1,0 +1,31 @@
+<!doctype html><html lang="en">
+    
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+    
+    <title>{% block title %}ColdGuard AI{% endblock %}</title><link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/app.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js">
+
+    </script></head><body><aside class="sidebar"><a class="brand" href="/dashboard"><span class="brand-mark">
+        
+        <img
+                src="{{ url_for('static', filename='img/coldguard-logo.png') }}"
+                alt="ColdGuard AI"
+           style=" width: 55px;
+            height: 55px;
+
+            object-fit: contain;
+
+            border-radius: 10px;" ></span><span>ColdGuard <small>AI</small></span></a><div class="nav-label">INTELLIGENCE</div><a class="nav-link" href="/dashboard">◈ <span>Overview</span></a><a class="nav-link" href="/control-tower">⌁ <span>AI Control Tower</span></a><a class="nav-link" href="/live-tracking">🚚 <span>Live Tracking</span></a><a class="nav-link" href="/ai-lab">✦ <span>AI Lab</span></a><a class="nav-link" href="/decision-center">🧠 <span>AI Decision Center</span></a><a class="nav-link" href="/recovery-intelligence">↻ <span>Recovery Intelligence</span></a><a class="nav-link" href="/ai-7">✧ <span>AI 7.0 Lab</span></a><a class="nav-link" href="/governance">🛡 <span>AI Governance</span></a><a class="nav-link" href="/risk-intelligence">◎ <span>Risk Intelligence</span></a><a class="nav-link" href="/digital-twin">◌ <span>Shipment Digital Twin</span></a><a class="nav-link" href="/simulator">◇ <span>Risk Simulator</span></a><div class="nav-label">OPERATIONS</div><a class="nav-link" href="/shipments">▣ <span>Shipments</span></a><a class="nav-link" href="/system-health">● <span>System Health</span></a><a class="nav-link" href="/alerts">⚠ <span>Incident Response</span></a><a class="nav-link" href="/support-center">⌖ <span>Support & Recovery Map</span></a><a class="nav-link" href="/analytics">▥ <span>Supply Analytics</span></a>
+            <a class="nav-link" href="/reports">▤ <span>AI Reports</span></a>
+             <a class="nav-link" href="/">▤ <span>Home</span></a><div class="sidebar-foot"></div>
+            <div class="sidebar-foot">
+                
+                <div class="status-dot"></div><div><b>Decision Engine</b><small>System operational</small></div></div></aside><main class="main"><header class="topbar"><div><div class="eyebrow">PREDICTIVE SUPPLY INTELLIGENCE</div><h5>{% block heading %}ColdGuard AI{% endblock %}</h5></div><div class="top-actions"><button id="mobileMenu" class="btn btn-ghost btn-sm mobile-menu" type="button">☰ Menu</button>
+            <a href="/alerts" class="notif-bell" title="Notifications">🔔 <b id="notifCount">0</b></a>
+            <span class="live-pill"><i></i> MODEL ONLINE</span><a href="/risk-intelligence" class="btn btn-primary btn-sm">New Assessment</a></div></header><section class="content">
+                
+                {% block content %}{% endblock %}</section></main><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script><script src="{{ url_for('static',filename='js/app.js') }}"></script><script>fetch("/api/notifications").then(r=>r.json()).then(d=>{let e=document.getElementById("notifCount");if(e)e.textContent=d.unread||0}).catch(()=>{});</script>{% block scripts %}{% endblock %}</body></html>
